@@ -43,10 +43,10 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
         return withIOContext {
             val query = """
             |mutation AddManga(${'$'}mangaId: Int, ${'$'}progress: Int, ${'$'}status: MediaListStatus, ${'$'}private: Boolean) {
-                |SaveMediaListEntry (mediaId: ${'$'}mangaId, progress: ${'$'}progress, status: ${'$'}status, private: ${'$'}private) {
-                |   id
-                |   status
-                |}
+            |    SaveMediaListEntry (mediaId: ${'$'}mangaId, progress: ${'$'}progress, status: ${'$'}status, private: ${'$'}private) {
+            |        id
+            |        status
+            |    }
             |}
             |
             """.trimMargin()
@@ -80,17 +80,17 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
         return withIOContext {
             val query = """
             |mutation UpdateManga(
-                |${'$'}listId: Int, ${'$'}progress: Int, ${'$'}status: MediaListStatus, ${'$'}private: Boolean,
-                |${'$'}score: Int, ${'$'}startedAt: FuzzyDateInput, ${'$'}completedAt: FuzzyDateInput
+            |    ${'$'}listId: Int, ${'$'}progress: Int, ${'$'}status: MediaListStatus, ${'$'}private: Boolean,
+            |    ${'$'}score: Int, ${'$'}startedAt: FuzzyDateInput, ${'$'}completedAt: FuzzyDateInput
             |) {
-                |SaveMediaListEntry(
-                    |id: ${'$'}listId, progress: ${'$'}progress, status: ${'$'}status, private: ${'$'}private,
-                    |scoreRaw: ${'$'}score, startedAt: ${'$'}startedAt, completedAt: ${'$'}completedAt
-                |) {
-                    |id
-                    |status
-                    |progress
-                |}
+            |    SaveMediaListEntry(
+            |        id: ${'$'}listId, progress: ${'$'}progress, status: ${'$'}status, private: ${'$'}private,
+            |        scoreRaw: ${'$'}score, startedAt: ${'$'}startedAt, completedAt: ${'$'}completedAt
+            |    ) {
+            |        id
+            |        status
+            |        progress
+            |    }
             |}
             |
             """.trimMargin()
@@ -116,9 +116,9 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
         withIOContext {
             val query = """
             |mutation DeleteManga(${'$'}listId: Int) {
-                |DeleteMediaListEntry(id: ${'$'}listId) {
-                    |deleted
-                |}
+            |    DeleteMediaListEntry(id: ${'$'}listId) {
+            |        deleted
+            |    }
             |}
             |
             """.trimMargin()
@@ -137,40 +137,40 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
         return withIOContext {
             val query = """
             |query Search(${'$'}query: String) {
-                |Page (perPage: 50) {
-                    |media(search: ${'$'}query, type: MANGA, format_not_in: [NOVEL]) {
-                        |id
-                        |staff {
-                            |edges {
-                                |role
-                                |id
-                                |node {
-                                    |name {
-                                        |full
-                                        |userPreferred
-                                        |native
-                                    |}
-                                |}
-                            |}
-                        |}
-                        |title {
-                            |userPreferred
-                        |}
-                        |coverImage {
-                            |large
-                        |}
-                        |format
-                        |status
-                        |chapters
-                        |description
-                        |startDate {
-                            |year
-                            |month
-                            |day
-                        |}
-                        |averageScore
-                    |}
-                |}
+            |    Page (perPage: 50) {
+            |        media(search: ${'$'}query, type: MANGA, format_not_in: [NOVEL]) {
+            |            id
+            |            staff {
+            |                edges {
+            |                    role
+            |                    id
+            |                    node {
+            |                        name {
+            |                            full
+            |                            userPreferred
+            |                            native
+            |                        }
+            |                    }
+            |                }
+            |            }
+            |            title {
+            |                userPreferred
+            |            }
+            |            coverImage {
+            |                large
+            |            }
+            |            format
+            |            status
+            |            chapters
+            |            description
+            |            startDate {
+            |                year
+            |                month
+            |                day
+            |            }
+            |            averageScore
+            |        }
+            |    }
             |}
             |
             """.trimMargin()
@@ -199,56 +199,56 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
         return withIOContext {
             val query = """
             |query (${'$'}id: Int!, ${'$'}manga_id: Int!) {
-                |Page {
-                    |mediaList(userId: ${'$'}id, type: MANGA, mediaId: ${'$'}manga_id) {
-                        |id
-                        |status
-                        |scoreRaw: score(format: POINT_100)
-                        |progress
-                        |private
-                        |startedAt {
-                            |year
-                            |month
-                            |day
-                        |}
-                        |completedAt {
-                            |year
-                            |month
-                            |day
-                        |}
-                        |media {
-                            |id
-                            |title {
-                                |userPreferred
-                            |}
-                            |coverImage {
-                                |large
-                            |}
-                            |format
-                            |status
-                            |chapters
-                            |description
-                            |startDate {
-                                |year
-                                |month
-                                |day
-                            |}
-                            |staff {
-                                |edges {
-                                    |role
-                                    |id
-                                    |node {
-                                        |name {
-                                            |full
-                                            |userPreferred
-                                            |native
-                                        |}
-                                    |}
-                                |}
-                            |}
-                        |}
-                    |}
-                |}
+            |    Page {
+            |        mediaList(userId: ${'$'}id, type: MANGA, mediaId: ${'$'}manga_id) {
+            |            id
+            |            status
+            |            scoreRaw: score(format: POINT_100)
+            |            progress
+            |            private
+            |            startedAt {
+            |                year
+            |                month
+            |                day
+            |            }
+            |            completedAt {
+            |                year
+            |                month
+            |                day
+            |            }
+            |            media {
+            |                id
+            |                title {
+            |                    userPreferred
+            |                }
+            |                coverImage {
+            |                    large
+            |                }
+            |                format
+            |                status
+            |                chapters
+            |                description
+            |                startDate {
+            |                    year
+            |                    month
+            |                    day
+            |                }
+            |                staff {
+            |                    edges {
+            |                        role
+            |                        id
+            |                        node {
+            |                            name {
+            |                                full
+            |                                userPreferred
+            |                                native
+            |                            }
+            |                        }
+            |                    }
+            |                }
+            |            }
+            |        }
+            |    }
             |}
             |
             """.trimMargin()
@@ -288,12 +288,12 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
         return withIOContext {
             val query = """
             |query User {
-                |Viewer {
-                    |id
-                    |mediaListOptions {
-                        |scoreFormat
-                    |}
-                |}
+            |    Viewer {
+            |        id
+            |        mediaListOptions {
+            |            scoreFormat
+            |        }
+            |    }
             |}
             |
             """.trimMargin()
@@ -312,6 +312,74 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
                     .let {
                         val viewer = it.data.viewer
                         Pair(viewer.id, viewer.mediaListOptions.scoreFormat)
+                    }
+            }
+        }
+    }
+
+    suspend fun getMangaMetadata(track: DomainTrack): TrackMangaMetadata {
+        return withIOContext {
+            val query = """
+            |query (${'$'}mangaId: Int!) {
+            |    Media (id: ${'$'}mangaId) {
+            |        id
+            |        title {
+            |            userPreferred
+            |        }
+            |        coverImage {
+            |            large
+            |        }
+            |        description
+            |        staff {
+            |            edges {
+            |                role
+            |                id
+            |                node {
+            |                    name {
+            |                        full
+            |                        userPreferred
+            |                        native
+            |                    }
+            |                }
+            |            }
+            |        }
+            |    }
+            |}
+            |
+            """.trimMargin()
+            val payload = buildJsonObject {
+                put("query", query)
+                putJsonObject("variables") {
+                    put("mangaId", track.remoteId)
+                }
+            }
+            with(json) {
+                authClient.newCall(
+                    POST(
+                        API_URL,
+                        body = payload.toString().toRequestBody(jsonMime),
+                    ),
+                )
+                    .awaitSuccess()
+                    .parseAs<ALMangaMetadata>()
+                    .let {
+                        val media = it.data.media
+                        TrackMangaMetadata(
+                            remoteId = media.id,
+                            title = media.title.userPreferred,
+                            thumbnailUrl = media.coverImage.large,
+                            description = media.description?.htmlDecode()?.ifEmpty { null },
+                            authors = media.staff.edges
+                                .filter { "Story" in it.role }
+                                .mapNotNull { it.node.name() }
+                                .joinToString(", ")
+                                .ifEmpty { null },
+                            artists = media.staff.edges
+                                .filter { "Art" in it.role }
+                                .mapNotNull { it.node.name() }
+                                .joinToString(", ")
+                                .ifEmpty { null },
+                        )
                     }
             }
         }
