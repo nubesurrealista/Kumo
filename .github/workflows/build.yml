@@ -11,9 +11,7 @@ jobs:
       - name: Get version from build.gradle.kts
         id: get_version
         run: |
-          # Extrae la versión del archivo build.gradle.kts
           VERSION=$(grep 'versionName =' app/build.gradle.kts | cut -d '"' -f 2)
-          # Añade un timestamp para hacer el tag único
           TIMESTAMP=$(date +%Y%m%d%H%M%S)
           echo "Versión encontrada: $VERSION"
           echo "TAG=v${VERSION}-${TIMESTAMP}" >> $GITHUB_OUTPUT
@@ -29,39 +27,35 @@ jobs:
       - name: Generate changelog
         id: changelog
         run: |
-          CHANGELOG=$(git log --pretty=format:"- %h %s")
+          CHANGELOG=$(git log -n 20 --pretty=format:"- %h %s")
           echo "CHANGELOG=$CHANGELOG" >> $GITHUB_OUTPUT
 
       - name: Decode keystore
         run: |
           echo "${{ secrets.RELEASE_KEYSTORE_B64 }}" | base64 -d > app/nube.p12
 
-      - name: Build release APKs
+      - name: Build release APK
         run: |
           ./gradlew assembleRelease --stacktrace --parallel --max-workers=$(nproc)
 
-      - name: Sign APKs
+      - name: Sign APK
         run: |
           ANDROID_BUILD_TOOLS="$ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort -V | tail -n1)"
-          
-          sign_apk() {
-            local arch=$1
-            local unsigned_path="app/build/outputs/apk/release/app-${arch}-release-unsigned.apk"
-            local signed_name="kumo-${{ steps.get_version.outputs.VERSION }}-${arch}-release-signed.apk"
-            
-            [ -f "$unsigned_path" ] || { echo "APK not found for ${arch}"; return 1; }
-            
-            "$ANDROID_BUILD_TOOLS/apksigner" sign \
-              --ks app/nube.p12 \
-              --ks-key-alias "${{ secrets.RELEASE_KEY_ALIAS }}" \
-              --ks-pass pass:"${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" \
-              --key-pass pass:"${{ secrets.RELEASE_KEY_PASSWORD }}" \
-              --out app/build/outputs/apk/release/$signed_name \
-              "$unsigned_path"
-          }
-          
-          sign_apk "armeabi-v7a"
-          sign_apk "arm64-v8a"
+          UNSIGNED_APK="app/build/outputs/apk/release/app-release-unsigned.apk"
+          SIGNED_APK="app/build/outputs/apk/release/kumo-${{ steps.get_version.outputs.VERSION }}-release-signed.apk"
+
+          if [ ! -f "$UNSIGNED_APK" ]; then
+            echo "Unsigned universal APK not found!"
+            exit 1
+          fi
+
+          "$ANDROID_BUILD_TOOLS/apksigner" sign \
+            --ks app/nube.p12 \
+            --ks-key-alias "${{ secrets.RELEASE_KEY_ALIAS }}" \
+            --ks-pass pass:"${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" \
+            --key-pass pass:"${{ secrets.RELEASE_KEY_PASSWORD }}" \
+            --out "$SIGNED_APK" \
+            "$UNSIGNED_APK"
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -69,8 +63,7 @@ jobs:
           tag_name: ${{ steps.get_version.outputs.TAG }}
           name: "Versión ${{ steps.get_version.outputs.VERSION }}"
           files: |
-            app/build/outputs/apk/release/kumo-${{ steps.get_version.outputs.VERSION }}-armeabi-v7a-release-signed.apk
-            app/build/outputs/apk/release/kumo-${{ steps.get_version.outputs.VERSION }}-arm64-v8a-release-signed.apk
+            app/build/outputs/apk/release/kumo-${{ steps.get_version.outputs.VERSION }}-release-signed.apk
           body: "${{ steps.changelog.outputs.CHANGELOG }}"
           draft: false
           prerelease: false
