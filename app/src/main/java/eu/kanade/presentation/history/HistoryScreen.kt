@@ -130,6 +130,7 @@ private fun HistoryScreenContent(
                         onClickResume = { onClickResume(value) },
                         onClickDelete = { onClickDelete(value) },
                         onClickFavorite = { onClickFavorite(value) },
+                        hasUnread = value.unreadCount > 0,
                     )
                 }
             }
@@ -154,7 +155,7 @@ internal fun HistoryScreenPreviews(
             snackbarHostState = SnackbarHostState(),
             onSearchQueryChange = {},
             onClickCover = {},
-            onClickResume = { _, _ -> run {} },
+            onClickResume = { _, _ -> },
             onDialogChange = {},
             onClickFavorite = {},
         )
