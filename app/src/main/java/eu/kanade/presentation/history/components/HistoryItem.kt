@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import eu.kanade.presentation.manga.components.DotSeparatorText
 import eu.kanade.presentation.manga.components.MangaCover
 import eu.kanade.presentation.theme.TachiyomiPreviewTheme
 import eu.kanade.presentation.util.formatChapterNumber
@@ -45,6 +46,7 @@ fun HistoryItem(
     onClickDelete: () -> Unit,
     onClickFavorite: () -> Unit,
     modifier: Modifier = Modifier,
+    readProgress: String?,
     hasUnread: Boolean,
 ) {
     val textAlpha = if (history.read) DISABLED_ALPHA else 1f
@@ -101,6 +103,15 @@ fun HistoryItem(
                     color = LocalContentColor.current.copy(alpha = textAlpha),
                     style = MaterialTheme.typography.bodySmall,
                 )
+                if (readProgress != null) {
+                    DotSeparatorText()
+                    Text(
+                        text = readProgress,
+                        maxLines = 1,
+                        color = LocalContentColor.current.copy(alpha = textAlpha),
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
             }
         }
 
@@ -138,6 +149,7 @@ private fun HistoryItemPreviews(
                 onClickResume = {},
                 onClickDelete = {},
                 onClickFavorite = {},
+                readProgress = "Page 5",
                 hasUnread = true,
             )
         }

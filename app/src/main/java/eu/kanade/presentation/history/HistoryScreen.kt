@@ -130,6 +130,14 @@ private fun HistoryScreenContent(
                         onClickResume = { onClickResume(value) },
                         onClickDelete = { onClickDelete(value) },
                         onClickFavorite = { onClickFavorite(value) },
+                        readProgress = value.lastPageRead
+                            .takeIf { !value.read && it > 0L }
+                            ?.let {
+                                stringResource(
+                                    MR.strings.chapter_progress,
+                                    it + 1,
+                                )
+                            },
                         hasUnread = value.unreadCount > 0,
                     )
                 }

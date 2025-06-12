@@ -96,6 +96,7 @@ class HistoryScreenModelStateProvider : PreviewParameterProvider<HistoryScreenMo
                         title = "Test Title",
                         chapterNumber = Random.nextDouble(),
                         read = Random.nextBoolean(),
+                        lastPageRead = Random.nextLong(1, 10),
                         totalChapters = totalChapters,
                         readCount = Random.nextLong(0, totalChapters + 1),
                         readAt = Date.from(Instant.now()),
