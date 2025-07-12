@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
-        run: git clone --depth 1 --branch rebrand https://github.com/nubesurrealista/mihon.git kumo
+        run: git clone --depth 1 https://github.com/nubesurrealista/mihon.git kumo
 
       - name: Set up JDK 24
         uses: actions/setup-java@v4
