@@ -4,6 +4,7 @@
     <string name="label_settings">Ajustes</string>
     <string name="label_download_queue">Cola de descargas</string>
     <string name="label_library">Biblioteca</string>
+    <string name="label_category">Categoria</string>
     <string name="label_recent_manga">Historial</string>
     <string name="label_recent_updates">Actualizaciones</string>
     <string name="label_backup">Copia de seguridad y restauración</string>
@@ -729,6 +730,12 @@
     <string name="pref_flash_page">Parpadear a blanco al cambiar de página</string>
     <string name="label_data_storage">Datos y almacenamiento</string>
     <string name="pref_storage_usage">Almacenamiento utilizado</string>
+    <string name="available_disk_space_info">Disponible: %1$s / Total: %2$s</string>
+    <string name="pref_storage_overview">Resumen almacenamiento</string>
+    <string name="calculating_storage_overview">Calculando uso de almacenamiento... (%1$s)</string>
+    <string name="storage_overview_no_items">No hay entradas para las siguientes categorías</string>
+    <string name="delete_local_manga">¿Borrar todo tu manga local?</string>
+    <string name="delete_manga_confirm">¿Estás seguro que quieres borrar \"%1$s\"?</string>
     <string name="action_sort_tracker_score">Puntuación del servicio</string>
     <string name="action_apply">Aplicar</string>
     <string name="action_revert_to_default">Restablecer vista</string>
