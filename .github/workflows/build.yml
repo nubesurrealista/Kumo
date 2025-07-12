@@ -1,4 +1,4 @@
-name: Build Kumo
+name: Build & Sign Kumo APKs (32 & 64 bits)
 on:
   workflow_dispatch: null
 jobs:
@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
-        run: git clone --depth 1 https://github.com/nubesurrealista/mihon.git kumo
+        run: git clone --depth 1 --branch rebrand https://github.com/nubesurrealista/mihon.git kumo
 
       - name: Set up JDK 24
         uses: actions/setup-java@v4
@@ -19,9 +19,8 @@ jobs:
         id: changelog
         run: |
           cd kumo
-          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
-          git log --pretty=format:"- %h %s" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          CHANGELOG=$(git log --pretty=format:"- %h %s")
+          echo "CHANGELOG=$CHANGELOG" >> $GITHUB_OUTPUT
 
       - name: Decode keystore
         run: |
