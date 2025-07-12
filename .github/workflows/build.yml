@@ -1,4 +1,4 @@
-name: Build & Sign Kumo APKs (32 & 64 bits)
+name: Build Kumo
 on:
   workflow_dispatch: null
 jobs:
