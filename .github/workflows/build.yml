@@ -1,4 +1,4 @@
-name: Build & Sign Mihon 32bits APK
+name: Build & Sign Kumo 32bits APK
 on:
   workflow_dispatch: null
 jobs:
@@ -34,12 +34,12 @@ jobs:
             --ks-key-alias "${{ secrets.RELEASE_KEY_ALIAS }}" \
             --ks-pass pass:"${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" \
             --key-pass pass:"${{ secrets.RELEASE_KEY_PASSWORD }}" \
-            --out app/build/outputs/apk/release/mihon-armeabi-v7a-release-signed.apk \
+            --out app/build/outputs/apk/release/kumo-armeabi-v7a-release-signed.apk \
             "$APK_PATH"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: mihon-armeabi-v7a-apk
-          path: mihon/app/build/outputs/apk/release/mihon-armeabi-v7a-release-signed.apk
+          name: kumo-armeabi-v7a-apk
+          path: mihon/app/build/outputs/apk/release/kumo-armeabi-v7a-release-signed.apk
           if-no-files-found: error
