@@ -129,8 +129,7 @@
         <item name="colorSurfaceContainerHighest">@color/catppuccin_surfaceContainerHighest</item>
         <item name="colorSurfaceContainerLow">@color/catppuccin_surfaceContainerLow</item>
         <item name="colorSurfaceContainerLowest">@color/catppuccin_surfaceContainerLowest</item>
-    </style>
-    
+    </style
     <!--== Dracula Theme ==-->
     <style name="Theme.Tachiyomi.Dracula"> 
         <item name="colorPrimary">@color/dracula_primary</item>
