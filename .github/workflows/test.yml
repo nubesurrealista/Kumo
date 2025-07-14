@@ -1,4 +1,4 @@
-name: Just build from repo
+name: Build Kumo
 on:
   workflow_dispatch: null
 jobs:
@@ -8,14 +8,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Get version from build.gradle
+      - name: Get version from build.gradle.kts
         id: get_version
         run: |
-          # Extrae la versión del archivo build.gradle
-          VERSION=$(grep 'versionName' app/build.gradle | cut -d '"' -f 2)
+          # Extrae la versión del archivo build.gradle.kts
+          VERSION=$(grep 'versionName =' app/build.gradle.kts | cut -d '"' -f 2)
           # Añade un timestamp para hacer el tag único
           TIMESTAMP=$(date +%Y%m%d%H%M%S)
-          echo "Versión base: $VERSION"
+          echo "Versión encontrada: $VERSION"
           echo "TAG=v${VERSION}-${TIMESTAMP}" >> $GITHUB_OUTPUT
           echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
 
@@ -47,7 +47,7 @@ jobs:
           sign_apk() {
             local arch=$1
             local unsigned_path="app/build/outputs/apk/release/app-${arch}-release-unsigned.apk"
-            local signed_name="kumo-${VERSION}-${arch}-release-signed.apk"
+            local signed_name="kumo-${{ steps.get_version.outputs.VERSION }}-${arch}-release-signed.apk"
             
             [ -f "$unsigned_path" ] || { echo "APK not found for ${arch}"; return 1; }
             
