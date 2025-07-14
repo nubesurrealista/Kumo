@@ -1,4 +1,4 @@
-name: Build Kumo
+name: Just Build
 on:
   workflow_dispatch: null
 jobs:
