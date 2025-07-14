@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
-        run: git clone --depth 1 https://github.com/nubesurrealista/mihon.git kumo
+        run: git clone --depth 1 --branch https://github.com/nubesurrealista/mihon.git kumo
 
       - name: Get version tag
         id: get_version
