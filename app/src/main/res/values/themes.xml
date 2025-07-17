@@ -169,6 +169,45 @@
         <item name="colorSurfaceContainerLow">@color/dracula_surfaceContainerLow</item>
         <item name="colorSurfaceContainerLowest">@color/dracula_surfaceContainerLowest</item>
     </style>
+    
+    <!--== Obsidian Theme ==-->   
+    <style name="Theme.Tachiyomi.Obsidian">
+        <item name="colorPrimary">@color/obsidian_primary</item>
+        <item name="colorOnPrimary">@color/obsidian_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/obsidian_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/obsidian_onPrimaryContainer</item>
+        <item name="colorPrimaryInverse">@color/obsidian_inversePrimary</item>
+        <item name="colorSecondary">@color/obsidian_secondary</item>
+        <item name="colorOnSecondary">@color/obsidian_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/obsidian_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/obsidian_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/obsidian_tertiary</item>
+        <item name="colorOnTertiary">@color/obsidian_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/obsidian_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/obsidian_onTertiaryContainer</item>
+        <item name="android:colorBackground">@color/obsidian_background</item>
+        <item name="colorOnBackground">@color/obsidian_onBackground</item>
+        <item name="colorSurface">@color/obsidian_surface</item>
+        <item name="colorOnSurface">@color/obsidian_onSurface</item>
+        <item name="colorSurfaceVariant">@color/obsidian_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/obsidian_onSurfaceVariant</item>
+        <item name="colorSurfaceInverse">@color/obsidian_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/obsidian_inverseOnSurface</item>
+        <item name="colorError">@color/obsidian_error</item>
+        <item name="colorOnError">@color/obsidian_onError</item>
+        <item name="colorErrorContainer">@color/obsidian_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/obsidian_onErrorContainer</item>
+        <item name="colorOutline">@color/obsidian_outline</item>
+        <item name="colorOutlineVariant">@color/obsidian_outlineVariant</item>
+        <item name="scrimBackground">@color/obsidian_scrim</item>
+        <item name="colorSurfaceBright">@color/obsidian_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/obsidian_surfaceDim</item>
+        <item name="colorSurfaceContainer">@color/obsidian_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/obsidian_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/obsidian_surfaceContainerHighest</item>
+        <item name="colorSurfaceContainerLow">@color/obsidian_surfaceContainerLow</item>
+        <item name="colorSurfaceContainerLowest">@color/obsidian_surfaceContainerLowest</item>
+    </style>
 
     <!--== Green Apple Theme ==-->
     <style name="Theme.Tachiyomi.GreenApple">
