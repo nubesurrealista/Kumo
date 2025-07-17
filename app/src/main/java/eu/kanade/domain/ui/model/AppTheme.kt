@@ -8,6 +8,7 @@ enum class AppTheme(val titleRes: StringResource?) {
     MONET(MR.strings.theme_monet),
     CATPPUCCIN(MR.strings.theme_catppuccin),
     DRACULA(MR.strings.theme_dracula),
+    OBSIDIAN(MR.strings.theme_obsidian),
     GREEN_APPLE(MR.strings.theme_greenapple),
     LAVENDER(MR.strings.theme_lavender),
     MIDNIGHT_DUSK(MR.strings.theme_midnightdusk),
