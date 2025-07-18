@@ -182,7 +182,6 @@ fun MangaScreen(
             nextUpdate = nextUpdate,
             navigateUp = navigateUp,
             isUpdateIntervalEnabled = isUpdateIntervalEnabled,
-            onBackClicked = onBackClicked,
             onChapterClicked = onChapterClicked,
             onDownloadChapter = onDownloadChapter,
             onAddToLibraryClicked = onAddToLibraryClicked,
