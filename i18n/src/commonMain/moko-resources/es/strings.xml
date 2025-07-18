@@ -289,6 +289,7 @@
     <string name="ext_obsolete">Obsoleto</string>
     <string name="obsolete_extension_message">Esta extensión ya no está disponible. Puede que no funcione bien y te cause problemas con el resto de la aplicación, te recomendamos desinstalarla.</string>
     <string name="pref_date_format">Formato de fecha</string>
+    <string name="pref_display_images_description">Cargar imagenes en la descripción</string>
     <string name="pref_category_library_update">Actualización global</string>
     <string name="logout">Cerrar sesión</string>
     <string name="logout_success">Has cerrado sesión</string>
