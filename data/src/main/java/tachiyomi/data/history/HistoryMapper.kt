@@ -30,6 +30,7 @@ object HistoryMapper {
         chapterNumber: Double,
         // KMK -->
         read: Boolean,
+        lastPageRead: Long,
         totalCount: Long,
         readCount: Double,
         // KMK <--
@@ -43,6 +44,7 @@ object HistoryMapper {
         chapterNumber = chapterNumber,
         // KMK -->
         read = read,
+        lastPageRead = lastPageRead,
         totalChapters = totalCount,
         readCount = readCount.toLong(),
         // KMK <--

@@ -10,6 +10,7 @@ data class HistoryWithRelations(
     val title: String,
     val chapterNumber: Double,
     val read: Boolean,
+    val lastPageRead: Long,
     val totalChapters: Long,
     val readCount: Long,
     val readAt: Date?,
