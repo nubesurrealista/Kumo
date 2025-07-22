@@ -38,3 +38,7 @@
 - Dracula theme
 - Obsidian theme
 - Some tweaks to LibraryUpdateNotifier.kt
+
+---
+
+PRs are welcome!
