@@ -14,7 +14,7 @@
 **From [Kahon](https://github.com/AmanoTeam/Kahon):**
 - [Trust extensions by default](https://github.com/AmanoTeam/Kahon/commit/16580dadfdff3a4ed20b57b2f03c4f90f715d983)
 - [Remove google Spyware](https://github.com/AmanoTeam/Kahon/commit/c56212ddfb67427bea6758d3963e863a5c2d0a8f)
-- [Drop support to x86 ABIs; also disable split APKs](https://github.com/AmanoTeam/Kahon/commit/85f061edab8bfe7a06305b004c70169e0b53b3a1)
+- [Drop support to x86 ABIs](https://github.com/AmanoTeam/Kahon/commit/85f061edab8bfe7a06305b004c70169e0b53b3a1)
 - [Remove productFlavors](https://github.com/AmanoTeam/Kahon/commit/d21199b2ce754aceca650cbb164eb47123e40405)
 
 ---
