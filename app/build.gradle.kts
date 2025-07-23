@@ -29,10 +29,6 @@ android {
         buildConfigField("String", "BUILD_TIME", "\"${getBuildTime(useLastCommitTime = false)}\"")
         buildConfigField("boolean", "UPDATER_ENABLED", "${Config.enableUpdater}")
 
-        ndk {
-            abiFilters += supportedAbis
-        }
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -40,7 +36,7 @@ android {
         abi {
             isEnable = true
             reset()
-            include(*supportedAbis.toTypedArray())
+            include("armeabi-v7a", "arm64-v8a")
             isUniversalApk = false
         }
     }
@@ -97,8 +93,6 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
-
-        // Disable some unused things
         aidl = false
         renderScript = false
         shaders = false
@@ -140,7 +134,6 @@ dependencies {
     implementation(projects.presentationCore)
     implementation(projects.presentationWidget)
 
-    // Compose
     implementation(compose.activity)
     implementation(compose.foundation)
     implementation(compose.material3.core)
@@ -164,7 +157,6 @@ dependencies {
     implementation(platform(kotlinx.coroutines.bom))
     implementation(kotlinx.bundles.coroutines)
 
-    // AndroidX libraries
     implementation(androidx.annotation)
     implementation(androidx.appcompat)
     implementation(androidx.biometricktx)
@@ -177,34 +169,25 @@ dependencies {
 
     implementation(androidx.bundles.lifecycle)
 
-    // Job scheduling
     implementation(androidx.workmanager)
 
-    // RxJava
     implementation(libs.rxjava)
 
-    // Networking
     implementation(libs.bundles.okhttp)
     implementation(libs.okio)
     implementation(libs.conscrypt.android)
 
-    // Data serialization
     implementation(kotlinx.bundles.serialization)
 
-    // HTML parser
     implementation(libs.jsoup)
 
-    // Disk
     implementation(libs.disklrucache)
     implementation(libs.unifile)
 
-    // Preferences
     implementation(libs.preferencektx)
 
-    // Dependency injection
     implementation(libs.injekt)
 
-    // Image loading
     implementation(platform(libs.coil.bom))
     implementation(libs.bundles.coil)
     implementation(libs.subsamplingscaleimageview) {
@@ -212,7 +195,6 @@ dependencies {
     }
     implementation(libs.image.decoder)
 
-    // UI libraries
     implementation(libs.material)
     implementation(libs.flexible.adapter.core)
     implementation(libs.photoview)
@@ -230,16 +212,12 @@ dependencies {
     implementation(libs.reorderable)
     implementation(libs.bundles.markdown)
 
-    // Logging
     implementation(libs.logcat)
 
-    // Shizuku
     implementation(libs.bundles.shizuku)
 
-    // String similarity
     implementation(libs.stringSimilarity)
 
-    // Tests
     testImplementation(libs.bundles.test)
     testRuntimeOnly(libs.junit.platform.launcher)
 
