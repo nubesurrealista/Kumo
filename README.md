@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  Fork of Mihon with patches from Kahon and other forks.<br>
+  An open source manga reader based on Mihon with patches from Kahon and other forks.<br>
   <strong>Open source software</strong>
 </p>
 

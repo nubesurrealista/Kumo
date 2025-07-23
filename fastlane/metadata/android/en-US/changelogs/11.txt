@@ -1,0 +1,9 @@
+- Trust extensions by default
+- Removed Google spyware and x86 support
+- Unified APK builds; removed productFlavors
+- Added reading progress and indicators in History
+- Storage overview, divider, and section headers
+- New toggle for image loading
+- Improved global search behavior
+- Dracula & Obsidian themes
+- Tweaks to library update handling
