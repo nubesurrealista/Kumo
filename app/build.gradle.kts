@@ -36,6 +36,15 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include(*supportedAbis.toTypedArray())
+            isUniversalApk = false
+        }
+    }
+
     buildTypes {
         val debug by getting {
             applicationIdSuffix = ".dev"
@@ -177,9 +186,9 @@ dependencies {
     // Networking
     implementation(libs.bundles.okhttp)
     implementation(libs.okio)
-    implementation(libs.conscrypt.android) // TLS 1.3 support for Android < 10
+    implementation(libs.conscrypt.android)
 
-    // Data serialization (JSON, protobuf, xml)
+    // Data serialization
     implementation(kotlinx.bundles.serialization)
 
     // HTML parser
@@ -234,8 +243,6 @@ dependencies {
     testImplementation(libs.bundles.test)
     testRuntimeOnly(libs.junit.platform.launcher)
 
-    // For detecting memory leaks; see https://square.github.io/leakcanary/
-    // debugImplementation(libs.leakcanary.android)
     implementation(libs.leakcanary.plumber)
 
     testImplementation(kotlinx.coroutines.test)
