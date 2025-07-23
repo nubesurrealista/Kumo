@@ -61,28 +61,45 @@ jobs:
         run: |
           echo "${{ secrets.RELEASE_KEYSTORE_B64 }}" | base64 -d > app/nube.p12
 
-      - name: Build release APK
+      - name: Build release APKs
         run: |
           ./gradlew assembleRelease --stacktrace --parallel --max-workers=$(nproc)
 
-      - name: Sign APK
+      - name: Sign APKs
         run: |
           ANDROID_BUILD_TOOLS="$ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort -V | tail -n1)"
-          UNSIGNED_APK="app/build/outputs/apk/release/app-release-unsigned.apk"
-          SIGNED_APK="app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-release-signed.apk"
-
-          if [ ! -f "$UNSIGNED_APK" ]; then
-            echo "Unsigned universal APK not found!"
-            exit 1
+          
+          # Sign armeabi-v7a APK
+          UNSIGNED_V7="app/build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk"
+          SIGNED_V7="app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-armeabi-v7a-release-signed.apk"
+          
+          if [ -f "$UNSIGNED_V7" ]; then
+            "$ANDROID_BUILD_TOOLS/apksigner" sign \
+              --ks app/nube.p12 \
+              --ks-key-alias "${{ secrets.RELEASE_KEY_ALIAS }}" \
+              --ks-pass pass:"${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" \
+              --key-pass pass:"${{ secrets.RELEASE_KEY_PASSWORD }}" \
+              --out "$SIGNED_V7" \
+              "$UNSIGNED_V7"
+          else
+            echo "Warning: armeabi-v7a APK not found" >&2
           fi
 
-          "$ANDROID_BUILD_TOOLS/apksigner" sign \
-            --ks app/nube.p12 \
-            --ks-key-alias "${{ secrets.RELEASE_KEY_ALIAS }}" \
-            --ks-pass pass:"${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" \
-            --key-pass pass:"${{ secrets.RELEASE_KEY_PASSWORD }}" \
-            --out "$SIGNED_APK" \
-            "$UNSIGNED_APK"
+          # Sign arm64-v8a APK
+          UNSIGNED_ARM64="app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk"
+          SIGNED_ARM64="app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-arm64-v8a-release-signed.apk"
+          
+          if [ -f "$UNSIGNED_ARM64" ]; then
+            "$ANDROID_BUILD_TOOLS/apksigner" sign \
+              --ks app/nube.p12 \
+              --ks-key-alias "${{ secrets.RELEASE_KEY_ALIAS }}" \
+              --ks-pass pass:"${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" \
+              --key-pass pass:"${{ secrets.RELEASE_KEY_PASSWORD }}" \
+              --out "$SIGNED_ARM64" \
+              "$UNSIGNED_ARM64"
+          else
+            echo "Warning: arm64-v8a APK not found" >&2
+          fi
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -90,7 +107,8 @@ jobs:
           tag_name: ${{ steps.version_info.outputs.TAG }}
           name: "Kumo ${{ steps.version_info.outputs.TAG }}"
           files: |
-            app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-release-signed.apk
+            app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-armeabi-v7a-release-signed.apk
+            app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-arm64-v8a-release-signed.apk
           body: "${{ steps.changelog.outputs.CHANGELOG }}"
           draft: false
           prerelease: ${{ github.ref != 'refs/heads/main' }}
