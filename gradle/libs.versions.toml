@@ -7,10 +7,10 @@ shizuku_version = "13.1.0"
 sqldelight = "2.1.0"
 sqlite = "2.5.2"
 voyager = "1.1.0-beta03"
-spotless = "7.1.0"
-ktlint-core = "1.6.0"
+spotless = "7.2.1"
+ktlint-core = "1.7.1"
 markdown = "0.35.0"
-junit = "5.13.3"
+junit = "5.13.4"
 [libraries]
 desugar = "com.android.tools:desugar_jdk_libs:2.1.5"
 android-shortcut-gradle = "com.github.zellius:android-shortcut-gradle-plugin:0.1.2"
@@ -31,7 +31,7 @@ sqlite-ktx = { module = "androidx.sqlite:sqlite-ktx", version.ref = "sqlite" }
 sqlite-android = "com.github.requery:sqlite-android:3.49.0"
 preferencektx = "androidx.preference:preference-ktx:1.2.1"
 injekt = "com.github.mihonapp:injekt:91edab2317"
-coil-bom = { module = "io.coil-kt.coil3:coil-bom", version = "3.2.0" }
+coil-bom = { module = "io.coil-kt.coil3:coil-bom", version = "3.3.0" }
 coil-core = { module = "io.coil-kt.coil3:coil" }
 coil-gif = { module = "io.coil-kt.coil3:coil-gif" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose" }
@@ -65,7 +65,7 @@ sqldelight-dialects-sql = { module = "app.cash.sqldelight:sqlite-3-38-dialect", 
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 kotest-assertions = "io.kotest:kotest-assertions-core:5.9.1"
-mockk = "io.mockk:mockk:1.14.4"
+mockk = "io.mockk:mockk:1.14.5"
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-screenmodel = { module = "cafe.adriel.voyager:voyager-screenmodel", version.ref = "voyager" }
 voyager-tab-navigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyager" }
