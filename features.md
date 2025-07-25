@@ -20,6 +20,7 @@
 - [add divider & section header](https://github.com/mihonapp/mihon/pull/1443)
 - [feat: add toggle for image loading](https://github.com/mihonapp/mihon/pull/2076)
 - [Hide smart update icon when disabled](https://github.com/mihonapp/mihon/pull/1031)
+- [Add a font size parameter](https://github.com/mihonapp/mihon/pull/273)
 
 ---
 
