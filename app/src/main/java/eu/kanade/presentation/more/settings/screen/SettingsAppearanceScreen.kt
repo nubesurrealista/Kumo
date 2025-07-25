@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
@@ -116,7 +117,7 @@ object SettingsAppearanceScreen : SearchableSettings {
                     onClick = { navigator.push(AppLanguageScreen()) },
                 ),
                 Preference.PreferenceItem.ListPreference(
-                    pref = uiPreferences.fontSize(),
+                    preference = uiPreferences.fontSize(),
                     title = stringResource(MR.strings.pref_font_size),
                     entries = persistentMapOf(
                         0.75f to stringResource(MR.strings.pref_font_size_small),

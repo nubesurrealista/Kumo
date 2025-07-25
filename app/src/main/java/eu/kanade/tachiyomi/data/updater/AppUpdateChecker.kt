@@ -41,7 +41,7 @@ class AppUpdateChecker {
 }
 
 val GITHUB_REPO: String by lazy {
-    "nubesurrealista/kumo"
+    "nubesurrealista/Kumo"
 }
 
 val RELEASE_TAG: String by lazy {
