@@ -7,4 +7,5 @@
 - Improved global search behavior
 - Dracula & Obsidian themes
 - Tweaks to library update handling
-- Add a font size parameter
+- Add a font size parameter 
+- Repo: fastlane metadata
