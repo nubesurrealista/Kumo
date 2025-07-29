@@ -4,6 +4,7 @@
     <string name="label_settings">Ajustes</string>
     <string name="label_download_queue">Cola de descargas</string>
     <string name="label_library">Biblioteca</string>
+    <string name="label_category">Categoria</string>
     <string name="label_recent_manga">Historial</string>
     <string name="label_recent_updates">Actualizaciones</string>
     <string name="label_backup">Copia de seguridad y restauración</string>
@@ -288,6 +289,7 @@
     <string name="ext_obsolete">Obsoleto</string>
     <string name="obsolete_extension_message">Esta extensión ya no está disponible. Puede que no funcione bien y te cause problemas con el resto de la aplicación, te recomendamos desinstalarla.</string>
     <string name="pref_date_format">Formato de fecha</string>
+    <string name="pref_display_images_description">Cargar imagenes en la descripción</string>
     <string name="pref_category_library_update">Actualización global</string>
     <string name="logout">Cerrar sesión</string>
     <string name="logout_success">Has cerrado sesión</string>
@@ -599,6 +601,11 @@
     <string name="custom_cover">Portada personalizada</string>
     <string name="not_installed">Sin instalar</string>
     <string name="pref_app_language">Idioma de la aplicación</string>
+    <string name="pref_font_size">Tamaño de fuente</string>
+    <string name="pref_font_size_small">Pequeña</string>
+    <string name="pref_font_size_normal">Normal</string>
+    <string name="pref_font_size_large">Larga</string>
+    <string name="pref_font_size_huge">Enorme</string>
     <string name="theme_lavender">Lavanda</string>
     <string name="description_placeholder">Sin descripción</string>
     <string name="delete_category">Borrar categoría</string>
@@ -729,6 +736,12 @@
     <string name="pref_flash_page">Parpadear a blanco al cambiar de página</string>
     <string name="label_data_storage">Datos y almacenamiento</string>
     <string name="pref_storage_usage">Almacenamiento utilizado</string>
+    <string name="available_disk_space_info">Disponible: %1$s / Total: %2$s</string>
+    <string name="pref_storage_overview">Resumen almacenamiento</string>
+    <string name="calculating_storage_overview">Calculando uso de almacenamiento... (%1$s)</string>
+    <string name="storage_overview_no_items">No hay entradas para las siguientes categorías</string>
+    <string name="delete_local_manga">¿Borrar todo tu manga local?</string>
+    <string name="delete_manga_confirm">¿Estás seguro que quieres borrar \"%1$s\"?</string>
     <string name="action_sort_tracker_score">Puntuación del servicio</string>
     <string name="action_apply">Aplicar</string>
     <string name="action_revert_to_default">Restablecer vista</string>

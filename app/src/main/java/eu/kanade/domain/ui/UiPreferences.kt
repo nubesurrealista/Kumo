@@ -34,6 +34,10 @@ class UiPreferences(
 
     fun tabletUiMode() = preferenceStore.getEnum("tablet_ui_mode", TabletUiMode.AUTOMATIC)
 
+    fun imagesInDescription() = preferenceStore.getBoolean("pref_render_images_description", true)
+
+    fun fontSize() = preferenceStore.getFloat("font_size", 1f)
+
     companion object {
         fun dateFormat(format: String): DateTimeFormatter = when (format) {
             "" -> DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)

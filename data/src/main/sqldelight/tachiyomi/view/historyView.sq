@@ -9,6 +9,12 @@ SELECT
     mangas.favorite,
     mangas.cover_last_modified,
     chapters.chapter_number AS chapterNumber,
+    -- KMK -->
+    chapters.read AS read,
+    chapters.last_page_read AS lastPageRead,
+    coalesce(C.total, 0) AS totalCount,
+    coalesce(C.readCount, 0) AS readCount,
+    -- KMK <--
     history.last_read AS readAt,
     history.time_read AS readDuration,
     max_last_read.last_read AS maxReadAt,
@@ -24,7 +30,23 @@ JOIN (
     ON chapters._id = history.chapter_id
     GROUP BY chapters.manga_id
 ) AS max_last_read
-ON chapters.manga_id = max_last_read.manga_id;
+ON chapters.manga_id = max_last_read.manga_id
+-- KMK -->
+LEFT JOIN(
+    SELECT
+        chapters.manga_id,
+        count(*) AS total,
+        sum(read) AS readCount,
+        excluded_scanlators.scanlator AS ex_scanlator
+    FROM chapters
+    LEFT JOIN excluded_scanlators
+    ON chapters.manga_id = excluded_scanlators.manga_id
+    AND chapters.scanlator = excluded_scanlators.scanlator
+    WHERE ex_scanlator IS NULL
+    GROUP BY chapters.manga_id
+) AS C
+ON mangas._id = C.manga_id;
+-- KMK <--
 
 history:
 SELECT
@@ -37,6 +59,12 @@ source,
 favorite,
 cover_last_modified,
 chapterNumber,
+-- KMK -->
+read,
+lastPageRead,
+totalCount,
+readCount,
+-- KMK <--
 readAt,
 readDuration
 FROM historyView
@@ -56,6 +84,10 @@ source,
 favorite,
 cover_last_modified,
 chapterNumber,
+read,
+lastPageRead,
+totalCount,
+readCount,
 readAt,
 readDuration
 FROM historyView
