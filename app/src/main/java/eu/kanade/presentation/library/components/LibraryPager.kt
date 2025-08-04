@@ -20,7 +20,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import eu.kanade.core.preference.PreferenceMutableState
 import eu.kanade.tachiyomi.ui.library.LibraryItem
-import tachiyomi.domain.category.model.Category
 import tachiyomi.domain.library.model.LibraryDisplayMode
 import tachiyomi.domain.library.model.LibraryManga
 import tachiyomi.i18n.MR
@@ -32,15 +31,14 @@ fun LibraryPager(
     state: PagerState,
     contentPadding: PaddingValues,
     hasActiveFilters: Boolean,
-    selection: Set<Long>,
+    selectedManga: List<LibraryManga>,
     searchQuery: String?,
     onGlobalSearchClicked: () -> Unit,
-    getCategoryForPage: (Int) -> Category,
     getDisplayMode: (Int) -> PreferenceMutableState<LibraryDisplayMode>,
     getColumnsForOrientation: (Boolean) -> PreferenceMutableState<Int>,
-    getItemsForCategory: (Category) -> List<LibraryItem>,
-    onClickManga: (Category, LibraryManga) -> Unit,
-    onLongClickManga: (Category, LibraryManga) -> Unit,
+    getLibraryForPage: (Int) -> List<LibraryItem>,
+    onClickManga: (LibraryManga) -> Unit,
+    onLongClickManga: (LibraryManga) -> Unit,
     onClickContinueReading: ((LibraryManga) -> Unit)?,
 ) {
     HorizontalPager(
@@ -52,10 +50,9 @@ fun LibraryPager(
             // To make sure only one offscreen page is being composed
             return@HorizontalPager
         }
-        val category = getCategoryForPage(page)
-        val items = getItemsForCategory(category)
+        val library = getLibraryForPage(page)
 
-        if (items.isEmpty()) {
+        if (library.isEmpty()) {
             LibraryPagerEmptyScreen(
                 searchQuery = searchQuery,
                 hasActiveFilters = hasActiveFilters,
@@ -75,15 +72,12 @@ fun LibraryPager(
             remember { mutableIntStateOf(0) }
         }
 
-        val onClickManga: (LibraryManga) -> Unit = { onClickManga(category, it) }
-        val onLongClickManga: (LibraryManga) -> Unit = { onLongClickManga(category, it) }
-
         when (displayMode) {
             LibraryDisplayMode.List -> {
                 LibraryList(
-                    items = items,
+                    items = library,
                     contentPadding = contentPadding,
-                    selection = selection,
+                    selection = selectedManga,
                     onClick = onClickManga,
                     onLongClick = onLongClickManga,
                     onClickContinueReading = onClickContinueReading,
@@ -93,11 +87,11 @@ fun LibraryPager(
             }
             LibraryDisplayMode.CompactGrid, LibraryDisplayMode.CoverOnlyGrid -> {
                 LibraryCompactGrid(
-                    items = items,
+                    items = library,
                     showTitle = displayMode is LibraryDisplayMode.CompactGrid,
                     columns = columns,
                     contentPadding = contentPadding,
-                    selection = selection,
+                    selection = selectedManga,
                     onClick = onClickManga,
                     onLongClick = onLongClickManga,
                     onClickContinueReading = onClickContinueReading,
@@ -107,10 +101,10 @@ fun LibraryPager(
             }
             LibraryDisplayMode.ComfortableGrid -> {
                 LibraryComfortableGrid(
-                    items = items,
+                    items = library,
                     columns = columns,
                     contentPadding = contentPadding,
-                    selection = selection,
+                    selection = selectedManga,
                     onClick = onClickManga,
                     onLongClick = onLongClickManga,
                     onClickContinueReading = onClickContinueReading,

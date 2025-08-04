@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.util.fastAny
 import eu.kanade.tachiyomi.ui.library.LibraryItem
 import tachiyomi.domain.library.model.LibraryManga
 import tachiyomi.domain.manga.model.MangaCover
@@ -14,7 +15,7 @@ internal fun LibraryComfortableGrid(
     items: List<LibraryItem>,
     columns: Int,
     contentPadding: PaddingValues,
-    selection: Set<Long>,
+    selection: List<LibraryManga>,
     onClick: (LibraryManga) -> Unit,
     onLongClick: (LibraryManga) -> Unit,
     onClickContinueReading: ((LibraryManga) -> Unit)?,
@@ -34,7 +35,7 @@ internal fun LibraryComfortableGrid(
         ) { libraryItem ->
             val manga = libraryItem.libraryManga.manga
             MangaComfortableGridItem(
-                isSelected = manga.id in selection,
+                isSelected = selection.fastAny { it.id == libraryItem.libraryManga.id },
                 title = manga.title,
                 coverData = MangaCover(
                     mangaId = manga.id,

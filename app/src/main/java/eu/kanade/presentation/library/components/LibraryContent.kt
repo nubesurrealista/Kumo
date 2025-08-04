@@ -29,22 +29,22 @@ import kotlin.time.Duration.Companion.seconds
 fun LibraryContent(
     categories: List<Category>,
     searchQuery: String?,
-    selection: Set<Long>,
+    selection: List<LibraryManga>,
     contentPadding: PaddingValues,
     currentPage: Int,
     hasActiveFilters: Boolean,
     showPageTabs: Boolean,
     onChangeCurrentPage: (Int) -> Unit,
-    onClickManga: (Long) -> Unit,
+    onMangaClicked: (Long) -> Unit,
     onContinueReadingClicked: ((LibraryManga) -> Unit)?,
-    onToggleSelection: (Category, LibraryManga) -> Unit,
-    onToggleRangeSelection: (Category, LibraryManga) -> Unit,
-    onRefresh: () -> Boolean,
+    onToggleSelection: (LibraryManga) -> Unit,
+    onToggleRangeSelection: (LibraryManga) -> Unit,
+    onRefresh: (Category?) -> Boolean,
     onGlobalSearchClicked: () -> Unit,
-    getItemCountForCategory: (Category) -> Int?,
+    getNumberOfMangaForCategory: (Category) -> Int?,
     getDisplayMode: (Int) -> PreferenceMutableState<LibraryDisplayMode>,
     getColumnsForOrientation: (Boolean) -> PreferenceMutableState<Int>,
-    getItemsForCategory: (Category) -> List<LibraryItem>,
+    getLibraryForPage: (Int) -> List<LibraryItem>,
 ) {
     Column(
         modifier = Modifier.padding(
@@ -58,7 +58,7 @@ fun LibraryContent(
         val scope = rememberCoroutineScope()
         var isRefreshing by remember(pagerState.currentPage) { mutableStateOf(false) }
 
-        if (showPageTabs && categories.isNotEmpty()) {
+        if (showPageTabs && categories.size > 1) {
             LaunchedEffect(categories) {
                 if (categories.size <= pagerState.currentPage) {
                     pagerState.scrollToPage(categories.size - 1)
@@ -67,20 +67,23 @@ fun LibraryContent(
             LibraryTabs(
                 categories = categories,
                 pagerState = pagerState,
-                getItemCountForCategory = getItemCountForCategory,
-                onTabItemClick = {
-                    scope.launch {
-                        pagerState.animateScrollToPage(it)
-                    }
-                },
-            )
+                getNumberOfMangaForCategory = getNumberOfMangaForCategory,
+            ) { scope.launch { pagerState.animateScrollToPage(it) } }
+        }
+
+        val notSelectionMode = selection.isEmpty()
+        val onClickManga = { manga: LibraryManga ->
+            if (notSelectionMode) {
+                onMangaClicked(manga.manga.id)
+            } else {
+                onToggleSelection(manga)
+            }
         }
 
         PullRefresh(
             refreshing = isRefreshing,
-            enabled = selection.isEmpty(),
             onRefresh = {
-                val started = onRefresh()
+                val started = onRefresh(categories[currentPage()])
                 if (!started) return@PullRefresh
                 scope.launch {
                     // Fake refresh status but hide it after a second as it's a long running task
@@ -89,25 +92,19 @@ fun LibraryContent(
                     isRefreshing = false
                 }
             },
+            enabled = notSelectionMode,
         ) {
             LibraryPager(
                 state = pagerState,
                 contentPadding = PaddingValues(bottom = contentPadding.calculateBottomPadding()),
                 hasActiveFilters = hasActiveFilters,
-                selection = selection,
+                selectedManga = selection,
                 searchQuery = searchQuery,
                 onGlobalSearchClicked = onGlobalSearchClicked,
-                getCategoryForPage = { page -> categories[page] },
                 getDisplayMode = getDisplayMode,
                 getColumnsForOrientation = getColumnsForOrientation,
-                getItemsForCategory = getItemsForCategory,
-                onClickManga = { category, manga ->
-                    if (selection.isNotEmpty()) {
-                        onToggleSelection(category, manga)
-                    } else {
-                        onClickManga(manga.manga.id)
-                    }
-                },
+                getLibraryForPage = getLibraryForPage,
+                onClickManga = onClickManga,
                 onLongClickManga = onToggleRangeSelection,
                 onClickContinueReading = onContinueReadingClicked,
             )
