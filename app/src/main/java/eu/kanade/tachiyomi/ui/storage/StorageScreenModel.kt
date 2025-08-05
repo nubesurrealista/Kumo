@@ -4,11 +4,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.util.fastDistinctBy
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.hippo.unifile.UniFile
 import eu.kanade.domain.manga.interactor.UpdateManga
 import eu.kanade.presentation.more.storage.StorageScreenState
 import eu.kanade.presentation.more.storage.data.StorageData
 import eu.kanade.tachiyomi.data.download.DownloadCache
 import eu.kanade.tachiyomi.data.download.DownloadManager
+import eu.kanade.tachiyomi.source.Source
 import eu.kanade.tachiyomi.util.storage.size
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -40,7 +42,7 @@ class StorageScreenModel(
     private val getLibraryManga: GetLibraryManga = Injekt.get(),
     private val getCategories: GetCategories = Injekt.get(),
     private val updateManga: UpdateManga = Injekt.get(),
-    private val sourceManager: SourceManager = Injekt.get(),
+    private val sourceManager: SourceManager = Injekt.get<SourceManager>(),
     private val sourceFileSystem: LocalSourceFileSystem = Injekt.get(),
 ) : StateScreenModel<StorageScreenState>(StorageScreenState.Loading(0)) {
     private val _selectedCategory = MutableStateFlow<Category>(allCategory)
@@ -71,16 +73,14 @@ class StorageScreenModel(
                 downloadCacheFlow,
                 downloadCache.isInitializing,
                 getLibraryManga.subscribe().distinctUntilChanged { old, new ->
-                    old.map { Pair(it.id, it.category) }.toSet() == new.map { Pair(it.id, it.category) }.toSet()
+                    old.map { Pair(it.id, it.categories.toSortedSet()) }.toSet() ==
+                        new.map { Pair(it.id, it.categories.toSortedSet()) }.toSet()
                 },
                 getCategories.subscribe(),
             ) { _, _, libraries, categories ->
-                val distinctEntries = libraries.fastDistinctBy {
-                    it.id
-                }
+                val distinctEntries = libraries.fastDistinctBy { it.id }
 
-                // If a manga is removed from the list, we don't want to recompute the size for all entries,
-                // just remove the entry from the list
+                // If a manga is removed, avoid recomputing sizes for all entries
                 if (downloadedItems.value.first.isNotEmpty() && distinctEntries.size < entries.value.size) {
                     val (items, categories) = downloadedItems.value
                     val libraryIds = libraries.map { it.manga.id }
@@ -218,9 +218,6 @@ class StorageScreenModel(
     }
 
     companion object {
-        /**
-         * A dummy category used to display all entries irrespective of the category.
-         */
         const val ALL_CATEGORY_ID = -1L
 
         val allCategory = Category(
