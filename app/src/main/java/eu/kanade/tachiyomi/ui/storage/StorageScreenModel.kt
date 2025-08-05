@@ -26,7 +26,6 @@ import tachiyomi.domain.category.interactor.GetCategories
 import tachiyomi.domain.category.model.Category
 import tachiyomi.domain.manga.interactor.GetLibraryManga
 import tachiyomi.domain.manga.model.Manga
-import tachiyomi.domain.source.service.SourceManager
 import tachiyomi.source.local.io.Archive
 import tachiyomi.source.local.io.LocalSourceFileSystem
 import tachiyomi.source.local.isLocal
@@ -71,16 +70,14 @@ class StorageScreenModel(
                 downloadCacheFlow,
                 downloadCache.isInitializing,
                 getLibraryManga.subscribe().distinctUntilChanged { old, new ->
-                    old.map { Pair(it.id, it.category) }.toSet() == new.map { Pair(it.id, it.category) }.toSet()
+                    old.map { Pair(it.id, it.categories.toSortedSet()) }.toSet() ==
+                        new.map { Pair(it.id, it.categories.toSortedSet()) }.toSet()
                 },
                 getCategories.subscribe(),
             ) { _, _, libraries, categories ->
-                val distinctEntries = libraries.fastDistinctBy {
-                    it.id
-                }
+                val distinctEntries = libraries.fastDistinctBy { it.id }
 
-                // If a manga is removed from the list, we don't want to recompute the size for all entries,
-                // just remove the entry from the list
+                // If a manga is removed, avoid recomputing sizes for all entries
                 if (downloadedItems.value.first.isNotEmpty() && distinctEntries.size < entries.value.size) {
                     val (items, categories) = downloadedItems.value
                     val libraryIds = libraries.map { it.manga.id }
@@ -218,9 +215,6 @@ class StorageScreenModel(
     }
 
     companion object {
-        /**
-         * A dummy category used to display all entries irrespective of the category.
-         */
         const val ALL_CATEGORY_ID = -1L
 
         val allCategory = Category(
