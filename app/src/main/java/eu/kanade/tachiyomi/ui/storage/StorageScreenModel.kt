@@ -172,7 +172,6 @@ class StorageScreenModel(
         return if (manga.isLocal()) {
             sourceFileSystem
                 .getMangaDirectory(manga.url)
-                ?.let { UniFile.fromFile(it) }
                 ?.size()
                 ?: 0L
         } else {
@@ -184,6 +183,7 @@ class StorageScreenModel(
         return if (manga.isLocal()) {
             sourceFileSystem
                 .getFilesInMangaDirectory(manga.url)
+                .mapNotNull { it.file }
                 .count { Archive.isSupported(it) }
         } else {
             downloadManager.getDownloadCount(manga)
