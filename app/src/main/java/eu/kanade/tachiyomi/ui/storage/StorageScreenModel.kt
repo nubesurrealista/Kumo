@@ -9,7 +9,7 @@ import eu.kanade.presentation.more.storage.StorageScreenState
 import eu.kanade.presentation.more.storage.data.StorageData
 import eu.kanade.tachiyomi.data.download.DownloadCache
 import eu.kanade.tachiyomi.data.download.DownloadManager
-import eu.kanade.tachiyomi.util.storage.size
+import eu.kanade.tachiyomi.source.Source
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -26,6 +26,7 @@ import tachiyomi.domain.category.interactor.GetCategories
 import tachiyomi.domain.category.model.Category
 import tachiyomi.domain.manga.interactor.GetLibraryManga
 import tachiyomi.domain.manga.model.Manga
+import tachiyomi.domain.source.service.SourceManager
 import tachiyomi.source.local.io.Archive
 import tachiyomi.source.local.io.LocalSourceFileSystem
 import tachiyomi.source.local.isLocal
@@ -39,7 +40,7 @@ class StorageScreenModel(
     private val getLibraryManga: GetLibraryManga = Injekt.get(),
     private val getCategories: GetCategories = Injekt.get(),
     private val updateManga: UpdateManga = Injekt.get(),
-    private val sourceManager: SourceManager = Injekt.get(),
+    private val sourceManager: SourceManager = Injekt.get<SourceManager>(),
     private val sourceFileSystem: LocalSourceFileSystem = Injekt.get(),
 ) : StateScreenModel<StorageScreenState>(StorageScreenState.Loading(0)) {
     private val _selectedCategory = MutableStateFlow<Category>(allCategory)
