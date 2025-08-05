@@ -34,7 +34,6 @@ import tachiyomi.source.local.io.LocalSourceFileSystem
 import tachiyomi.source.local.isLocal
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
-import java.io.File
 import kotlin.random.Random
 
 class StorageScreenModel(
@@ -183,7 +182,6 @@ class StorageScreenModel(
         return if (manga.isLocal()) {
             sourceFileSystem
                 .getFilesInMangaDirectory(manga.url)
-                .mapNotNull { it.file }
                 .count { Archive.isSupported(it) }
         } else {
             downloadManager.getDownloadCount(manga)
