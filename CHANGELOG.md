@@ -11,6 +11,8 @@ The format is a modified version of [Keep a Changelog](https://keepachangelog.co
 - `Other` - for technical stuff.
 
 ## [Unreleased]
+### Fixes
+- Fixed scrollbar sometimes not showing during scroll or not reaching the bottom with few items ([@anirudhsnayak](https://github.com/anirudhsnayak)) ([#2304](https://github.com/mihonapp/mihon/pull/2304))
 
 ## [v0.19.0] - 2025-08-04
 ### Added
@@ -383,7 +385,7 @@ The format is a modified version of [Keep a Changelog](https://keepachangelog.co
 - Minimum supported Android version to 8 ([@AntsyLich](https://github.com/AntsyLich)) ([`dfb3091`](https://github.com/mihonapp/mihon/commit/dfb3091e380dda3e9bfb64bf5c9a685cf3a03d0e))
 
 [unreleased]: https://github.com/mihonapp/mihon/compare/v0.19.0...main
-[v0.18.0]: https://github.com/mihonapp/mihon/compare/v0.18.0...v0.19.0
+[v0.19.0]: https://github.com/mihonapp/mihon/compare/v0.18.0...v0.19.0
 [v0.18.0]: https://github.com/mihonapp/mihon/compare/v0.17.1...v0.18.0
 [v0.17.1]: https://github.com/mihonapp/mihon/compare/v0.17.0...v0.17.1
 [v0.17.0]: https://github.com/mihonapp/mihon/compare/v0.16.5...v0.17.0
