@@ -14,6 +14,9 @@
 
 ---
 
+**From [Aniyomi](https://github.com/aniyomiorg/aniyomi):**
+- [feat(doh): Add LibreDNS](https://github.com/aniyomiorg/aniyomi/commit/596f501ba111ce225187d086353da76cb5bd8270)
+  
 **From [PRs](https://github.com/mihonapp/mihon/pulls) on Mihon repository:**
 - [feat(storage): Add storage overview](https://github.com/mihonapp/mihon/pull/1974)
 - [make global search pinned/all sticky and save choice made by user](https://github.com/mihonapp/mihon/pull/1345)
