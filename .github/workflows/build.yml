@@ -1,63 +1,114 @@
-name: Build & Test
+name: Build Kumo
 on:
-  pull_request:
-    paths:
-      - '**'
-      - '!**.md'
-      - '!i18n/src/commonMain/moko-resources/**/strings.xml'
-      - '!i18n/src/commonMain/moko-resources/**/plurals.xml'
-      - 'i18n/src/commonMain/moko-resources/base/strings.xml'
-      - 'i18n/src/commonMain/moko-resources/base/plurals.xml'
-  push:
-    branches:
-      - main
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
-permissions:
-  contents: read
-
+  workflow_dispatch: null
 jobs:
   build:
-    name: Build & Test App
-    runs-on: 'ubuntu-24.04'
-
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Dependency Review
-        if: github.event_name == 'pull_request'
-        uses: actions/dependency-review-action@da24556b548a50705dd671f47852072ea4c105d9 # v4.7.1
+      - name: Get version info
+        id: version_info
+        run: |
+          VERSION_NAME=$(grep 'versionName =' app/build.gradle.kts | cut -d '"' -f 2)
+          VERSION_CODE=$(grep 'versionCode =' app/build.gradle.kts | awk '{print $3}')
+          echo "Version name: $VERSION_NAME"
+          echo "Version code: $VERSION_CODE"
+          
+          LAST_TAG=$(git tag -l "v${VERSION_NAME}*" --sort=-v:refname | head -n 1)
+          
+          if [[ -z "$LAST_TAG" ]]; then
+            NEW_TAG="v${VERSION_NAME}.0"
+          else
+            LAST_INCREMENT=$(echo "$LAST_TAG" | awk -F'.' '{print $NF}')
+            if [[ "$LAST_INCREMENT" =~ ^[0-9]+$ ]]; then
+              NEXT_INCREMENT=$((LAST_INCREMENT + 1))
+              NEW_TAG="v${VERSION_NAME}.${NEXT_INCREMENT}"
+            else
+              NEW_TAG="v${VERSION_NAME}.1"
+            fi
+          fi
+          
+          echo "New tag: $NEW_TAG"
+          echo "TAG=${NEW_TAG}" >> $GITHUB_OUTPUT
+          echo "VERSION=${VERSION_NAME}" >> $GITHUB_OUTPUT
+          echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_OUTPUT
 
-      - name: Set up JDK
-        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+      - name: Set up JDK 24
+        uses: actions/setup-java@v4
         with:
-          java-version: 17
           distribution: temurin
+          java-version: "24"
+          cache: gradle
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@017a9effdb900e5b5b2fddfb590a105619dca3c3 # v4.4.2
+      - name: Get changelog
+        id: changelog
+        run: |
+          CHANGELOG_FILE="fastlane/metadata/android/en-US/changelogs/${{ steps.version_info.outputs.VERSION_CODE }}.txt"
+          if [ -f "$CHANGELOG_FILE" ]; then
+            CHANGELOG=$(cat "$CHANGELOG_FILE")
+            echo "Using changelog from $CHANGELOG_FILE"
+          else
+            CHANGELOG="No changelog found for version ${{ steps.version_info.outputs.VERSION_CODE }}"
+            echo "Warning: $CHANGELOG_FILE not found" >&2
+          fi
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Check code format
-        run: ./gradlew spotlessCheck
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.RELEASE_KEYSTORE_B64 }}" | base64 -d > app/nube.p12
 
-      - name: Build app
-        run: ./gradlew assembleRelease -Pinclude-telemetry -Penable-updater
+      - name: Build release APKs
+        run: |
+          ./gradlew assembleRelease --stacktrace --parallel --max-workers=$(nproc)
 
-      - name: Run unit tests
-        run: ./gradlew testReleaseUnitTest
+      - name: Sign APKs
+        run: |
+          ANDROID_BUILD_TOOLS="$ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort -V | tail -n1)"
+          
+          # Sign armeabi-v7a APK
+          UNSIGNED_V7="app/build/outputs/apk/release/app-armeabi-v7a-release-unsigned.apk"
+          SIGNED_V7="app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-armeabi-v7a-release-signed.apk"
+          
+          if [ -f "$UNSIGNED_V7" ]; then
+            "$ANDROID_BUILD_TOOLS/apksigner" sign \
+              --ks app/nube.p12 \
+              --ks-key-alias "${{ secrets.RELEASE_KEY_ALIAS }}" \
+              --ks-pass pass:"${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" \
+              --key-pass pass:"${{ secrets.RELEASE_KEY_PASSWORD }}" \
+              --out "$SIGNED_V7" \
+              "$UNSIGNED_V7"
+          else
+            echo "Warning: armeabi-v7a APK not found" >&2
+          fi
 
-      - name: Upload APK
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+          # Sign arm64-v8a APK
+          UNSIGNED_ARM64="app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk"
+          SIGNED_ARM64="app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-arm64-v8a-release-signed.apk"
+          
+          if [ -f "$UNSIGNED_ARM64" ]; then
+            "$ANDROID_BUILD_TOOLS/apksigner" sign \
+              --ks app/nube.p12 \
+              --ks-key-alias "${{ secrets.RELEASE_KEY_ALIAS }}" \
+              --ks-pass pass:"${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" \
+              --key-pass pass:"${{ secrets.RELEASE_KEY_PASSWORD }}" \
+              --out "$SIGNED_ARM64" \
+              "$UNSIGNED_ARM64"
+          else
+            echo "Warning: arm64-v8a APK not found" >&2
+          fi
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: arm64-v8a-${{ github.sha }}
-          path: app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
-
-      - name: Upload mapping
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: mapping-${{ github.sha }}
-          path: app/build/outputs/mapping/release
+          tag_name: ${{ steps.version_info.outputs.TAG }}
+          name: "Kumo ${{ steps.version_info.outputs.TAG }}"
+          files: |
+            app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-armeabi-v7a-release-signed.apk
+            app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-arm64-v8a-release-signed.apk
+          body: "${{ steps.changelog.outputs.CHANGELOG }}"
+          draft: false
+          prerelease: ${{ github.ref != 'refs/heads/main' }}
