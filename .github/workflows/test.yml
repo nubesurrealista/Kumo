@@ -78,4 +78,4 @@ jobs:
           path: |
             app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-armeabi-v7a-release-signed.apk
             app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-arm64-v8a-release-signed.apk
-          retention-days: 7
+          retention-days: 1
