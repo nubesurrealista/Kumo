@@ -1,0 +1,1 @@
+- Added LibreDNS as a DOH provider (Thanks Aniyomi)
