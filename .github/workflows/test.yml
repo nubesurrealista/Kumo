@@ -1,6 +1,8 @@
-name: Build Kumo
+name: Kumo test build
+
 on:
   workflow_dispatch: null
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,23 +17,6 @@ jobs:
           VERSION_CODE=$(grep 'versionCode =' app/build.gradle.kts | awk '{print $3}')
           echo "Version name: $VERSION_NAME"
           echo "Version code: $VERSION_CODE"
-          
-          LAST_TAG=$(git tag -l "v${VERSION_NAME}*" --sort=-v:refname | head -n 1)
-          
-          if [[ -z "$LAST_TAG" ]]; then
-            NEW_TAG="v${VERSION_NAME}.0"
-          else
-            LAST_INCREMENT=$(echo "$LAST_TAG" | awk -F'.' '{print $NF}')
-            if [[ "$LAST_INCREMENT" =~ ^[0-9]+$ ]]; then
-              NEXT_INCREMENT=$((LAST_INCREMENT + 1))
-              NEW_TAG="v${VERSION_NAME}.${NEXT_INCREMENT}"
-            else
-              NEW_TAG="v${VERSION_NAME}.1"
-            fi
-          fi
-          
-          echo "New tag: $NEW_TAG"
-          echo "TAG=${NEW_TAG}" >> $GITHUB_OUTPUT
           echo "VERSION=${VERSION_NAME}" >> $GITHUB_OUTPUT
           echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_OUTPUT
 
@@ -41,21 +26,6 @@ jobs:
           distribution: temurin
           java-version: "24"
           cache: gradle
-
-      - name: Get changelog
-        id: changelog
-        run: |
-          CHANGELOG_FILE="fastlane/metadata/android/en-US/changelogs/${{ steps.version_info.outputs.VERSION_CODE }}.txt"
-          if [ -f "$CHANGELOG_FILE" ]; then
-            CHANGELOG=$(cat "$CHANGELOG_FILE")
-            echo "Using changelog from $CHANGELOG_FILE"
-          else
-            CHANGELOG="No changelog found for version ${{ steps.version_info.outputs.VERSION_CODE }}"
-            echo "Warning: $CHANGELOG_FILE not found" >&2
-          fi
-          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
-          echo "$CHANGELOG" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Decode keystore
         run: |
@@ -101,14 +71,11 @@ jobs:
             echo "Warning: arm64-v8a APK not found" >&2
           fi
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
+      - name: Upload APK artifacts
+        uses: actions/upload-artifact@v4
         with:
-          tag_name: ${{ steps.version_info.outputs.TAG }}
-          name: "Kumo ${{ steps.version_info.outputs.TAG }}"
-          files: |
+          name: kumo-apks
+          path: |
             app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-armeabi-v7a-release-signed.apk
             app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-arm64-v8a-release-signed.apk
-          body: "${{ steps.changelog.outputs.CHANGELOG }}"
-          draft: false
-          prerelease: ${{ github.ref != 'refs/heads/main' }}
+          retention-days: 1
