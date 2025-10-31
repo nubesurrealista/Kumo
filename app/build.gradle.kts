@@ -21,7 +21,7 @@ android {
     defaultConfig {
         applicationId = "app.kumo"
 
-        versionCode = 13
+        versionCode = 14
         versionName = "0.19.1"
 
         buildConfigField("String", "COMMIT_COUNT", "\"${getCommitCount()}\"")
