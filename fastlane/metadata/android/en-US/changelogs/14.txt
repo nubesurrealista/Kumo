@@ -1,1 +1,3 @@
 - Added LibreDNS as a DOH provider (Thanks Aniyomi)
+- Configure Coil-cache to no longer leak memory, causing the app to slow down and eventually crash (Thanks to a PR on Komikku repo)
+- Sync Mihon source
