@@ -1,3 +1,4 @@
+MAKE BACKUPS BEFORE UPDATE
 - Added LibreDNS as a DOH provider (Thanks Aniyomi)
-- Configure Coil-cache to no longer leak memory, causing the app to slow down and eventually crash (Thanks to a PR on Komikku repo)
-- Sync Mihon source
+- Configure Coil-cache to no longer leak memory, causing the app to slow down and eventually crash (Thanks to a PR on Komikku repo). This change may require a clean install, so it is advisable to make backups and delete the app data when updating.
+- Update to Mihon v.0.19.2 (Mihon changelog: https://github.com/mihonapp/mihon/blob/main/CHANGELOG.md#v0192---2025-11-02)
