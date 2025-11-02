@@ -21,8 +21,8 @@ android {
     defaultConfig {
         applicationId = "app.kumo"
 
-        versionCode = 14
-        versionName = "0.19.1"
+        versionCode = 15
+        versionName = "0.19.2"
 
         buildConfigField("String", "COMMIT_COUNT", "\"${getCommitCount()}\"")
         buildConfigField("String", "COMMIT_SHA", "\"${getGitSha()}\"")
@@ -93,7 +93,9 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
-        aidl = false
+        aidl = true
+
+        // Disable some unused things
         renderScript = false
         shaders = false
     }
@@ -201,7 +203,6 @@ dependencies {
     implementation(libs.directionalviewpager) {
         exclude(group = "androidx.viewpager", module = "viewpager")
     }
-    implementation(libs.insetter)
     implementation(libs.richeditor.compose)
     implementation(libs.aboutLibraries.compose)
     implementation(libs.bundles.voyager)
