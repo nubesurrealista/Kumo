@@ -10,7 +10,17 @@ The format is a modified version of [Keep a Changelog](https://keepachangelog.co
 - `Fixed` - for any bug fixes.
 - `Other` - for technical stuff.
 
-## [Unreleased]
+## [v0.19.3] - 2025-11-07
+### Improved
+- Improved various aspects of the WebView multi window support ([@TheUnlocked](https://github.com/TheUnlocked)) ([#2662](https://github.com/mihonapp/mihon/pull/2662))
+
+### Removed
+- Revert "Fix reader tap zones triggering after scrolling was stopped by the user" due to introduction of regression ([@AntsyLich](https://github.com/AntsyLich)) ([#2670](https://github.com/mihonapp/mihon/pull/2670))
+
+### Fixed
+- Fix WebView crash introduced in 0.19.2 ([@bapeey](https://github.com/bapeey)) ([#2649](https://github.com/mihonapp/mihon/pull/2649))
+- Fix extra padding appearing in reader after user interactions ([@AntsyLich](https://github.com/AntsyLich)) ([#2669](https://github.com/mihonapp/mihon/pull/2669))
+- Fix long strip reader not scrolling on consecutive taps ([@AntsyLich](https://github.com/AntsyLich)) ([#2670](https://github.com/mihonapp/mihon/pull/2670))
 
 ## [v0.19.2] - 2025-11-02
 ### Added
@@ -433,7 +443,8 @@ The format is a modified version of [Keep a Changelog](https://keepachangelog.co
 - Branding to Mihon ([@AntsyLich](https://github.com/AntsyLich))
 - Minimum supported Android version to 8 ([@AntsyLich](https://github.com/AntsyLich)) ([`dfb3091`](https://github.com/mihonapp/mihon/commit/dfb3091e380dda3e9bfb64bf5c9a685cf3a03d0e))
 
-[unreleased]: https://github.com/mihonapp/mihon/compare/v0.19.2...main
+[unreleased]: https://github.com/mihonapp/mihon/compare/v0.19.3...main
+[v0.19.3]: https://github.com/mihonapp/mihon/compare/v0.19.2...v0.19.3
 [v0.19.2]: https://github.com/mihonapp/mihon/compare/v0.19.1...v0.19.2
 [v0.19.1]: https://github.com/mihonapp/mihon/compare/v0.19.0...v0.19.1
 [v0.19.0]: https://github.com/mihonapp/mihon/compare/v0.18.0...v0.19.0
