@@ -70,6 +70,11 @@ abstract class SearchScreenModel(
                 mutableState.update { it.copy(onlyShowHasResults = state) }
             }
         }
+        screenModelScope.launch {
+            preferences.globalSearchPinnedState().changes().collectLatest { state ->
+                mutableState.update { it.copy(sourceFilter = state) }
+            }
+        }
     }
 
     @Composable
@@ -114,7 +119,7 @@ abstract class SearchScreenModel(
     }
 
     fun setSourceFilter(filter: SourceFilter) {
-        mutableState.update { it.copy(sourceFilter = filter) }
+        preferences.globalSearchPinnedState().set(filter)
         search()
     }
 
