@@ -11,8 +11,7 @@
 </p>
 
 <p align="center">
-  An open source manga reader based on Mihon with patches from Kahon and other forks.<br><br>
-  Please note, Kumo is NOT a fork of Kahon; in fact, it has only included two patches from that fork. When we refer to Kahon, it is simply for inspiration or the general idea. However, Kumo is based on Mihon and actually updates faster than Kahon. We do not depend on that fork, nor do we share the same code or development roadmap.<br><br>
+  An open source manga reader based on Mihon with custom changes and patches from other forks.<br>
   <strong>Open source software</strong>
 </p>
 
