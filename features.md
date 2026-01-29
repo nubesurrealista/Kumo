@@ -11,6 +11,8 @@
 **From [Komikku](https://github.com/komikku-app/komikku):**
 - [feat(history): Add indicator for un-finished reading & has more un-read chapters](https://github.com/komikku-app/komikku/pull/992/commits/9ce8c20db8e01816104abf1e3ee1d0a05a2f55e8)
 - [Show reading progress in History screen](https://github.com/komikku-app/komikku/pull/992/commits/aa70db542cd12be032190c2a25ee95cb22eceb25)
+- [Improve getting staff name with Anilist](https://github.com/komikku-app/komikku/commit/e398d9b1565f6051dcdd34c35270a62c84c908db)
+- Changes related to Komikku: basically after the previous commit, a lot of Anilist had to be refactored in Kumo, taking advantage of the changes from SY/Komkikku, can be followed in these commits: [Merge Komikku changes for Anilist](https://github.com/nubesurrealista/Kumo/commit/ee4a3aa3d21d9f9fbd6ace3da91e5b85a016c7c6) and [Fix ALSearch.kt](https://github.com/nubesurrealista/Kumo/commit/53e161c683bcd1645ea7db427d06ab8931708fcb)
 
 ---
 
