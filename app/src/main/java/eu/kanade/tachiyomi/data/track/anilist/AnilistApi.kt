@@ -5,15 +5,19 @@ import androidx.core.net.toUri
 import eu.kanade.tachiyomi.data.database.models.Track
 import eu.kanade.tachiyomi.data.track.anilist.dto.ALAddMangaResult
 import eu.kanade.tachiyomi.data.track.anilist.dto.ALCurrentUserResult
+import eu.kanade.tachiyomi.data.track.anilist.dto.ALIdSearchResult
+import eu.kanade.tachiyomi.data.track.anilist.dto.ALMangaMetadata
 import eu.kanade.tachiyomi.data.track.anilist.dto.ALOAuth
 import eu.kanade.tachiyomi.data.track.anilist.dto.ALSearchResult
 import eu.kanade.tachiyomi.data.track.anilist.dto.ALUserListMangaQueryResult
+import eu.kanade.tachiyomi.data.track.model.TrackMangaMetadata
 import eu.kanade.tachiyomi.data.track.model.TrackSearch
 import eu.kanade.tachiyomi.network.POST
 import eu.kanade.tachiyomi.network.awaitSuccess
 import eu.kanade.tachiyomi.network.interceptor.rateLimit
 import eu.kanade.tachiyomi.network.jsonMime
 import eu.kanade.tachiyomi.network.parseAs
+import eu.kanade.tachiyomi.util.lang.htmlDecode
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
@@ -143,7 +147,6 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
             |            staff {
             |                edges {
             |                    role
-            |                    id
             |                    node {
             |                        name {
             |                            full
@@ -236,7 +239,6 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
             |                staff {
             |                    edges {
             |                        role
-            |                        id
             |                        node {
             |                            name {
             |                                full
@@ -333,7 +335,6 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
             |        staff {
             |            edges {
             |                role
-            |                id
             |                node {
             |                    name {
             |                        full
@@ -371,16 +372,64 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
                             description = media.description?.htmlDecode()?.ifEmpty { null },
                             authors = media.staff.edges
                                 .filter { "Story" in it.role }
-                                .mapNotNull { it.node.name() }
+                                .mapNotNull { edge -> edge.node.name.userPreferred }
                                 .joinToString(", ")
                                 .ifEmpty { null },
                             artists = media.staff.edges
                                 .filter { "Art" in it.role }
-                                .mapNotNull { it.node.name() }
+                                .mapNotNull { edge -> edge.node.name.userPreferred }
                                 .joinToString(", ")
                                 .ifEmpty { null },
                         )
                     }
+            }
+        }
+    }
+
+    suspend fun searchById(id: String): TrackSearch {
+        return withIOContext {
+            val query = """
+            |query (${'$'}mangaId: Int!) {
+            |    Media (id: ${'$'}mangaId) {
+            |        id
+            |        title {
+            |            userPreferred
+            |        }
+            |        coverImage {
+            |            large
+            |        }
+            |        format
+            |        status
+            |        chapters
+            |        description
+            |        startDate {
+            |            year
+            |            month
+            |            day
+            |        }
+            |        averageScore
+            |    }
+            |}
+            |
+            """.trimMargin()
+            val payload = buildJsonObject {
+                put("query", query)
+                putJsonObject("variables") {
+                    put("mangaId", id.toInt())
+                }
+            }
+            with(json) {
+                authClient.newCall(
+                    POST(
+                        API_URL,
+                        body = payload.toString().toRequestBody(jsonMime),
+                    ),
+                )
+                    .awaitSuccess()
+                    .parseAs<ALIdSearchResult>()
+                    .data.media
+                    .toALManga()
+                    .toTrack()
             }
         }
     }
