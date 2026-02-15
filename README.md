@@ -11,8 +11,12 @@
 </p>
 
 <p align="center">
-  An open source manga reader based on Mihon with custom changes and patches from other forks.<br>
-  <strong>Open source software</strong>
+  An open source manga reader for Android designed to be a friendly place for new features.<br>
+  Built on Mihon, integrating custom changes and community patches at its own pace.
+</p>
+
+<p align="center">
+  <a href="features.md"><strong>Explore all features and patches →</strong></a>
 </p>
 
 ---
@@ -39,8 +43,3 @@
 **What the hell does Kumo mean?**
 - It means Cloud (雲) in Japanese. The kanji is a phono-semantic compound: the top part (雨) represents rain and the bottom (云) is the ancient glyph for cloud, symbolizing something that "revolves" or "moves" freely. My username in Spanish is Nube, Nube is Cloud, so, yep, Kumo is a reference to my online username, but also to what I want this project to be: something that, like a cloud, is free to change shape, adapt, and move at its own pace without being anchored to a single spot.
  
- ---
- 
-[Complete changes and features list](features.md)
-
-PRs are welcome!
