@@ -105,7 +105,7 @@ jobs:
             echo "Warning: arm64-v8a APK not found" >&2
           fi
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version_info.outputs.TAG }}
           name: Kumo ${{ steps.version_info.outputs.TAG }}
