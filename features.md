@@ -26,6 +26,7 @@
 - [feat: add toggle for image loading](https://github.com/mihonapp/mihon/pull/2076)
 - [Hide smart update icon when disabled](https://github.com/mihonapp/mihon/pull/1031)
 - [Add a font size parameter](https://github.com/mihonapp/mihon/pull/273)
+- [Support Dynamic theme for Android 11 and below](https://github.com/mihonapp/mihon/pull/2845)
 
 ---
 
