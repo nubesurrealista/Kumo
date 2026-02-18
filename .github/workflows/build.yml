@@ -30,6 +30,16 @@ jobs:
           distribution: temurin
           java-version: "24"
           cache: gradle
+      - name: Decode keystore
+        run: echo "${{ secrets.RELEASE_KEYSTORE_B64 }}" | base64 -d > app/nube.p12
+      - name: Extract signature hash
+        id: hash_info
+        run: >
+          SIGNATURE_HASH=$(keytool -list -v -keystore app/nube.p12 -storepass "${{
+          secrets.RELEASE_KEYSTORE_PASSWORD }}" | grep "SHA256:" | head -n 1 |
+          awk '{print $2}')
+
+          echo "SHA256=${SIGNATURE_HASH}" >> $GITHUB_OUTPUT
       - name: Get changelog
         id: changelog
         run: >
@@ -46,9 +56,13 @@ jobs:
 
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
 
+          echo "" >> $GITHUB_OUTPUT
+
+          echo "---" >> $GITHUB_OUTPUT
+
+          echo "**Signature SHA-256:** \`${{ steps.hash_info.outputs.SHA256 }}\`" >> $GITHUB_OUTPUT
+
           echo "EOF" >> $GITHUB_OUTPUT
-      - name: Decode keystore
-        run: echo "${{ secrets.RELEASE_KEYSTORE_B64 }}" | base64 -d > app/nube.p12
       - name: Build release APKs
         run: ./gradlew assembleRelease --stacktrace --parallel --max-workers=$(nproc)
       - name: Sign APKs
