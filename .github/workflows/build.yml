@@ -4,6 +4,8 @@ on:
   workflow_dispatch: null
 permissions:
   contents: write
+  id-token: write
+  attestations: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,9 +19,7 @@ jobs:
 
           VERSION_CODE=$(grep 'versionCode =' app/build.gradle.kts | awk '{print $3}')
 
-          NEW_TAG="v${VERSION_NAME}"
-
-          echo "TAG=${NEW_TAG}" >> $GITHUB_OUTPUT
+          echo "TAG=v${VERSION_NAME}" >> $GITHUB_OUTPUT
 
           echo "VERSION=${VERSION_NAME}" >> $GITHUB_OUTPUT
 
@@ -59,7 +59,6 @@ jobs:
           for arch in armeabi-v7a arm64-v8a; do
             UNSIGNED="app/build/outputs/apk/release/app-$arch-release-unsigned.apk"
             SIGNED="app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-$arch-release-signed.apk"
-            
             if [ -f "$UNSIGNED" ]; then
               "$ANDROID_BUILD_TOOLS/apksigner" sign \
                 --ks app/nube.p12 \
@@ -71,18 +70,24 @@ jobs:
                 --out "$SIGNED" \
                 "$UNSIGNED"
             else
-              echo "Warning: APK for $arch not found" >&2
+              echo "Error: APK for $arch not found" >&2
+              exit 1
             fi
           done
-      - name: Create Release
+      - name: Attest Build Provenance
+        uses: actions/attest-build-provenance@v3.2.0
+        with:
+          subject-path: app/build/outputs/apk/release/kumo-*-release-signed.apk
+      - name: Create Immutable Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version_info.outputs.TAG }}
           name: Kumo ${{ steps.version_info.outputs.TAG }}
-          files: app/build/outputs/apk/release/kumo-*-signed.apk
+          files: app/build/outputs/apk/release/kumo-*-release-signed.apk
           body: ${{ steps.changelog.outputs.CHANGELOG }}
           draft: false
-          prerelease: ${{ github.ref != 'refs/heads/main' }}
+          prerelease: false
+          make_latest: true
       - name: Cleanup keystore
         if: always()
         run: rm -f app/nube.p12
