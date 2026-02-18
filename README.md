@@ -43,3 +43,12 @@
 **What the hell does Kumo mean?**
 - It means Cloud (雲) in Japanese. The kanji is a phono-semantic compound: the top part (雨) represents rain and the bottom (云) is the ancient glyph for cloud, symbolizing something that "revolves" or "moves" freely. My username in Spanish is Nube, Nube is Cloud, so, yep, Kumo is a reference to my online username, but also to what I want this project to be: something that, like a cloud, is free to change shape, adapt, and move at its own pace without being anchored to a single spot.
  
+---
+
+## Fingerprint & Trust
+
+The build process is fully public and transparent; you can audit every build in the **Actions** tab. **All APKs** are signed automatically by GitHub Actions using my digital signature. 
+
+If the signature hash of your APK does not match the one below, you're not using an APK from me. Also, this repository uses **immutable releases** to guarantee reliability; once a version is published, binaries and tags cannot be modified or replaced. It's recommended that you simply do not trust me, make a fork and compile your own build; there's nothing more reliable than that, if you can do it, do it.
+
+**SHA-256:** `2E:A2:FD:51:F4:BA:EC:90:11:91:19:41:E8:C8:D2:B7:59:9D:36:09:15:94:B2:CF:0A:EF:14:E9:E2:B9:78:71`
