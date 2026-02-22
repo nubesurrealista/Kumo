@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/nubesurrealista/Kumo/releases/latest">
-    <img src="https://badgen.net/github/release/nubesurrealista/Kumo?color=8e44ad&label=Latest%20Release" alt="Latest Release" />
+    <img src="https://img.shields.io/github/v/tag/nubesurrealista/Kumo?sort=semver&color=8e44ad&label=Latest%20Release" alt="Latest Release" />
   </a>
 </p>
 
