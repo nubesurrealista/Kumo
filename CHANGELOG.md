@@ -15,6 +15,7 @@ The format is a modified version of [Keep a Changelog](https://keepachangelog.co
 - Automatically remove downloads on Suwayomi after reading, configurable via extension settings ([@cpiber](https://github.com/cpiber)) ([#2673](https://github.com/mihonapp/mihon/pull/2673))
 - Display author & artist name in MAL search results ([@MajorTanya](https://github.com/MajorTanya)) ([#2833](https://github.com/mihonapp/mihon/pull/2833))
 - Add filter options to Updates tab ([@MajorTanya](https://github.com/MajorTanya)) ([#2851](https://github.com/mihonapp/mihon/pull/2851))
+- Add bookmarked chapters to chapter download options ([@NarwhalHorns](https://github.com/NarwhalHorns)) ([#2891](https://github.com/mihonapp/mihon/pull/2891))
 - Add `src:` prefix to search the library by source ID ([@MajorTanya](https://github.com/MajorTanya)) ([#2927](https://github.com/mihonapp/mihon/pull/2927))
   - Add `src:local` as a way to search for Local Source entries ([@MajorTanya](https://github.com/MajorTanya)) ([#2928](https://github.com/mihonapp/mihon/pull/2928))
 
@@ -23,6 +24,8 @@ The format is a modified version of [Keep a Changelog](https://keepachangelog.co
 - Optimize MAL search queries ([@MajorTanya](https://github.com/MajorTanya)) ([#2832](https://github.com/mihonapp/mihon/pull/2832))
 - Reword download reindexing message to avoid confusion ([@MajorTanya](https://github.com/MajorTanya)) ([#2874](https://github.com/mihonapp/mihon/pull/2874))
 - Rework internals for better performance ([@Lolle2000la](https://github.com/Lolle2000la)) ([#2955](https://github.com/mihonapp/mihon/pull/2955))
+- Optimize tracked library filter ([@NarwhalHorns](https://github.com/NarwhalHorns)) ([#2977](https://github.com/mihonapp/mihon/pull/2977))
+- Utilize tracker for library duplicate detection ([@NarwhalHorns](https://github.com/NarwhalHorns)) ([#2977](https://github.com/mihonapp/mihon/pull/2978))
 
 ### Changed
 - Update tracker icons ([@AntsyLich](https://github.com/AntsyLich)) ([#2773](https://github.com/mihonapp/mihon/pull/2773))
