@@ -1,5 +1,5 @@
 ---
-name: Build Kumo
+name: Kumo test build
 on:
   workflow_dispatch: null
 permissions:
@@ -17,13 +17,11 @@ jobs:
         run: >
           VERSION_NAME=$(grep 'versionName =' app/build.gradle.kts | cut -d '"' -f 2)
 
-          VERSION_CODE=$(grep 'versionCode =' app/build.gradle.kts | awk '{print $3}')
-
-          echo "TAG=v${VERSION_NAME}" >> $GITHUB_OUTPUT
+          SHORT_SHA=$(git rev-parse --short HEAD)
 
           echo "VERSION=${VERSION_NAME}" >> $GITHUB_OUTPUT
 
-          echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_OUTPUT
+          echo "TAG=v${VERSION_NAME}-test-${SHORT_SHA}" >> $GITHUB_OUTPUT
       - name: Set up JDK 24
         uses: actions/setup-java@v5
         with:
@@ -40,27 +38,24 @@ jobs:
           awk '{print $2}')
 
           echo "SHA256=${SIGNATURE_HASH}" >> $GITHUB_OUTPUT
-      - name: Get changelog
+      - name: Generate test changelog
         id: changelog
         run: >
-          CHANGELOG_FILE="fastlane/metadata/android/en-US/changelogs/${{
-          steps.version_info.outputs.VERSION_CODE }}.txt"
-
-          if [ -f "$CHANGELOG_FILE" ]; then
-            CHANGELOG=$(cat "$CHANGELOG_FILE")
-          else
-            CHANGELOG="No changelog found for version ${{ steps.version_info.outputs.VERSION_CODE }}"
-          fi
-
           echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
 
-          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "# Kumo Test Build" >> $GITHUB_OUTPUT
 
           echo "" >> $GITHUB_OUTPUT
 
-          echo "---" >> $GITHUB_OUTPUT
+          echo "> [!WARNING]" >> $GITHUB_OUTPUT
 
-          echo "**Signature SHA-256:** \`${{ steps.hash_info.outputs.SHA256 }}\`" >> $GITHUB_OUTPUT
+          echo "> This is a test version and may be unstable. Use with caution." >> $GITHUB_OUTPUT
+
+          echo "" >> $GITHUB_OUTPUT
+
+          echo "### Signature Fingerprint (SHA-256)" >> $GITHUB_OUTPUT
+
+          echo "\`${{ steps.hash_info.outputs.SHA256 }}\`" >> $GITHUB_OUTPUT
 
           echo "EOF" >> $GITHUB_OUTPUT
       - name: Build release APKs
@@ -72,7 +67,7 @@ jobs:
 
           for arch in armeabi-v7a arm64-v8a; do
             UNSIGNED="app/build/outputs/apk/release/app-$arch-release-unsigned.apk"
-            SIGNED="app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-$arch-release-signed.apk"
+            SIGNED="app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-$arch-test-signed.apk"
             if [ -f "$UNSIGNED" ]; then
               "$ANDROID_BUILD_TOOLS/apksigner" sign \
                 --ks app/nube.p12 \
@@ -91,17 +86,17 @@ jobs:
       - name: Attest Build Provenance
         uses: actions/attest-build-provenance@v3.2.0
         with:
-          subject-path: app/build/outputs/apk/release/kumo-*-release-signed.apk
-      - name: Create Immutable Release
+          subject-path: app/build/outputs/apk/release/kumo-*-test-signed.apk
+      - name: Create Test Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version_info.outputs.TAG }}
-          name: Kumo ${{ steps.version_info.outputs.TAG }}
-          files: app/build/outputs/apk/release/kumo-*-release-signed.apk
+          name: Kumo Test Build ${{ steps.version_info.outputs.VERSION }} (${{
+            steps.version_info.outputs.TAG }})
           body: ${{ steps.changelog.outputs.CHANGELOG }}
+          files: app/build/outputs/apk/release/kumo-*-test-signed.apk
+          prerelease: true
           draft: false
-          prerelease: false
-          make_latest: true
       - name: Cleanup keystore
         if: always()
         run: rm -f app/nube.p12
