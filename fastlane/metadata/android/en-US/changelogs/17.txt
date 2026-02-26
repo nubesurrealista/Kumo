@@ -1,6 +1,6 @@
-# It's recommended to make backups before updating, as you might need to clear the app data to be able to use this build.
-- From now on Kumo takes a new approach for releases: immutable releases, release attestation and the hash of the signature used is attached. Read the readme for more information
-- Changes in how AniList tracker works thanks to code adapted from Komikku
-- Support Dynamic theme for Android 11 and below (PR on Mihon, thanks @cuong-tran)
-- tiny fixes
-**Mihon changelog: https://github.com/mihonapp/mihon/blob/main/CHANGELOG.md
+Recommended: backup before updating, app data reset may be needed.
+- Kumo uses immutable releases, attestation, signature hash attached. See README.
+- Improved AniList tracker (adapted from Komikku).
+- Support for Dynamic themes on Android 11 and below (from Mihon PR, thanks @cuong-tran).
+- Minor fixes.
+Mihon changelog: https://github.com/mihonapp/mihon/blob/main/CHANGELOG.md
