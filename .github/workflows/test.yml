@@ -1,7 +1,11 @@
----
 name: Kumo test build
 on:
-  workflow_dispatch: null
+  workflow_dispatch:
+    inputs:
+      custom_notes:
+        description: 'Release notes'
+        required: false
+        default: ''
 permissions:
   contents: write
   id-token: write
@@ -43,13 +47,13 @@ jobs:
         run: >
           echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
 
-          echo "# Kumo Test Build" >> $GITHUB_OUTPUT
-
-          echo "" >> $GITHUB_OUTPUT
-
           echo "> [!WARNING]" >> $GITHUB_OUTPUT
 
           echo "> This is a test version and may be unstable. Use with caution." >> $GITHUB_OUTPUT
+
+          echo "" >> $GITHUB_OUTPUT
+
+          echo "${{ github.event.inputs.custom_notes }}" >> $GITHUB_OUTPUT
 
           echo "" >> $GITHUB_OUTPUT
 
@@ -91,8 +95,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.version_info.outputs.TAG }}
-          name: Kumo Test Build ${{ steps.version_info.outputs.VERSION }} (${{
-            steps.version_info.outputs.TAG }})
+          name: ${{ steps.version_info.outputs.TAG }}
           body: ${{ steps.changelog.outputs.CHANGELOG }}
           files: app/build/outputs/apk/release/kumo-*-test-signed.apk
           prerelease: true
@@ -100,3 +103,4 @@ jobs:
       - name: Cleanup keystore
         if: always()
         run: rm -f app/nube.p12
+        
