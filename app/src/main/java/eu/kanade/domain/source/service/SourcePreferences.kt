@@ -1,6 +1,7 @@
 package eu.kanade.domain.source.service
 
 import eu.kanade.domain.source.interactor.SetMigrateSorting
+import eu.kanade.tachiyomi.ui.browse.source.globalsearch.SourceFilter
 import eu.kanade.tachiyomi.util.system.LocaleHelper
 import mihon.domain.migration.models.MigrationFlag
 import tachiyomi.core.common.preference.Preference
@@ -56,6 +57,11 @@ class SourcePreferences(
     fun globalSearchFilterState() = preferenceStore.getBoolean(
         Preference.appStateKey("has_filters_toggle_state"),
         false,
+    )
+
+    fun globalSearchPinnedState() = preferenceStore.getEnum(
+        Preference.appStateKey("global_search_pinned_toggle_state"),
+        SourceFilter.PinnedOnly,
     )
 
     fun migrationSources() = preferenceStore.getLongArray("migration_sources", emptyList())

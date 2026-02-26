@@ -1,86 +1,59 @@
-<div align="center">
+<h1 align="center" style="margin-top: 40px; font-size: 2.6em;">Kumo</h1>
 
-<a href="https://mihon.app">
-    <img src="./.github/assets/logo.png" alt="Mihon logo" title="Mihon logo" width="80"/>
-</a>
+<p align="center">
+  <a href="https://github.com/nubesurrealista/Kumo/releases/latest">
+    <img src="https://img.shields.io/github/v/tag/nubesurrealista/Kumo?sort=semver&color=8e44ad&label=Latest%20Release" alt="Latest Release" />
+  </a>
+</p>
 
-# Mihon [App](#)
+<p align="center">
+  <img src=".github/assets/logo.png" alt="Logo" width="200" style="margin-top: 20px; border-radius: 20px;" />
+</p>
 
-### Full-featured reader
-Discover and read manga, webtoons, comics, and more – easier than ever on your Android device.
+<p align="center">
+  An open source manga reader for Android designed to be a friendly place for new features.<br>
+  Built on Mihon, integrating custom changes and community patches at its own pace.
+</p>
 
-[![Discord server](https://img.shields.io/discord/1195734228319617024.svg?label=&labelColor=6A7EC2&color=7389D8&logo=discord&logoColor=FFFFFF)](https://discord.gg/mihon)
-[![GitHub downloads](https://img.shields.io/github/downloads/mihonapp/mihon/total?label=downloads&labelColor=27303D&color=0D1117&logo=github&logoColor=FFFFFF&style=flat)](https://mihon.app/download)
+<p align="center">
+  <a href="features.md"><strong>Explore all features and patches →</strong></a>
+</p>
 
-[![CI](https://img.shields.io/github/actions/workflow/status/mihonapp/mihon/build.yml?labelColor=27303D)](https://github.com/mihonapp/mihon/actions/workflows/build_push.yml)
-[![License: Apache-2.0](https://img.shields.io/github/license/mihonapp/mihon?labelColor=27303D&color=0877d2)](/LICENSE)
-[![Translation status](https://img.shields.io/weblate/progress/mihon?labelColor=27303D&color=946300)](https://hosted.weblate.org/engage/mihon/)
+---
 
-## Download
+## FAQ
 
-[![Mihon Stable](https://img.shields.io/github/release/mihonapp/mihon.svg?maxAge=3600&label=Stable&labelColor=06599d&color=043b69)](https://mihon.app/download)
-[![Mihon Beta](https://img.shields.io/github/v/release/mihonapp/mihon-preview.svg?maxAge=3600&label=Beta&labelColor=2c2c47&color=1c1c39)](https://mihon.app/download)
+**Why Kumo?**
 
-*Requires Android 8.0 or higher.*
+- Simple, tbh and with all due respect: I don't like Mihon's development, if you have to wait a thousand years for a basic feature to be integrated because the main team doesn't agree, then what's the point?. I don't see much sense in contributing to Mihon when many great features have been rejected, my fork exists simply to be a friendly place, and to take features that Mihon would never use because of its development model
 
-## Features
+**Mihon already has a "FOSS" build, so what is the point of Kumo?**
+- Kumo is not just "Mihon without telemetry"; if I see something interesting that I can integrate, I will add it; if I like it, it is stable, and it is useful, it will be in Kumo. I'm not interested in being on par with Mihon; currently we are and merging is relatively simple, but Kumo does not aspire to be a soft fork forever.
 
-<div align="left">
+**There are Komikku features, is Kumo planned to be a fork of Komikku or TachiyomiSY?**
 
-* Local reading of content.
-* A configurable reader with multiple viewers, reading directions and other settings.
-* Tracker support: [MyAnimeList](https://myanimelist.net/), [AniList](https://anilist.co/), [Kitsu](https://kitsu.app/), [MangaUpdates](https://mangaupdates.com), [Shikimori](https://shikimori.one), and [Bangumi](https://bgm.tv/) support.
-* Categories to organize your library.
-* Light and dark themes.
-* Schedule updating your library for new chapters.
-* Create backups locally to read offline or to your desired cloud service.
-* Plus much more...
+- No, but the features list from Komikku will probably grow in the future because I personally like it and I think it's the most innovative fork currently on the scene, there's nothing like it. I respect Komikku a lot, however I don't want Kumo to be "Komikku 2.0", so no, it's more correct to say that if there's something in Komikku or any other fork that benefits the whole community and Mihon doesn't have or doesn't want to include, it will be in Kumo, well, if it's easy for me to implement it obviously
 
-</div>
+**Who develops Kumo?**
+- Just me, Nube. I'm not an expert and many times I limit myself to simply cherry-picking; I understand that this is not ideal, but I do what I can. I use Kumo daily so I'm the biggest hater and the biggest fan of this app at the same time.
 
-## Contributing
+ **Do you accept PRs?**
+ - Yes, gladly, I need to! To learn, and to see how this can improve at the hands of other people. PRs are always welcome!
 
-[Code of conduct](./CODE_OF_CONDUCT.md) · [Contributing guide](./CONTRIBUTING.md)
+**What the hell does Kumo mean?**
+- It means Cloud (雲) in Japanese. The kanji is a phono-semantic compound: the top part (雨) represents rain and the bottom (云) is the ancient glyph for cloud, symbolizing something that "revolves" or "moves" freely. My username in Spanish is Nube, Nube is Cloud, so, yep, Kumo is a reference to my online username, but also to what I want this project to be: something that, like a cloud, is free to change shape, adapt, and move at its own pace without being anchored to a single spot.
+ 
+---
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+## Fingerprint & Trust
 
-Before reporting a new issue, take a look at the [FAQ](https://mihon.app/docs/faq/general), the [changelog](https://mihon.app/changelogs/) and the already opened [issues](https://github.com/mihonapp/mihon/issues); if you got any questions, join our [Discord server](https://discord.gg/mihon).
+The build process is fully public and transparent; you can audit every build in the [**Actions**](https://github.com/nubesurrealista/Kumo/actions) tab. **All APKs** are signed automatically by GitHub Actions using my digital signature. 
 
+If the signature hash of your APK does not match the one below, you're not using an APK from me. Also, this repository uses **immutable releases** to guarantee reliability; once a version is published, binaries and tags cannot be modified or replaced. It's recommended that you simply do not trust me, make a fork and compile your own build; there's nothing more reliable than that, if you can do it, do it.
 
-### Repositories
+**SHA-256:** `2E:A2:FD:51:F4:BA:EC:90:11:91:19:41:E8:C8:D2:B7:59:9D:36:09:15:94:B2:CF:0A:EF:14:E9:E2:B9:78:71`
 
-[![mihonapp/website - GitHub](https://github-readme-stats.vercel.app/api/pin/?username=mihonapp&repo=website&bg_color=161B22&text_color=c9d1d9&title_color=0877d2&icon_color=0877d2&border_radius=8&hide_border=true&description_lines_count=2)](https://github.com/mihonapp/website/)
-[![mihonapp/bitmap.kt - GitHub](https://github-readme-stats.vercel.app/api/pin/?username=mihonapp&repo=bitmap.kt&bg_color=161B22&text_color=c9d1d9&title_color=0877d2&icon_color=0877d2&border_radius=8&hide_border=true&description_lines_count=2)](https://github.com/mihonapp/bitmap.kt/)
+Every release also includes a **GitHub Attestation** (you'll see a `.json` file in the assets). It's basically a "digital receipt" proving the APK was built here and hasn't been tampered with. You can check the history of all verified builds [**here**](https://github.com/nubesurrealista/Kumo/attestations) or verify any APK yourself with the [GitHub CLI](https://github.com/cli/cli#installation):
 
-### Credits
-
-Thank you to all the people who have contributed!
-
-<a href="https://github.com/mihonapp/mihon/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=mihonapp/mihon" alt="Mihon app contributors" title="Mihon app contributors" width="800"/>
-</a>
-
-### Disclaimer
-
-The developer(s) of this application does not have any affiliation with the content providers available, and this application hosts zero content.
-
-### License
-
-<pre>
-Copyright © 2015 Javier Tomás
-Copyright © 2024 Mihon Open Source Project
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-</pre>
-
-</div>
+```bash
+gh attestation verify kumo-XXXX-signed.apk --owner nubesurrealista
