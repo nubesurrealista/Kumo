@@ -37,18 +37,15 @@ jobs:
         run: |
           SIGNATURE_HASH=$(keytool -list -v -keystore app/nube.p12 -storepass "${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" | grep "SHA256:" | head -n 1 | awk '{print $2}')
           echo "SHA256=${SIGNATURE_HASH}" >> $GITHUB_OUTPUT
-      - name: Generate test changelog
-        id: changelog
+      - name: Generate test changelog file
         run: |
-          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
-          echo "> [!WARNING]" >> $GITHUB_OUTPUT
-          echo "> This is a test version and may be unstable. Use with caution." >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "${{ github.event.inputs.custom_notes }}" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "### Signature Fingerprint (SHA-256)" >> $GITHUB_OUTPUT
-          echo "\`${{ steps.hash_info.outputs.SHA256 }}\`" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo "> [!WARNING]" > test_notes.md
+          echo "> This is a test version and may be unstable. Use with caution." >> test_notes.md
+          echo "" >> test_notes.md
+          echo "${{ github.event.inputs.custom_notes }}" >> test_notes.md
+          echo "" >> test_notes.md
+          echo "### Signature Fingerprint (SHA-256)" >> test_notes.md
+          echo "\`${{ steps.hash_info.outputs.SHA256 }}\`" >> test_notes.md
       - name: Build release APKs
         run: ./gradlew assembleRelease --stacktrace --parallel --max-workers=$(nproc)
       - name: Sign APKs
@@ -82,7 +79,7 @@ jobs:
         run: |
           gh release create "${{ steps.version_info.outputs.TAG }}" \
             --title "Kumo Test Build ${{ steps.version_info.outputs.VERSION }} (${{ steps.version_info.outputs.TAG }})" \
-            --notes "${{ steps.changelog.outputs.CHANGELOG }}" \
+            --notes-file test_notes.md \
             --target "${{ github.sha }}" \
             --prerelease \
             app/build/outputs/apk/release/kumo-*-test-signed.apk
