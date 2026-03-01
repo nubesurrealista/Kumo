@@ -52,11 +52,7 @@ class DebugInfoScreen : Screen() {
             preferenceItems = persistentListOf(
                 Preference.PreferenceItem.TextPreference(
                     title = "Version",
-                    subtitle = AboutScreen.getVersionName(false),
-                ),
-                Preference.PreferenceItem.TextPreference(
-                    title = "Build time",
-                    subtitle = AboutScreen.getFormattedBuildTime(),
+                    subtitle = AboutScreen.getVersionName(),
                 ),
                 getProfileVerifierPreference(),
                 Preference.PreferenceItem.TextPreference(
