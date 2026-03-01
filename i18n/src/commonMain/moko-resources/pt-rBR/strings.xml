@@ -901,4 +901,7 @@
     <string name="pref_download_concurrent_pages">Download simultâneo de páginas</string>
     <string name="pref_download_concurrent_pages_summary">Páginas baixadas simultâneamente por fonte</string>
     <string name="action_filter_excluded_scanlators">Filtrar grupo de traduções excluidos</string>
+    
+    <string name="ext_uninstall_obsolete">Desinstalar obsoletos</string>
+    <string name="ext_uninstall_obsolete_dialog">Você tem certeza de que desejar desinstalar %1$d extensões obsoletas?</string>
 </resources>
