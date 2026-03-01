@@ -1,12 +1,7 @@
 ---
 name: Build Kumo
 on:
-  workflow_dispatch:
-    inputs:
-      custom_tag:
-        description: Custom Tag
-        required: false
-        default: ''
+  workflow_dispatch: null
 permissions:
   contents: write
   id-token: write
@@ -22,11 +17,7 @@ jobs:
         run: |
           VERSION_NAME=$(grep 'versionName =' app/build.gradle.kts | cut -d '"' -f 2)
           VERSION_CODE=$(grep 'versionCode =' app/build.gradle.kts | awk '{print $3}')
-          if [ -n "${{ github.event.inputs.custom_tag }}" ]; then
-            FINAL_TAG="${{ github.event.inputs.custom_tag }}"
-          else
-            FINAL_TAG="v${VERSION_NAME}"
-          fi
+          FINAL_TAG="v${VERSION_NAME}"
           echo "TAG=$FINAL_TAG" >> $GITHUB_OUTPUT
           echo "VERSION=${VERSION_NAME}" >> $GITHUB_OUTPUT
           echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_OUTPUT
