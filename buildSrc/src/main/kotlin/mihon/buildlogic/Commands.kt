@@ -7,7 +7,7 @@ fun Project.getCommitCount(): String {
 }
 
 fun Project.getGitSha(): String {
-    return runCommand("git rev-parse --short HEAD")
+    return runCommand("git rev-parse --short=7 HEAD")
 }
 
 private fun Project.runCommand(command: String): String {
