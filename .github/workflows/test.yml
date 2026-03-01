@@ -17,11 +17,13 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - name: Get version info
         id: version_info
         run: |
           VERSION_NAME=$(grep 'versionName =' app/build.gradle.kts | cut -d '"' -f 2)
-          SHORT_SHA=$(git rev-parse --short HEAD)
+          SHORT_SHA=$(git rev-parse --short=7 HEAD)
           echo "VERSION=${VERSION_NAME}" >> $GITHUB_OUTPUT
           echo "TAG=v${VERSION_NAME}-test-${SHORT_SHA}" >> $GITHUB_OUTPUT
       - name: Set up JDK 21
