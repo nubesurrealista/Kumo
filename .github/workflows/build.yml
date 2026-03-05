@@ -48,7 +48,7 @@ jobs:
           echo "---" >> release_notes.md
           echo "**Signature SHA-256:** \`${{ steps.hash_info.outputs.SHA256 }}\`" >> release_notes.md
       - name: Build release APKs
-        run: ./gradlew assembleRelease --stacktrace --parallel --max-workers=$(nproc)
+        run: ./gradlew clean assembleRelease --no-build-cache --no-configuration-cache --no-daemon --stacktrace
       - name: Sign APKs
         run: |
           ANDROID_BUILD_TOOLS="$ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort -V | tail -n1)"
