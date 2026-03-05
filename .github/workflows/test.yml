@@ -49,7 +49,7 @@ jobs:
           echo "### Signature Fingerprint (SHA-256)" >> test_notes.md
           echo "\`${{ steps.hash_info.outputs.SHA256 }}\`" >> test_notes.md
       - name: Build release APKs
-        run: ./gradlew clean assembleRelease --no-build-cache --no-configuration-cache --no-daemon --stacktrace
+        run: ./gradlew assembleRelease --stacktrace --parallel --max-workers=$(nproc)
       - name: Sign APKs
         run: |
           ANDROID_BUILD_TOOLS="$ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort -V | tail -n1)"
