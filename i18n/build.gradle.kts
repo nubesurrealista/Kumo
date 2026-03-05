@@ -51,7 +51,7 @@ multiplatformResources {
 
 tasks {
     val localesConfigTask = project.getLocalesConfigTask(generatedAndroidResourceDir)
-    preBuild {
+    withType<com.android.build.gradle.tasks.MergeResources>().configureEach {
         dependsOn(localesConfigTask)
     }
 }
