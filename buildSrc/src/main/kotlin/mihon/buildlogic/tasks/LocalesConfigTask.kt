@@ -31,14 +31,14 @@ fun Project.getLocalesConfigTask(outputResourceDir: File): TaskProvider<Task> {
                         .replace("+", "-")
                 }
                 .sorted()
-                .joinToString("\n") { "| <locale android:name=\"$it\"/>" }
+                .joinToString("\n") { "   <locale android:name=\"$it\"/>" }
 
             val content = """
-                <?xml version="1.0" encoding="utf-8"?>
-                <locale-config xmlns:android="http://schemas.android.com/apk/res/android">
-                $locales
-                </locale-config>
-            """.trimMargin()
+<?xml version="1.0" encoding="utf-8"?>
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+$locales
+</locale-config>
+""".trimIndent()
 
             outputFile.parentFile.mkdirs()
             outputFile.writeText(content)
