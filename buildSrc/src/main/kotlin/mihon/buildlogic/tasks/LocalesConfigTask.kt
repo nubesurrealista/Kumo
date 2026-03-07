@@ -10,15 +10,15 @@ private val emptyResourcesElement = "<resources>\\s*</resources>|<resources\\s*/
 fun Project.getLocalesConfigTask(outputResourceDir: File): TaskProvider<Task> {
     return tasks.register("generateLocalesConfig") {
         val resourceDir = file("$projectDir/src/commonMain/moko-resources/")
-        val stringsFiles = fileTree(resourceDir).matching { include("**/strings.xml") }
+        val stringsFilesTree = fileTree(resourceDir).matching { include("**/strings.xml") }
         
-        inputs.files(stringsFiles)
+        inputs.files(stringsFilesTree)
 
         val outputFile = outputResourceDir.resolve("xml/locales_config.xml")
         outputs.file(outputFile)
 
         doLast {
-            val locales = stringsFiles
+            val locales = stringsFilesTree.files
                 .filterNot { it.readText().contains(emptyResourcesElement) }
                 .map {
                     it.parentFile.name
