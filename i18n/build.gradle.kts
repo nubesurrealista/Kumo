@@ -10,7 +10,9 @@ plugins {
 
 kotlin {
     androidTarget()
+
     applyDefaultHierarchyTemplate()
+
     sourceSets {
         commonMain {
             dependencies {
@@ -18,6 +20,7 @@ kotlin {
             }
         }
     }
+
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
         freeCompilerArgs.add("-Xexpect-actual-classes")
@@ -26,12 +29,14 @@ kotlin {
 
 android {
     namespace = "tachiyomi.i18n"
+
     sourceSets {
         val main by getting
         main.res.srcDirs(
             "src/commonMain/resources"
         )
     }
+
     lint {
         disable.addAll(listOf("MissingTranslation", "ExtraTranslation"))
     }
@@ -41,4 +46,4 @@ multiplatformResources {
     resourcesPackage.set("tachiyomi.i18n")
 }
 
-tasks.getLocalesConfigTask(file("src/commonMain/resources"))
+project.getLocalesConfigTask(file("src/commonMain/resources"))
