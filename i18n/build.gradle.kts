@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 plugins {
     id("mihon.library")
     kotlin("multiplatform")
-    alias(libs.plugins.moko)
+    alias(libs.plugins.moko.resources)
 }
 
 kotlin {
@@ -16,7 +16,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                api(libs.moko.core)
+                api(libs.moko.resources)
             }
         }
     }
@@ -27,16 +27,13 @@ kotlin {
     }
 }
 
-val generatedAndroidResourceDir = generatedBuildDir.resolve("android/res")
-
 android {
     namespace = "tachiyomi.i18n"
 
     sourceSets {
         val main by getting
         main.res.srcDirs(
-            "src/commonMain/resources",
-            generatedAndroidResourceDir,
+            "src/commonMain/resources"
         )
     }
 
@@ -49,9 +46,4 @@ multiplatformResources {
     resourcesPackage.set("tachiyomi.i18n")
 }
 
-tasks {
-    val localesConfigTask = project.getLocalesConfigTask(generatedAndroidResourceDir)
-    preBuild {
-        dependsOn(localesConfigTask)
-    }
-}
+project.getLocalesConfigTask(file("src/commonMain/resources"))

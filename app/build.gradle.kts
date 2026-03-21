@@ -20,8 +20,8 @@ android {
     defaultConfig {
         applicationId = "app.kumo"
 
-        versionCode = 17
-        versionName = "0.19.4"
+        versionCode = 19
+        versionName = "0.19.5"
 
         buildConfigField("String", "COMMIT_COUNT", "\"${getCommitCount()}\"")
         buildConfigField("String", "COMMIT_SHA", "\"${getGitSha()}\"")
@@ -133,80 +133,86 @@ dependencies {
     implementation(projects.presentationCore)
     implementation(projects.presentationWidget)
 
-    implementation(compose.activity)
-    implementation(compose.foundation)
-    implementation(compose.material3.core)
-    implementation(compose.material.icons)
-    implementation(compose.animation)
-    implementation(compose.animation.graphics)
-    debugImplementation(compose.ui.tooling)
-    implementation(compose.ui.tooling.preview)
-    implementation(compose.ui.util)
+    // Compose
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.materialIcons)
+    implementation(libs.androidx.compose.animation)
+    implementation(libs.androidx.compose.animationGraphics)
+    debugImplementation(libs.androidx.compose.uiTooling)
+    implementation(libs.androidx.compose.uiToolingPreview)
+    implementation(libs.androidx.compose.uiUtil)
 
-    implementation(androidx.interpolator)
+    implementation(libs.androidx.interpolator)
 
-    implementation(androidx.paging.runtime)
-    implementation(androidx.paging.compose)
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
 
-    implementation(libs.bundles.sqlite)
+    implementation(libs.androidx.sqlite.bundled)
 
-    implementation(kotlinx.reflect)
-    implementation(kotlinx.immutables)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.kotlinx.collections.immutable)
 
-    implementation(platform(kotlinx.coroutines.bom))
-    implementation(kotlinx.bundles.coroutines)
+    implementation(libs.bundles.kotlinx.coroutines)
 
-    implementation(androidx.annotation)
-    implementation(androidx.appcompat)
-    implementation(androidx.biometricktx)
-    implementation(androidx.constraintlayout)
-    implementation(androidx.corektx)
-    implementation(androidx.splashscreen)
-    implementation(androidx.recyclerview)
-    implementation(androidx.viewpager)
-    implementation(androidx.profileinstaller)
+    // AndroidX libraries
+    implementation(libs.androidx.annotation)
+    implementation(libs.androidx.appCompat)
+    implementation(libs.androidx.biometric)
+    implementation(libs.androidx.constraintLayout)
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.coreSplashScreen)
+    implementation(libs.androidx.recyclerView)
+    implementation(libs.androidx.viewPager)
+    implementation(libs.androidx.profileInstaller)
 
-    implementation(androidx.bundles.lifecycle)
+    implementation(libs.bundles.androidx.lifecycle)
 
-    implementation(androidx.workmanager)
+    // Job scheduling
+    implementation(libs.androidx.work)
 
-    implementation(libs.rxjava)
+    // RxJava
+    implementation(libs.rxJava)
 
     implementation(libs.bundles.okhttp)
     implementation(libs.okio)
-    implementation(libs.conscrypt.android)
+    implementation(libs.conscrypt) // TLS 1.3 support for Android < 10
 
-    implementation(kotlinx.bundles.serialization)
+    // Data serialization (JSON, protobuf, xml)
+    implementation(libs.bundles.serialization)
 
     implementation(libs.jsoup)
 
-    implementation(libs.disklrucache)
+    // Disk
+    implementation(libs.diskLruCache)
     implementation(libs.unifile)
 
-    implementation(libs.preferencektx)
+    // Preferences
+    implementation(libs.androidx.preference)
 
     implementation(libs.injekt)
 
-    implementation(platform(libs.coil.bom))
+    // Image loading
     implementation(libs.bundles.coil)
-    implementation(libs.subsamplingscaleimageview) {
+    implementation(libs.subsamplingScaleImageView) {
         exclude(module = "image-decoder")
     }
     implementation(libs.image.decoder)
 
     implementation(libs.material)
-    implementation(libs.flexible.adapter.core)
-    implementation(libs.photoview)
-    implementation(libs.directionalviewpager) {
+    implementation(libs.flexibleAdapter)
+    implementation(libs.photoView)
+    implementation(libs.directionalViewPager) {
         exclude(group = "androidx.viewpager", module = "viewpager")
     }
-    implementation(libs.richeditor.compose)
+    implementation(libs.composeRichEditor)
     implementation(libs.aboutLibraries.compose)
     implementation(libs.bundles.voyager)
-    implementation(libs.compose.materialmotion)
+    implementation(libs.composeMaterialMotion)
     implementation(libs.swipe)
-    implementation(libs.compose.webview)
-    implementation(libs.compose.grid)
+    implementation(libs.composeWebview)
+    implementation(libs.composeGrid)
     implementation(libs.reorderable)
     implementation(libs.bundles.markdown)
     implementation(libs.materialKolor)
@@ -220,13 +226,15 @@ dependencies {
     testImplementation(libs.bundles.test)
     testRuntimeOnly(libs.junit.platform.launcher)
 
-    implementation(libs.leakcanary.plumber)
+    // For detecting memory leaks; see https://square.github.io/leakcanary/
+    // debugImplementation(libs.leakCanary.android)
+    implementation(libs.leakCanary.plumber)
 
-    testImplementation(kotlinx.coroutines.test)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
 
 buildscript {
     dependencies {
-        classpath(kotlinx.gradle)
+        classpath(libs.kotlin.gradle)
     }
 }

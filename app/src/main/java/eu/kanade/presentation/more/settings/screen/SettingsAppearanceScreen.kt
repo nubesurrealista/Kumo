@@ -3,7 +3,6 @@ package eu.kanade.presentation.more.settings.screen
 import android.app.Activity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -20,7 +19,6 @@ import eu.kanade.presentation.more.settings.widget.AppThemeModePreferenceWidget
 import eu.kanade.presentation.more.settings.widget.AppThemePreferenceWidget
 import eu.kanade.tachiyomi.util.system.toast
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.toImmutableMap
 import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.i18n.stringResource
@@ -31,7 +29,6 @@ import java.time.LocalDate
 
 object SettingsAppearanceScreen : SearchableSettings {
 
-    @ReadOnlyComposable
     @Composable
     override fun getTitleRes() = MR.strings.pref_category_appearance
 
@@ -51,13 +48,13 @@ object SettingsAppearanceScreen : SearchableSettings {
     ): Preference.PreferenceGroup {
         val context = LocalContext.current
 
-        val themeModePref = uiPreferences.themeMode()
+        val themeModePref = uiPreferences.themeMode
         val themeMode by themeModePref.collectAsState()
 
-        val appThemePref = uiPreferences.appTheme()
+        val appThemePref = uiPreferences.appTheme
         val appTheme by appThemePref.collectAsState()
 
-        val amoledPref = uiPreferences.themeDarkAmoled()
+        val amoledPref = uiPreferences.themeDarkAmoled
         val amoled by amoledPref.collectAsState()
 
         return Preference.PreferenceGroup(
@@ -104,7 +101,7 @@ object SettingsAppearanceScreen : SearchableSettings {
 
         val now = remember { LocalDate.now() }
 
-        val dateFormat by uiPreferences.dateFormat().collectAsState()
+        val dateFormat by uiPreferences.dateFormat.collectAsState()
         val formattedNow = remember(dateFormat) {
             UiPreferences.dateFormat(dateFormat).format(now)
         }
@@ -117,28 +114,18 @@ object SettingsAppearanceScreen : SearchableSettings {
                     onClick = { navigator.push(AppLanguageScreen()) },
                 ),
                 Preference.PreferenceItem.ListPreference(
-                    preference = uiPreferences.fontSize(),
-                    title = stringResource(MR.strings.pref_font_size),
-                    entries = persistentMapOf(
-                        0.75f to stringResource(MR.strings.pref_font_size_small),
-                        1f to stringResource(MR.strings.pref_font_size_normal),
-                        1.25f to stringResource(MR.strings.pref_font_size_large),
-                        1.5f to stringResource(MR.strings.pref_font_size_huge),
-                    ),
-                ),
-                Preference.PreferenceItem.ListPreference(
-                    preference = uiPreferences.tabletUiMode(),
-                    title = stringResource(MR.strings.pref_tablet_ui_mode),
+                    preference = uiPreferences.tabletUiMode,
                     entries = TabletUiMode.entries
                         .associateWith { stringResource(it.titleRes) }
                         .toImmutableMap(),
+                    title = stringResource(MR.strings.pref_tablet_ui_mode),
                     onValueChanged = {
                         context.toast(MR.strings.requires_app_restart)
                         true
                     },
                 ),
                 Preference.PreferenceItem.ListPreference(
-                    preference = uiPreferences.dateFormat(),
+                    preference = uiPreferences.dateFormat,
                     entries = DateFormats
                         .associateWith {
                             val formattedDate = UiPreferences.dateFormat(it).format(now)
@@ -148,7 +135,7 @@ object SettingsAppearanceScreen : SearchableSettings {
                     title = stringResource(MR.strings.pref_date_format),
                 ),
                 Preference.PreferenceItem.SwitchPreference(
-                    preference = uiPreferences.relativeTime(),
+                    preference = uiPreferences.relativeTime,
                     title = stringResource(MR.strings.pref_relative_format),
                     subtitle = stringResource(
                         MR.strings.pref_relative_format_summary,
@@ -157,7 +144,7 @@ object SettingsAppearanceScreen : SearchableSettings {
                     ),
                 ),
                 Preference.PreferenceItem.SwitchPreference(
-                    preference = uiPreferences.imagesInDescription(),
+                    preference = uiPreferences.imagesInDescription,
                     title = stringResource(MR.strings.pref_display_images_description),
                 ),
             ),
@@ -166,7 +153,7 @@ object SettingsAppearanceScreen : SearchableSettings {
 }
 
 private val DateFormats = listOf(
-    "", // Default
+    "",
     "MM/dd/yy",
     "dd/MM/yy",
     "yyyy-MM-dd",

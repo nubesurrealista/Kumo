@@ -28,7 +28,6 @@ jobs:
         with:
           distribution: temurin
           java-version: '21'
-          cache: gradle
       - name: Decode keystore
         run: echo "${{ secrets.RELEASE_KEYSTORE_B64 }}" | base64 -d > app/nube.p12
       - name: Extract signature hash
@@ -48,7 +47,13 @@ jobs:
           echo "---" >> release_notes.md
           echo "**Signature SHA-256:** \`${{ steps.hash_info.outputs.SHA256 }}\`" >> release_notes.md
       - name: Build release APKs
-        run: ./gradlew assembleRelease --stacktrace --parallel --max-workers=$(nproc)
+        run: |
+          ./gradlew clean assembleRelease \
+            --no-build-cache \
+            --no-configuration-cache \
+            --no-daemon \
+            --stacktrace \
+            -Porg.gradle.parallel=false
       - name: Sign APKs
         run: |
           ANDROID_BUILD_TOOLS="$ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort -V | tail -n1)"
