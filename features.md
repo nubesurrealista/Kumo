@@ -1,10 +1,11 @@
 ### Changes:
 
 **From [Kahon](https://github.com/AmanoTeam/Kahon):**
-- [Trust extensions by default](https://github.com/AmanoTeam/Kahon/commit/16580dadfdff3a4ed20b57b2f03c4f90f715d983)
+- ~~[Trust extensions by default](https://github.com/AmanoTeam/Kahon/commit/16580dadfdff3a4ed20b57b2f03c4f90f715d983)~~ (Dropped in v0.19.5)
 - [Remove google Spyware](https://github.com/AmanoTeam/Kahon/commit/c56212ddfb67427bea6758d3963e863a5c2d0a8f)
 - [Drop support to x86 ABIs](https://github.com/AmanoTeam/Kahon/commit/85f061edab8bfe7a06305b004c70169e0b53b3a1)
 - [Remove productFlavors](https://github.com/AmanoTeam/Kahon/commit/d21199b2ce754aceca650cbb164eb47123e40405)
+- [Disable showing changelog on app start](https://github.com/AmanoTeam/Kahon/commit/cabcad9542c447fdffc5197af530f427fa624909)
 
 ---
 
@@ -19,15 +20,15 @@
 **From [Aniyomi](https://github.com/aniyomiorg/aniyomi):**
 - [feat(doh): Add LibreDNS](https://github.com/aniyomiorg/aniyomi/commit/596f501ba111ce225187d086353da76cb5bd8270)
 
-  ---
-  
+---
+
 **From [PRs](https://github.com/mihonapp/mihon/pulls) on Mihon repository:**
 - [feat(storage): Add storage overview](https://github.com/mihonapp/mihon/pull/1974)
 - [make global search pinned/all sticky and save choice made by user](https://github.com/mihonapp/mihon/pull/1345)
 - [add divider & section header](https://github.com/mihonapp/mihon/pull/1443)
 - [feat: add toggle for image loading](https://github.com/mihonapp/mihon/pull/2076)
 - [Hide smart update icon when disabled](https://github.com/mihonapp/mihon/pull/1031)
-- [Add a font size parameter](https://github.com/mihonapp/mihon/pull/273)
+- ~~[Add a font size parameter](https://github.com/mihonapp/mihon/pull/273)~~ (Dropped in v0.19.5)
 - [Support Dynamic theme for Android 11 and below](https://github.com/mihonapp/mihon/pull/2845)
 
 ---
