@@ -1,0 +1,4 @@
+THIS UPDATE MAY REQUIRE A CLEAN INSTALL (OR CLEARING THE APP DATA), so make backups before updating.
+
+Changes:
+- Upstream with Mihon and resolve conflicts

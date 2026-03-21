@@ -1,5 +1,4 @@
 import mihon.buildlogic.Config
-import mihon.buildlogic.getBuildTime
 import mihon.buildlogic.getCommitCount
 import mihon.buildlogic.getGitSha
 
@@ -11,31 +10,33 @@ plugins {
     alias(libs.plugins.aboutLibraries)
 }
 
-if (Config.includeTelemetry) {
-    pluginManager.apply {
-        apply(libs.plugins.google.services.get().pluginId)
-        apply(libs.plugins.firebase.crashlytics.get().pluginId)
-    }
-}
-
 shortcutHelper.setFilePath("./shortcuts.xml")
+
+val supportedAbis = setOf("armeabi-v7a", "arm64-v8a")
 
 android {
     namespace = "eu.kanade.tachiyomi"
 
     defaultConfig {
-        applicationId = "app.mihon"
+        applicationId = "app.kumo"
 
         versionCode = 19
         versionName = "0.19.5"
 
         buildConfigField("String", "COMMIT_COUNT", "\"${getCommitCount()}\"")
         buildConfigField("String", "COMMIT_SHA", "\"${getGitSha()}\"")
-        buildConfigField("String", "BUILD_TIME", "\"${getBuildTime(useLastCommitTime = false)}\"")
-        buildConfigField("boolean", "TELEMETRY_INCLUDED", "${Config.includeTelemetry}")
-        buildConfigField("boolean", "UPDATER_ENABLED", "${Config.enableUpdater}")
+        buildConfigField("boolean", "UPDATER_ENABLED", "false")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a")
+            isUniversalApk = false
+        }
     }
 
     buildTypes {
@@ -49,56 +50,6 @@ android {
             isShrinkResources = Config.enableCodeShrink
 
             proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
-
-            buildConfigField("String", "BUILD_TIME", "\"${getBuildTime(useLastCommitTime = true)}\"")
-        }
-
-        val commonMatchingFallbacks = listOf(release.name)
-
-        create("foss") {
-            initWith(release)
-
-            applicationIdSuffix = ".foss"
-
-            matchingFallbacks.addAll(commonMatchingFallbacks)
-        }
-        create("preview") {
-            initWith(release)
-
-            applicationIdSuffix = ".debug"
-
-            versionNameSuffix = debug.versionNameSuffix
-            signingConfig = debug.signingConfig
-
-            matchingFallbacks.addAll(commonMatchingFallbacks)
-
-            buildConfigField("String", "BUILD_TIME", "\"${getBuildTime(useLastCommitTime = false)}\"")
-        }
-        create("benchmark") {
-            initWith(release)
-
-            isDebuggable = false
-            isProfileable = true
-            versionNameSuffix = "-benchmark"
-            applicationIdSuffix = ".benchmark"
-
-            signingConfig = debug.signingConfig
-
-            matchingFallbacks.addAll(commonMatchingFallbacks)
-        }
-    }
-
-    sourceSets {
-        getByName("preview").res.srcDirs("src/debug/res")
-        getByName("benchmark").res.srcDirs("src/debug/res")
-    }
-
-    splits {
-        abi {
-            isEnable = true
-            isUniversalApk = true
-            reset()
-            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
         }
     }
 
@@ -140,7 +91,6 @@ android {
         buildConfig = true
         aidl = true
 
-        // Disable some unused things
         renderScript = false
         shaders = false
     }
@@ -182,7 +132,6 @@ dependencies {
     implementation(projects.domain)
     implementation(projects.presentationCore)
     implementation(projects.presentationWidget)
-    implementation(projects.telemetry)
 
     // Compose
     implementation(libs.androidx.activity.compose)
@@ -226,7 +175,6 @@ dependencies {
     // RxJava
     implementation(libs.rxJava)
 
-    // Networking
     implementation(libs.bundles.okhttp)
     implementation(libs.okio)
     implementation(libs.conscrypt) // TLS 1.3 support for Android < 10
@@ -234,7 +182,6 @@ dependencies {
     // Data serialization (JSON, protobuf, xml)
     implementation(libs.bundles.serialization)
 
-    // HTML parser
     implementation(libs.jsoup)
 
     // Disk
@@ -244,7 +191,6 @@ dependencies {
     // Preferences
     implementation(libs.androidx.preference)
 
-    // Dependency injection
     implementation(libs.injekt)
 
     // Image loading
@@ -254,7 +200,6 @@ dependencies {
     }
     implementation(libs.image.decoder)
 
-    // UI libraries
     implementation(libs.material)
     implementation(libs.flexibleAdapter)
     implementation(libs.photoView)
@@ -272,16 +217,12 @@ dependencies {
     implementation(libs.bundles.markdown)
     implementation(libs.materialKolor)
 
-    // Logging
     implementation(libs.logcat)
 
-    // Shizuku
     implementation(libs.bundles.shizuku)
 
-    // String similarity
     implementation(libs.stringSimilarity)
 
-    // Tests
     testImplementation(libs.bundles.test)
     testRuntimeOnly(libs.junit.platform.launcher)
 
@@ -290,14 +231,6 @@ dependencies {
     implementation(libs.leakCanary.plumber)
 
     testImplementation(libs.kotlinx.coroutines.test)
-}
-
-androidComponents {
-    onVariants(selector().withFlavor("default" to "standard")) {
-        // Only excluding in standard flavor because this breaks
-        // Layout Inspector's Compose tree
-        it.packaging.resources.excludes.add("META-INF/*.version")
-    }
 }
 
 buildscript {

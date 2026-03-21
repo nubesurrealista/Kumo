@@ -1,0 +1,9 @@
+- Confiar en extensiones por defecto
+- Se ha eliminado el spyware de Google y la compatibilidad con x86
+- Se ha eliminado productFlavors
+- Se ha añadido el progreso de lectura y los indicadores en el historial
+- Resumen de almacenamiento, divisor y encabezados de sección
+- Nuevo botón para la carga de imágenes
+- Se ha mejorado el comportamiento de la búsqueda global
+- Temas Dracula y Obsidian
+- Ajustes en la gestión de actualizaciones de la biblioteca

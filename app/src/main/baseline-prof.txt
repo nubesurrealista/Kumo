@@ -20552,7 +20552,7 @@ PLeu/kanade/presentation/more/settings/screen/SettingsTrackingScreen;-><clinit>(
 PLeu/kanade/presentation/more/settings/screen/SettingsTrackingScreen;-><init>()V
 PLeu/kanade/presentation/more/settings/screen/about/AboutScreen;-><clinit>()V
 PLeu/kanade/presentation/more/settings/screen/about/AboutScreen;-><init>()V
-PLeu/kanade/presentation/more/settings/screen/about/AboutScreen;->getVersionName(Z)Ljava/lang/String;
+PLeu/kanade/presentation/more/settings/screen/about/AboutScreen;->getVersionName()Ljava/lang/String;
 Leu/kanade/presentation/more/settings/widget/BasePreferenceWidgetKt;
 HSPLeu/kanade/presentation/more/settings/widget/BasePreferenceWidgetKt;-><clinit>()V
 PLeu/kanade/presentation/more/settings/widget/BasePreferenceWidgetKt;-><clinit>()V

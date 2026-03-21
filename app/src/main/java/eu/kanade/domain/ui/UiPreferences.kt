@@ -20,11 +20,7 @@ class UiPreferences(
 
     val appTheme: Preference<AppTheme> = preferenceStore.getEnum(
         "pref_app_theme",
-        if (DeviceUtil.isDynamicColorAvailable) {
-            AppTheme.MONET
-        } else {
-            AppTheme.DEFAULT
-        },
+        AppTheme.MONET,
     )
 
     val themeDarkAmoled: Preference<Boolean> = preferenceStore.getBoolean("pref_theme_dark_amoled_key", false)
@@ -36,6 +32,8 @@ class UiPreferences(
     val tabletUiMode: Preference<TabletUiMode> = preferenceStore.getEnum("tablet_ui_mode", TabletUiMode.AUTOMATIC)
 
     val imagesInDescription: Preference<Boolean> = preferenceStore.getBoolean("pref_render_images_description", true)
+
+    fun fontSize() = preferenceStore.getFloat("font_size", 1f)
 
     companion object {
         fun dateFormat(format: String): DateTimeFormatter = when (format) {

@@ -3,7 +3,6 @@ package eu.kanade.presentation.more.settings.screen
 import android.app.Activity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -30,7 +29,6 @@ import java.time.LocalDate
 
 object SettingsAppearanceScreen : SearchableSettings {
 
-    @ReadOnlyComposable
     @Composable
     override fun getTitleRes() = MR.strings.pref_category_appearance
 
@@ -155,7 +153,7 @@ object SettingsAppearanceScreen : SearchableSettings {
 }
 
 private val DateFormats = listOf(
-    "", // Default
+    "",
     "MM/dd/yy",
     "dd/MM/yy",
     "yyyy-MM-dd",
