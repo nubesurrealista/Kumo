@@ -1,1 +1,7 @@
--
+Updated codebase to Mihon v.0.19.5
+- Internal changes for IzzyOnDroid inclusion policy and reproducible builds (work in progress).
+- Removed features: "Trust extensions by default" and "font size parameter".
+- Disable showing changelog on app start (thanks @Kartatz).
+- Minor fixes, including rebranding Mihon names and internal links to Kumo.
+
+Mihon changelog: https://github.com/mihonapp/mihon/blob/main/CHANGELOG.md
