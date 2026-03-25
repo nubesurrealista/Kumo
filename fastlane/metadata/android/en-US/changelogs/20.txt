@@ -1,0 +1,6 @@
+Updated codebase to Mihon v.0.19.7
+- New independent privacy policy.
+- Changed MAL client ID from Mihon to Kumo.
+- General cleanup of redundant code and telemetry leftovers.
+
+Mihon changelog: https://github.com/mihonapp/mihon/blob/main/CHANGELOG.md
