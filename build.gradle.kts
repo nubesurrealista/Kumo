@@ -14,10 +14,6 @@ plugins {
 val buildLogic: IncludedBuild = gradle.includedBuild("build-logic")
 
 tasks {
-    register<Delete>("clean") {
-        delete(rootProject.layout.buildDirectory)
-    }
-
     listOf("clean", "spotlessApply", "spotlessCheck").forEach { task ->
         named(task) {
             dependsOn(buildLogic.task(":$task"))
