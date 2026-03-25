@@ -740,17 +740,12 @@
     <string name="action_sort_random">Willekeurig</string>
     <string name="onboarding_description">Laten we eerst enkele dingen instellen. Je kunt deze later altijd wijzigen in de instellingen.</string>
     <string name="onboarding_storage_action_select">Selecteer een map</string>
-    <string name="onboarding_permission_crashlytics_description">Stuur geanonimiseerde crashlogs naar de ontwikkelaars.</string>
     <string name="pref_security">Beveiliging</string>
-    <string name="pref_firebase">Analytics en crashlogs</string>
     <string name="error_repo_exists">Deze repo bestaat al!</string>
     <string name="information_empty_repos">Je hebt geen repo\'s ingesteld.</string>
     <string name="action_sort_tracker_score">Tracker score</string>
     <string name="onboarding_action_skip">Overslaan</string>
     <string name="onboarding_storage_help_action">Opslaggids</string>
-    <string name="onboarding_permission_analytics_description">Stuur geanonimiseerde gebruiksgegevens om functies van de app te verbeteren.</string>
-    <string name="onboarding_permission_crashlytics">Crashlogs verzenden</string>
-    <string name="onboarding_permission_analytics">Analytics toestaan</string>
     <string name="remove_private_extension_message">Weet je zeker dat je de extensie \"%s\" wil verwijderen?</string>
     <string name="onboarding_guides_returning_user">%s aan het herinstalleren?</string>
     <string name="onboarding_permission_action_grant">Toestaan</string>
@@ -897,7 +892,6 @@
     <string name="onboarding_permission_install_apps">App-installatierecht</string>
     <string name="onboarding_permission_notifications">Meldingsrecht</string>
     <string name="onboarding_permission_ignore_battery_opts">Achtergrondbatterijgebruik</string>
-    <string name="firebase_summary">Het verzenden van crashlogs en analytics zal ons toestaan om problemen te identificeren en op te lossen, performance te verbeteren en om toekomstige updates relevanter te maken voor jouw noden</string>
     <string name="action_replace_repo_title">Ondertekeningssleutelvingerafdruk bestaat al</string>
     <string name="action_replace_repo_message">Repo %1$s heeft dezelfde ondertekeningssleutelvingerafdruk als %2$s.\nAls dit verwacht is zal %2$s vervangen worden. Zo niet, neem dan contact op met de beheerder van uw repo.</string>
     <string name="upcoming_guide">Toekomstige Updatesgids</string>

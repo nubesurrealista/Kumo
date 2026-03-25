@@ -1,0 +1,41 @@
+package mihon.gradle
+
+import org.gradle.api.Project
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+
+fun Project.getLatestCommitCount(): String {
+    return exec("git rev-list --count HEAD")
+}
+
+fun Project.getLatestCommitSha(): String {
+    return exec("git rev-parse --short=7 HEAD")
+}
+
+private val BUILD_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+
+/**
+ * @param useLatestCommitTime If `true`, the build time is based on the timestamp of the last Git commit;
+ * otherwise, the current time is used. Both are in UTC.
+ * @return A formatted string representing the build time. The format used is defined by [BUILD_TIME_FORMATTER].
+ */
+fun Project.getBuildTime(useLatestCommitTime: Boolean): String {
+    return if (useLatestCommitTime) {
+        val epoch = exec("git log -1 --format=%ct").toLong()
+        Instant.ofEpochSecond(epoch).atOffset(ZoneOffset.UTC).format(BUILD_TIME_FORMATTER)
+    } else {
+        LocalDateTime.now(ZoneOffset.UTC).format(BUILD_TIME_FORMATTER)
+    }
+}
+
+fun Project.exec(command: String): String {
+    return providers.exec {
+        commandLine = command.split(" ")
+    }
+        .standardOutput
+        .asText
+        .get()
+        .trim()
+}
