@@ -806,12 +806,7 @@
     <string name="pref_auto_update_manga_on_mark_read">Aktualizovat postup po přečtení</string>
     <string name="action_copy_link">Zkopírovat odkaz</string>
     <string name="action_sort_random">Náhodně</string>
-    <string name="onboarding_permission_crashlytics_description">Pošle anonymizovaná chybová hlášení vývojářům.</string>
-    <string name="onboarding_permission_analytics_description">Pošle anonymizované údaje o používání pro vylepšení aplikace.</string>
     <string name="pref_security">Zabezpečení</string>
-    <string name="pref_firebase">Analytika a záznamy o pádech</string>
-    <string name="firebase_summary">Odesílání záznamů o pádech a analytických dat nám umožní identifikovat a opravit problémy, zlepšit výkon a přizpůsobit budoucí aktualizace vašim potřebám</string>
-    <string name="onboarding_permission_analytics">Povolit analytiku</string>
     <string name="add_repo_confirmation">Chcete přidat repozitář \"%s\"?</string>
     <string name="pref_always_decode_long_strip_with_ssiv_summary">Má dopad na výkon. Povolte pouze pokud snížení limitu bitmapy nespraví problémy s prázdnými obrázky</string>
     <string name="extensionRepo_settings">Repozitáře rozšíření</string>
@@ -823,7 +818,6 @@
     <string name="invalid_backup_file_unknown">Soubor se zálohou je poškozen</string>
     <string name="pref_hardware_bitmap_threshold">Vlastní limit hardwarových bitmap</string>
     <string name="pref_hardware_bitmap_threshold_default">Výchozí (%d)</string>
-    <string name="onboarding_permission_crashlytics">Posílat chybová hlášení</string>
     <string name="pref_hardware_bitmap_threshold_summary">Jestliže čtenář načte prázdnou stránku, postupně snižuj prahovou hodnotu.\nVybráno: %s</string>
     <string name="pref_incognito_mode_extension_summary">Pozastavit historii čtení pro rozšíření</string>
     <string name="trackers_updated_summary">Sledovače aktualizovány do kapitoly %d</string>

@@ -13,18 +13,11 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
-if (Config.includeTelemetry) {
-    pluginManager.apply {
-        apply(libs.plugins.google.services.get().pluginId)
-        apply(libs.plugins.firebase.crashlytics.get().pluginId)
-    }
-}
-
 android {
     namespace = "eu.kanade.tachiyomi"
 
     defaultConfig {
-        applicationId = "app.mihon"
+        applicationId = "app.kumo"
 
         versionCode = 20
         versionName = "0.19.7"
@@ -32,8 +25,7 @@ android {
         buildConfigField("String", "COMMIT_COUNT", "\"${getLatestCommitCount()}\"")
         buildConfigField("String", "COMMIT_SHA", "\"${getLatestCommitSha()}\"")
         buildConfigField("String", "BUILD_TIME", "\"${getBuildTime(useLatestCommitTime = false)}\"")
-        buildConfigField("boolean", "TELEMETRY_INCLUDED", "${Config.includeTelemetry}")
-        buildConfigField("boolean", "UPDATER_ENABLED", "${Config.enableUpdater}")
+        buildConfigField("boolean", "UPDATER_ENABLED", "false")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -140,7 +132,6 @@ android {
         buildConfig = true
         aidl = true
 
-        // Disable some unused things
         renderScript = false
         shaders = false
     }
@@ -182,9 +173,7 @@ dependencies {
     implementation(projects.domain)
     implementation(projects.presentationCore)
     implementation(projects.presentationWidget)
-    implementation(projects.telemetry)
 
-    // Compose
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.material3)
@@ -207,7 +196,6 @@ dependencies {
 
     implementation(libs.bundles.kotlinx.coroutines)
 
-    // AndroidX libraries
     implementation(libs.androidx.annotation)
     implementation(libs.androidx.appCompat)
     implementation(libs.androidx.biometric)
@@ -220,41 +208,31 @@ dependencies {
 
     implementation(libs.bundles.androidx.lifecycle)
 
-    // Job scheduling
     implementation(libs.androidx.work)
 
-    // RxJava
     implementation(libs.rxJava)
 
-    // Networking
     implementation(libs.bundles.okhttp)
     implementation(libs.okio)
-    implementation(libs.conscrypt) // TLS 1.3 support for Android < 10
+    implementation(libs.conscrypt)
 
-    // Data serialization (JSON, protobuf, xml)
     implementation(libs.bundles.serialization)
 
-    // HTML parser
     implementation(libs.jsoup)
 
-    // Disk
     implementation(libs.diskLruCache)
     implementation(libs.unifile)
 
-    // Preferences
     implementation(libs.androidx.preference)
 
-    // Dependency injection
     implementation(libs.injekt)
 
-    // Image loading
     implementation(libs.bundles.coil)
     implementation(libs.subsamplingScaleImageView) {
         exclude(module = "image-decoder")
     }
     implementation(libs.image.decoder)
 
-    // UI libraries
     implementation(libs.material)
     implementation(libs.flexibleAdapter)
     implementation(libs.photoView)
@@ -272,21 +250,15 @@ dependencies {
     implementation(libs.bundles.markdown)
     implementation(libs.materialKolor)
 
-    // Logging
     implementation(libs.logcat)
 
-    // Shizuku
     implementation(libs.bundles.shizuku)
 
-    // String similarity
     implementation(libs.stringSimilarity)
 
-    // Tests
     testImplementation(libs.bundles.test)
     testRuntimeOnly(libs.junit.platform.launcher)
 
-    // For detecting memory leaks; see https://square.github.io/leakcanary/
-    // debugImplementation(libs.leakCanary.android)
     implementation(libs.leakCanary.plumber)
 
     testImplementation(libs.kotlinx.coroutines.test)
@@ -307,8 +279,6 @@ androidComponents {
     }
 
     onVariants(selector().withFlavor("default" to "standard")) {
-        // Only excluding in standard flavor because this breaks
-        // Layout Inspector's Compose tree
         it.packaging.resources.excludes.add("META-INF/*.version")
     }
 }
