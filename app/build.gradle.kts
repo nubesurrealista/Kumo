@@ -1,18 +1,17 @@
-import mihon.buildlogic.Config
-import mihon.buildlogic.getCommitCount
-import mihon.buildlogic.getGitSha
+import mihon.gradle.Config
+import mihon.gradle.getBuildTime
+import mihon.gradle.getLatestCommitCount
+import mihon.gradle.getLatestCommitSha
+import mihon.gradle.tasks.ReplaceShortcutsPlaceholderTask
 
 plugins {
-    id("mihon.android.application")
-    id("mihon.android.application.compose")
-    id("com.github.zellius.shortcut-helper")
-    kotlin("plugin.serialization")
+    alias(mihonx.plugins.android.application)
+    alias(mihonx.plugins.compose)
+    alias(mihonx.plugins.spotless)
+
     alias(libs.plugins.aboutLibraries)
+    alias(libs.plugins.kotlin.serialization)
 }
-
-shortcutHelper.setFilePath("./shortcuts.xml")
-
-val supportedAbis = setOf("armeabi-v7a", "arm64-v8a")
 
 android {
     namespace = "eu.kanade.tachiyomi"
@@ -20,29 +19,21 @@ android {
     defaultConfig {
         applicationId = "app.kumo"
 
-        versionCode = 19
-        versionName = "0.19.5"
+        versionCode = 20
+        versionName = "0.19.7"
 
-        buildConfigField("String", "COMMIT_COUNT", "\"${getCommitCount()}\"")
-        buildConfigField("String", "COMMIT_SHA", "\"${getGitSha()}\"")
+        buildConfigField("String", "COMMIT_COUNT", "\"${getLatestCommitCount()}\"")
+        buildConfigField("String", "COMMIT_SHA", "\"${getLatestCommitSha()}\"")
+        buildConfigField("String", "BUILD_TIME", "\"${getBuildTime(useLatestCommitTime = false)}\"")
         buildConfigField("boolean", "UPDATER_ENABLED", "false")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    splits {
-        abi {
-            isEnable = true
-            reset()
-            include("armeabi-v7a", "arm64-v8a")
-            isUniversalApk = false
-        }
-    }
-
     buildTypes {
         val debug by getting {
             applicationIdSuffix = ".dev"
-            versionNameSuffix = "-${getCommitCount()}"
+            versionNameSuffix = "-${getLatestCommitCount()}"
             isPseudoLocalesEnabled = true
         }
         val release by getting {
@@ -50,6 +41,56 @@ android {
             isShrinkResources = Config.enableCodeShrink
 
             proguardFiles("proguard-android-optimize.txt", "proguard-rules.pro")
+
+            buildConfigField("String", "BUILD_TIME", "\"${getBuildTime(useLatestCommitTime = true)}\"")
+        }
+
+        val commonMatchingFallbacks = listOf(release.name)
+
+        create("foss") {
+            initWith(release)
+
+            applicationIdSuffix = ".foss"
+
+            matchingFallbacks.addAll(commonMatchingFallbacks)
+        }
+        create("preview") {
+            initWith(release)
+
+            applicationIdSuffix = ".debug"
+
+            versionNameSuffix = debug.versionNameSuffix
+            signingConfig = debug.signingConfig
+
+            matchingFallbacks.addAll(commonMatchingFallbacks)
+
+            buildConfigField("String", "BUILD_TIME", "\"${getBuildTime(useLatestCommitTime = false)}\"")
+        }
+        create("benchmark") {
+            initWith(release)
+
+            isDebuggable = false
+            isProfileable = true
+            versionNameSuffix = "-benchmark"
+            applicationIdSuffix = ".benchmark"
+
+            signingConfig = debug.signingConfig
+
+            matchingFallbacks.addAll(commonMatchingFallbacks)
+        }
+    }
+
+    sourceSets {
+        getByName("preview").res.srcDirs("src/debug/res")
+        getByName("benchmark").res.srcDirs("src/debug/res")
+    }
+
+    splits {
+        abi {
+            isEnable = true
+            isUniversalApk = true
+            reset()
+            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
         }
     }
 
@@ -133,7 +174,6 @@ dependencies {
     implementation(projects.presentationCore)
     implementation(projects.presentationWidget)
 
-    // Compose
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.material3)
@@ -156,7 +196,6 @@ dependencies {
 
     implementation(libs.bundles.kotlinx.coroutines)
 
-    // AndroidX libraries
     implementation(libs.androidx.annotation)
     implementation(libs.androidx.appCompat)
     implementation(libs.androidx.biometric)
@@ -169,31 +208,25 @@ dependencies {
 
     implementation(libs.bundles.androidx.lifecycle)
 
-    // Job scheduling
     implementation(libs.androidx.work)
 
-    // RxJava
     implementation(libs.rxJava)
 
     implementation(libs.bundles.okhttp)
     implementation(libs.okio)
-    implementation(libs.conscrypt) // TLS 1.3 support for Android < 10
+    implementation(libs.conscrypt)
 
-    // Data serialization (JSON, protobuf, xml)
     implementation(libs.bundles.serialization)
 
     implementation(libs.jsoup)
 
-    // Disk
     implementation(libs.diskLruCache)
     implementation(libs.unifile)
 
-    // Preferences
     implementation(libs.androidx.preference)
 
     implementation(libs.injekt)
 
-    // Image loading
     implementation(libs.bundles.coil)
     implementation(libs.subsamplingScaleImageView) {
         exclude(module = "image-decoder")
@@ -226,11 +259,28 @@ dependencies {
     testImplementation(libs.bundles.test)
     testRuntimeOnly(libs.junit.platform.launcher)
 
-    // For detecting memory leaks; see https://square.github.io/leakcanary/
-    // debugImplementation(libs.leakCanary.android)
     implementation(libs.leakCanary.plumber)
 
     testImplementation(libs.kotlinx.coroutines.test)
+}
+
+androidComponents {
+    onVariants { variant ->
+        val resSource = variant.sources.res ?: return@onVariants
+
+        val variantName = variant.name.replaceFirstChar { it.uppercase() }
+        val replaceShortcutsPlaceholderTask = tasks.register<ReplaceShortcutsPlaceholderTask>(
+            "replace${variantName}ShortcutPlaceholder",
+        ) {
+            applicationId.set(variant.applicationId)
+            shortcutsFile.set(projectDir.resolve("src/main/shortcuts.xml"))
+        }
+        resSource.addGeneratedSourceDirectory(replaceShortcutsPlaceholderTask) { it.outputDir }
+    }
+
+    onVariants(selector().withFlavor("default" to "standard")) {
+        it.packaging.resources.excludes.add("META-INF/*.version")
+    }
 }
 
 buildscript {

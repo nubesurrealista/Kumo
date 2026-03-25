@@ -18,7 +18,6 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -87,7 +86,6 @@ internal class PermissionStep : OnboardingStep {
                 val permissionRequester = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestPermission(),
                     onResult = {
-                        // no-op. resulting checks is being done on resume
                     },
                 )
                 PermissionCheckbox(
@@ -154,28 +152,6 @@ internal class PermissionStep : OnboardingStep {
                         Text(stringResource(MR.strings.onboarding_permission_action_grant))
                     }
                 }
-            },
-            colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-        )
-    }
-
-    @Composable
-    private fun PermissionSwitch(
-        title: String,
-        subtitle: String,
-        granted: Boolean,
-        modifier: Modifier = Modifier,
-        onToggleChange: (Boolean) -> Unit,
-    ) {
-        ListItem(
-            modifier = modifier,
-            headlineContent = { Text(text = title) },
-            supportingContent = { Text(text = subtitle) },
-            trailingContent = {
-                Switch(
-                    checked = granted,
-                    onCheckedChange = onToggleChange,
-                )
             },
             colors = ListItemDefaults.colors(containerColor = Color.Transparent),
         )
