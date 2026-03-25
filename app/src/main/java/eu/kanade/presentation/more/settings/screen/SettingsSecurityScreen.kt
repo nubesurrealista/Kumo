@@ -29,9 +29,9 @@ object SettingsSecurityScreen : SearchableSettings {
     @Composable
     override fun getPreferences(): List<Preference> {
         val securityPreferences = remember { Injekt.get<SecurityPreferences>() }
-        return listOf(
-            getSecurityGroup(securityPreferences),
-        )
+        return buildList(1) {
+            add(getSecurityGroup(securityPreferences))
+        }
     }
 
     @Composable
