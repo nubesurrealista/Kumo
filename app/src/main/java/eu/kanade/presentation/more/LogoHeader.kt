@@ -1,6 +1,7 @@
 package eu.kanade.presentation.more
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,7 +16,9 @@ import androidx.compose.ui.unit.dp
 import eu.kanade.tachiyomi.R
 
 @Composable
-fun LogoHeader() {
+fun LogoHeader(
+    iconPadding: PaddingValues = PaddingValues(),
+) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -24,7 +27,7 @@ fun LogoHeader() {
             painter = painterResource(R.mipmap.ic_launcher_rounded),
             contentDescription = null,
             modifier = Modifier
-                .padding(vertical = 56.dp)
+                .padding(iconPadding)
                 .size(64.dp),
         )
 
