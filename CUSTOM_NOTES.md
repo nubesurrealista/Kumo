@@ -1,0 +1,1 @@
+- This is just a test run to test moving from GitHub Actions to Codemagic, why? Because GitHub limited my access to Actions and this was an emergency move to keep the project alive.
