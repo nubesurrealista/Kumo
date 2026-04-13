@@ -1,12 +1,13 @@
 workflows:
-  build-kumo:
-    name: Build Kumo
+  release-build:
+    name: Kumo Release Build
     instance_type: mac_mini_m2
     max_build_duration: 60
     environment:
       java: 21
       groups:
         - keystore_credentials
+        - github_credentials
       vars:
         JAVA_HOME: /Library/Java/JavaVirtualMachines/zulu-21.jdk/Contents/Home
     scripts:
@@ -16,46 +17,107 @@ workflows:
           VERSION_CODE=$(grep 'versionCode =' app/build.gradle.kts | awk '{print $3}')
           echo "VERSION=$VERSION_NAME" >> $CM_ENV
           echo "VERSION_CODE=$VERSION_CODE" >> $CM_ENV
+          echo "TAG=v$VERSION_NAME" >> $CM_ENV
       - name: Decode keystore
         script: echo "$CM_KEYSTORE_B64" | base64 -d > app/nube.p12
       - name: Extract signature hash
         script: |
           SIGNATURE_HASH=$(keytool -list -v -keystore app/nube.p12 -storepass "$CM_KEYSTORE_PASSWORD" | grep "SHA256:" | head -n 1 | awk '{print $2}')
           echo "SHA256=$SIGNATURE_HASH" >> $CM_ENV
+      - name: Prepare release notes
+        script: |
+          CHANGELOG_FILE="fastlane/metadata/android/en-US/changelogs/$VERSION_CODE.txt"
+          if [ -f "$CHANGELOG_FILE" ]; then
+            cat "$CHANGELOG_FILE" > release_notes.md
+          else
+            echo "No changelog found for version $VERSION_CODE" > release_notes.md
+          fi
+          echo "" >> release_notes.md
+          echo "---" >> release_notes.md
+          echo "**Signature SHA-256:** \`$SHA256\`" >> release_notes.md
       - name: Build release APKs
         script: |
           chmod +x gradlew
           ./gradlew clean assembleRelease \
-            --no-build-cache \
-            --no-configuration-cache \
-            --no-daemon \
-            --stacktrace \
-            -Porg.gradle.parallel=false
+            --no-build-cache --no-daemon --stacktrace -Porg.gradle.parallel=false
       - name: Sign APKs
         script: |
           BUILD_TOOLS_DIR="$ANDROID_SDK_ROOT/build-tools"
           ANDROID_BUILD_TOOLS="$BUILD_TOOLS_DIR/$(ls $BUILD_TOOLS_DIR | sort -V | tail -n1)"
-          
           for arch in armeabi-v7a arm64-v8a; do
             UNSIGNED="app/build/outputs/apk/release/app-$arch-release-unsigned.apk"
             SIGNED="app/build/outputs/apk/release/kumo-$VERSION-$arch-release-signed.apk"
-            
             if [ -f "$UNSIGNED" ]; then
-              "$ANDROID_BUILD_TOOLS/apksigner" sign \
-                --ks app/nube.p12 \
-                --ks-key-alias "$CM_KEY_ALIAS" \
-                --ks-pass pass:"$CM_KEYSTORE_PASSWORD" \
-                --key-pass pass:"$CM_KEY_PASSWORD" \
-                --v2-signing-enabled true \
-                --v3-signing-enabled true \
-                --out "$SIGNED" \
-                "$UNSIGNED"
-            else
-              echo "Error: APK for $arch not found"
-              exit 1
+              "$ANDROID_BUILD_TOOLS/apksigner" sign --ks app/nube.p12 --ks-key-alias "$CM_KEY_ALIAS" --ks-pass pass:"$CM_KEYSTORE_PASSWORD" --key-pass pass:"$CM_KEY_PASSWORD" --v2-signing-enabled true --v3-signing-enabled true --out "$SIGNED" "$UNSIGNED"
             fi
           done
+      - name: Create GitHub Release
+        script: |
+          echo "$GH_TOKEN" | gh auth login --with-token
+          gh release create "$TAG" --title "Kumo $TAG" --notes-file release_notes.md --target "$CM_COMMIT" --latest app/build/outputs/apk/release/kumo-*-release-signed.apk
       - name: Cleanup keystore
         script: rm -f app/nube.p12
     artifacts:
       - app/build/outputs/apk/release/kumo-*-release-signed.apk
+
+  test-build:
+    name: Kumo Test Build
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    environment:
+      java: 21
+      groups:
+        - keystore_credentials
+        - github_credentials
+      vars:
+        JAVA_HOME: /Library/Java/JavaVirtualMachines/zulu-21.jdk/Contents/Home
+    scripts:
+      - name: Get test version info
+        script: |
+          VERSION_NAME=$(grep 'versionName =' app/build.gradle.kts | cut -d '"' -f 2)
+          SHORT_SHA=$(echo $CM_COMMIT | cut -c1-7)
+          echo "VERSION=$VERSION_NAME" >> $CM_ENV
+          echo "TAG=v$VERSION_NAME-test-$SHORT_SHA" >> $CM_ENV
+      - name: Decode keystore
+        script: echo "$CM_KEYSTORE_B64" | base64 -d > app/nube.p12
+      - name: Extract signature hash
+        script: |
+          SIGNATURE_HASH=$(keytool -list -v -keystore app/nube.p12 -storepass "$CM_KEYSTORE_PASSWORD" | grep "SHA256:" | head -n 1 | awk '{print $2}')
+          echo "SHA256=$SIGNATURE_HASH" >> $CM_ENV
+      - name: Generate test changelog
+        script: |
+          echo "> [!WARNING]" > test_notes.md
+          echo "> This is a test version and may be unstable. Use with caution." >> test_notes.md
+          echo "" >> test_notes.md
+          if [ -f "CUSTOM_NOTES.md" ]; then
+            cat "CUSTOM_NOTES.md" >> test_notes.md
+          else
+            echo "Manual test build without specific notes." >> test_notes.md
+          fi
+          echo "" >> test_notes.md
+          echo "### Signature Fingerprint (SHA-256)" >> test_notes.md
+          echo "\`$SHA256\`" >> test_notes.md
+      - name: Build APKs
+        script: |
+          chmod +x gradlew
+          ./gradlew clean assembleRelease \
+            --no-build-cache --no-daemon --stacktrace -Porg.gradle.parallel=false
+      - name: Sign Test APKs
+        script: |
+          BUILD_TOOLS_DIR="$ANDROID_SDK_ROOT/build-tools"
+          ANDROID_BUILD_TOOLS="$BUILD_TOOLS_DIR/$(ls $BUILD_TOOLS_DIR | sort -V | tail -n1)"
+          for arch in armeabi-v7a arm64-v8a; do
+            UNSIGNED="app/build/outputs/apk/release/app-$arch-release-unsigned.apk"
+            SIGNED="app/build/outputs/apk/release/kumo-$VERSION-$arch-test-signed.apk"
+            if [ -f "$UNSIGNED" ]; then
+              "$ANDROID_BUILD_TOOLS/apksigner" sign --ks app/nube.p12 --ks-key-alias "$CM_KEY_ALIAS" --ks-pass pass:"$CM_KEYSTORE_PASSWORD" --key-pass pass:"$CM_KEY_PASSWORD" --v2-signing-enabled true --v3-signing-enabled true --out "$SIGNED" "$UNSIGNED"
+            fi
+          done
+      - name: Create Test Release on GitHub
+        script: |
+          echo "$GH_TOKEN" | gh auth login --with-token
+          gh release create "$TAG" --title "Kumo Test Build $VERSION ($TAG)" --notes-file test_notes.md --target "$CM_COMMIT" --prerelease app/build/outputs/apk/release/kumo-*-test-signed.apk
+      - name: Cleanup keystore
+        script: rm -f app/nube.p12
+    artifacts:
+      - app/build/outputs/apk/release/kumo-*-test-signed.apk
