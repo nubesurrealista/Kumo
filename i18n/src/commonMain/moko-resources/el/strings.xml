@@ -902,5 +902,4 @@
     <string name="pref_download_concurrent_pages_summary">Σελίδες που λήφθηκαν ταυτόχρονα ανά πηγή</string>
     <string name="download_bookmarked">Προστέθηκε στους σελιδοδείκτες</string>
     <string name="action_filter_excluded_scanlators">Φιλτράρισμα εξαιρούμενων scanlator</string>
-    <string name="label_support_us">Υποστηρίξτε μας</string>
 </resources>
