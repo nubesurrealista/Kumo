@@ -4,6 +4,7 @@
     <string name="label_settings">Ajustes</string>
     <string name="label_download_queue">Cola de descargas</string>
     <string name="label_library">Biblioteca</string>
+    <string name="label_category">Categoria</string>
     <string name="label_recent_manga">Historial</string>
     <string name="label_recent_updates">Actualizaciones</string>
     <string name="label_backup">Copia de seguridad y restauración</string>
@@ -287,6 +288,7 @@
     <string name="ext_obsolete">Obsoleto</string>
     <string name="obsolete_extension_message">Esta extensión ya no está disponible. Puede que no funcione bien y te cause problemas con el resto de la aplicación, te recomendamos desinstalarla.</string>
     <string name="pref_date_format">Formato de fecha</string>
+    <string name="pref_display_images_description">Cargar imagenes en la descripción</string>
     <string name="pref_category_library_update">Actualización global</string>
     <string name="logout">Cerrar sesión</string>
     <string name="logout_success">Has cerrado sesión</string>
@@ -596,6 +598,11 @@
     <string name="custom_cover">Portada personalizada</string>
     <string name="not_installed">Sin instalar</string>
     <string name="pref_app_language">Idioma de la aplicación</string>
+    <string name="pref_font_size">Tamaño de fuente</string>
+    <string name="pref_font_size_small">Pequeña</string>
+    <string name="pref_font_size_normal">Normal</string>
+    <string name="pref_font_size_large">Larga</string>
+    <string name="pref_font_size_huge">Enorme</string>
     <string name="theme_lavender">Lavanda</string>
     <string name="description_placeholder">Sin descripción</string>
     <string name="delete_category">Borrar categoría</string>
@@ -723,7 +730,13 @@
     <string name="pref_flash_page">Parpadear a blanco al cambiar de página</string>
     <string name="label_data_storage">Datos y almacenamiento</string>
     <string name="pref_storage_usage">Almacenamiento utilizado</string>
-    <string name="action_sort_tracker_score">Por puntuación en el servicio de seguimiento</string>
+    <string name="available_disk_space_info">Disponible: %1$s / Total: %2$s</string>
+    <string name="pref_storage_overview">Resumen almacenamiento</string>
+    <string name="calculating_storage_overview">Calculando uso de almacenamiento... (%1$s)</string>
+    <string name="storage_overview_no_items">No hay entradas para las siguientes categorías</string>
+    <string name="delete_local_manga">¿Borrar todo tu manga local?</string>
+    <string name="delete_manga_confirm">¿Estás seguro que quieres borrar \"%1$s\"?</string>
+    <string name="action_sort_tracker_score">Puntuación del servicio</string>
     <string name="action_apply">Aplicar</string>
     <string name="action_revert_to_default">Restablecer vista</string>
     <string name="action_create">Crear</string>
@@ -805,16 +818,10 @@
     <string name="add_repo_confirmation">¿Quieres añadir el repositorio «%s»?</string>
     <string name="confirm_tracker_update">¿Marcar el capítulo %d como leído en los servicios de seguimiento?</string>
     <string name="action_sort_random">Al azar</string>
-    <string name="onboarding_permission_crashlytics">Enviar registros de errores</string>
-    <string name="onboarding_permission_crashlytics_description">Envía registros anónimos de errores a los desarrolladores.</string>
     <string name="pref_security">Seguridad</string>
     <string name="ext_remove">Eliminar</string>
     <string name="ext_confirm_remove">¿Quieres quitar la extensión?</string>
     <string name="remove_private_extension_message">¿Seguro que quieres quitar la extensión «%s»?</string>
-    <string name="firebase_summary">El envío de registros de errores y estadísticas de uso nos permitirá identificar y solucionar problemas, mejorar el rendimiento y hacer que las versiones futuras se adapten mejor a tus necesidades</string>
-    <string name="onboarding_permission_analytics">Enviar estadísticas de uso</string>
-    <string name="onboarding_permission_analytics_description">Comparte estadísticas de uso con las que mejorar la aplicación.</string>
-    <string name="pref_firebase">Informar de errores y compartir datos</string>
     <string name="non_library_settings">Todas las obras leídas</string>
     <string name="pref_auto_update_manga_on_mark_read">Actualizar el progreso al marcarlo como leído</string>
     <string name="trackers_updated_summary">El progreso de lectura ha saltado al capítulo %d</string>
@@ -901,17 +908,4 @@
     <string name="action_webview_close_tab">Cerrar pestaña</string>
     <string name="action_filter_excluded_scanlators">Ocultar equipos de traducción excluidos</string>
     <string name="download_bookmarked">Favoritos</string>
-    <string name="label_support_us">Apóyanos</string>
-    <string name="supportUsScreen.perks">Los patrocinadores obtienen acceso a canales exclusivos, con más beneficios por venir.</string>
-    <string name="supportUsScreen.donationPlatform.patreon">Patreon (preferido)</string>
-    <string name="supportUsScreen.donationPlatform.opencollective">OpenCollective</string>
-    <string name="supportUsScreen.currentlySupportedBy">Mihon cuenta actualmente con el apoyo de %d+ patrocinadores. Queremos agradecerles a cada uno de ustedes. Hagamos Mihon aún mejor juntos.</string>
-    <string name="supportUsScreen.contactForDetailsMessage">Para opciones alternativas o cualquier pregunta relacionada, únete a nuestro servidor de Discord.</string>
-    <string name="supportUsScreen.contactPlatform">Discord</string>
-    <string name="donationCampaign.title">¿Disfrutando la aplicación?</string>
-    <string name="donationCampaign.paragraph1">¡Hola! Soy el desarrollador principal de Mihon, y me gustaría pedirte que consideres apoyar su desarrollo económicamente. Con suficiente apoyo, podré trabajar en Mihon a tiempo completo y centrarme en problemas antiguos, así como en funciones muy solicitadas.</string>
-    <string name="donationCampaign.paragraph2">Puedes donar a través de Patreon (preferido) o OpenCollective. Si tienes preguntas o prefieres apoyar usando otros métodos, no dudes en contactarme a través del servidor de Discord de Mihon.</string>
-    <string name="donationCampaign.paragraph3">De todas formas, Mihon seguirá siendo mantenido por mí y los voluntarios, y se mantendrá como código abierto.</string>
-    <string name="donationCampaign.dismiss">Descartar</string>
-    <string name="donationCampaign.contactPlatform">Discord</string>
 </resources>
