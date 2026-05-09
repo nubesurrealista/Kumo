@@ -282,9 +282,3 @@ androidComponents {
         it.packaging.resources.excludes.add("META-INF/*.version")
     }
 }
-
-buildscript {
-    dependencies {
-        classpath(libs.kotlin.gradle)
-    }
-}
