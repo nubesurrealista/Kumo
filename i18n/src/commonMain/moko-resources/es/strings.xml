@@ -543,6 +543,8 @@
     <string name="update_72hour">Cada 3 días</string>
     <string name="download_queue_size_warning">Advertencia: Las descargas grandes pueden llevar a que las fuentes se vuelvan cada vez más lentas y en casos extremos que los servidores limiten o impidan el acceso a %s. Toca aquí para más información.</string>
     <string name="ext_update_all">Actualizar todas</string>
+    <string name="ext_uninstall_obsolete">Desinstalar obsoletas</string>
+    <string name="ext_uninstall_obsolete_dialog">¿Realmente quieres desinstalar %1$d extensiones obsoletas?</string>
     <string name="channel_app_updates">Actualizaciones de la aplicación</string>
     <string name="pref_auto_clear_chapter_cache">Limpiar la caché de capítulos al abrir la aplicación</string>
     <string name="database_clean">Base de datos limpia</string>
