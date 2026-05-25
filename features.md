@@ -6,6 +6,7 @@
 - [Drop support to x86 ABIs](https://github.com/AmanoTeam/Kahon/commit/85f061edab8bfe7a06305b004c70169e0b53b3a1)
 - [Remove productFlavors](https://github.com/AmanoTeam/Kahon/commit/d21199b2ce754aceca650cbb164eb47123e40405)
 - [Disable showing changelog on app start](https://github.com/AmanoTeam/Kahon/commit/cabcad9542c447fdffc5197af530f427fa624909)
+- [Add an "Uninstall obsolete" button to the extension listing](https://github.com/AmanoTeam/Kahon/commit/97535a99fb2e427a0629a03989b446900d263339)
 
 ---
 
