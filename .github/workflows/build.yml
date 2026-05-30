@@ -1,74 +1,94 @@
-name: Build & Test
+---
+name: Build Kumo
 on:
-  pull_request:
-    paths:
-      - '**'
-      - '!**.md'
-      - '!i18n/src/commonMain/moko-resources/**/strings.xml'
-      - '!i18n/src/commonMain/moko-resources/**/plurals.xml'
-      - 'i18n/src/commonMain/moko-resources/base/strings.xml'
-      - 'i18n/src/commonMain/moko-resources/base/plurals.xml'
-  push:
-    branches:
-      - main
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
+  workflow_dispatch: null
 permissions:
-  contents: read
-
+  contents: write
+  id-token: write
+  attestations: write
 jobs:
   build:
-    name: Build & Test App
-    runs-on: 'ubuntu-24.04'
-
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - name: Dependency Review
-        if: github.event_name == 'pull_request'
-        uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48 # v4.9.0
-
-      - name: Set up JDK
-        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+      - name: Checkout repository
+        uses: actions/checkout@v6
         with:
-          java-version-file: .github/.java-version
+          fetch-depth: 0
+      - name: Get version info
+        id: version_info
+        run: |
+          VERSION_NAME=$(grep 'versionName =' app/build.gradle.kts | cut -d '"' -f 2)
+          VERSION_CODE=$(grep 'versionCode =' app/build.gradle.kts | awk '{print $3}')
+          FINAL_TAG="v${VERSION_NAME}"
+          echo "TAG=$FINAL_TAG" >> $GITHUB_OUTPUT
+          echo "VERSION=${VERSION_NAME}" >> $GITHUB_OUTPUT
+          echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_OUTPUT
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
           distribution: temurin
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5.0.2
-
-      - name: Check code format
-        run: ./gradlew spotlessCheck
-
-      - name: Run unit tests
-        id: unit_tests
-        run: ./gradlew testDebugUnitTest
-
-      - name: Verify SQLDelight migrations
-        run: ./gradlew verifySqlDelightMigration
-
-      - name: Upload test report
-        if: steps.unit_tests.outcome == 'failure'
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+          java-version: '21'
+      - name: Decode keystore
+        run: echo "${{ secrets.RELEASE_KEYSTORE_B64 }}" | base64 -d > app/nube.p12
+      - name: Extract signature hash
+        id: hash_info
+        run: |
+          SIGNATURE_HASH=$(keytool -list -v -keystore app/nube.p12 -storepass "${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" | grep "SHA256:" | head -n 1 | awk '{print $2}')
+          echo "SHA256=${SIGNATURE_HASH}" >> $GITHUB_OUTPUT
+      - name: Prepare release notes file
+        run: |
+          CHANGELOG_FILE="fastlane/metadata/android/en-US/changelogs/${{ steps.version_info.outputs.VERSION_CODE }}.txt"
+          if [ -f "$CHANGELOG_FILE" ]; then
+            cat "$CHANGELOG_FILE" > release_notes.md
+          else
+            echo "No changelog found for version ${{ steps.version_info.outputs.VERSION_CODE }}" > release_notes.md
+          fi
+          echo "" >> release_notes.md
+          echo "---" >> release_notes.md
+          echo "**Signature SHA-256:** \`${{ steps.hash_info.outputs.SHA256 }}\`" >> release_notes.md
+      - name: Build release APKs
+        run: |
+          ./gradlew clean assembleRelease \
+            --no-build-cache \
+            --no-configuration-cache \
+            --no-daemon \
+            --stacktrace \
+            -Porg.gradle.parallel=false
+      - name: Sign APKs
+        run: |
+          ANDROID_BUILD_TOOLS="$ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort -V | tail -n1)"
+          for arch in armeabi-v7a arm64-v8a; do
+            UNSIGNED="app/build/outputs/apk/release/app-$arch-release-unsigned.apk"
+            SIGNED="app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-$arch-release-signed.apk"
+            if [ -f "$UNSIGNED" ]; then
+              "$ANDROID_BUILD_TOOLS/apksigner" sign \
+                --ks app/nube.p12 \
+                --ks-key-alias "${{ secrets.RELEASE_KEY_ALIAS }}" \
+                --ks-pass pass:"${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" \
+                --key-pass pass:"${{ secrets.RELEASE_KEY_PASSWORD }}" \
+                --v2-signing-enabled true \
+                --v3-signing-enabled true \
+                --out "$SIGNED" \
+                "$UNSIGNED"
+            else
+              echo "Error: APK for $arch not found" >&2
+              exit 1
+            fi
+          done
+      - name: Attest Build Provenance
+        uses: actions/attest-build-provenance@v4.1.0
         with:
-          name: test-report-${{ github.sha }}
-          path: app/build/reports/tests/testDebugUnitTest
-
-      - name: Build app
-        run: ./gradlew assembleRelease -Pinclude-telemetry -Penable-updater
-
-      - name: Upload APK
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
-        with:
-          name: arm64-v8a-${{ github.sha }}
-          path: app/build/outputs/apk/release/app-arm64-v8a-release-unsigned.apk
-
-      - name: Upload mapping
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
-        with:
-          name: mapping-${{ github.sha }}
-          path: app/build/outputs/mapping/release
+          subject-path: app/build/outputs/apk/release/kumo-*-release-signed.apk
+      - name: Create Immutable Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ steps.version_info.outputs.TAG }}" \
+            --title "Kumo ${{ steps.version_info.outputs.TAG }}" \
+            --notes-file release_notes.md \
+            --target "${{ github.sha }}" \
+            --latest \
+            app/build/outputs/apk/release/kumo-*-release-signed.apk
+      - name: Cleanup keystore
+        if: always()
+        run: rm -f app/nube.p12

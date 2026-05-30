@@ -18,3 +18,14 @@ data class ALSearchPage(
 data class ALSearchMedia(
     val media: List<ALSearchItem>,
 )
+
+@Serializable
+data class ALIdSearchResult(
+    val data: ALIdSearchMedia,
+)
+
+@Serializable
+data class ALIdSearchMedia(
+    @SerialName("Media")
+    val media: ALSearchItem,
+)
