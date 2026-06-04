@@ -7,7 +7,7 @@ androidx-annotation = "1.10.0"
 androidx-appCompat = "1.7.1"
 androidx-benchmark = "1.4.1"
 androidx-biometric = "1.2.0-alpha05"
-androidx-compose-bom = "2026.05.01"
+androidx-compose-bom = "2026.05.02"
 androidx-constraintLayout = "2.2.1"
 androidx-core = "1.18.0"
 androidx-coreSplashScreen = "1.2.0"
@@ -40,7 +40,6 @@ jsoup = "1.22.2"
 junit = "6.1.0"
 kotest-assertions = "6.1.11"
 kotlin-gradle = "2.4.0"
-kotlinx-collections-immutable = "0.4.0"
 kotlinx-coroutines = "1.11.0"
 kotlinx-serialization = "1.11.0"
 ktlint = "1.8.0"
@@ -130,7 +129,6 @@ kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref =
 kotlin-compose-compiler-gradle = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin-gradle" }
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin-gradle" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-gradle" }
-kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-guava = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-guava", version.ref = "kotlinx-coroutines" }
