@@ -1,0 +1,5 @@
+Updated codebase to Mihon v.0.19.9
+- Removed "Donation Campaign" one-time popup, reason: intrusive and unnecessary.
+- General cleanup and minor fixes.
+
+Mihon changelog: https://github.com/mihonapp/mihon/blob/main/CHANGELOG.md
