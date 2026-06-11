@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Mihon</string>
+    <string name="app_name" translatable="false">Kumo</string>
 
     <!-- Generic strings -->
     <string name="on">On</string>
@@ -25,6 +25,7 @@
     <string name="label_settings">Settings</string>
     <string name="label_download_queue">Download queue</string>
     <string name="label_library">Library</string>
+    <string name="label_category">Category</string>
     <string name="label_recent_updates">Updates</string>
     <string name="label_upcoming">Upcoming</string>
     <string name="label_recent_manga">History</string>
@@ -36,7 +37,6 @@
     <string name="label_extensions">Extensions</string>
     <string name="label_extension_info">Extension info</string>
     <string name="label_help">Help</string>
-    <string name="label_support_us">Support Us</string>
     <string name="label_default">Default</string>
     <string name="label_warning">Warning</string>
     <string name="label_auto">Auto</string>
@@ -194,10 +194,6 @@
     <string name="onboarding_permission_notifications_description">Get notified for library updates and more.</string>
     <string name="onboarding_permission_ignore_battery_opts">Background battery usage</string>
     <string name="onboarding_permission_ignore_battery_opts_description">Avoid interruptions to long-running library updates, downloads, and backup restores.</string>
-    <string name="onboarding_permission_crashlytics">Send crash logs</string>
-    <string name="onboarding_permission_crashlytics_description">Send anonymized crash logs to the developers.</string>
-    <string name="onboarding_permission_analytics">Allow analytics</string>
-    <string name="onboarding_permission_analytics_description">Send anonymized usage data to improve app features.</string>
     <string name="onboarding_permission_action_grant">Grant</string>
     <string name="onboarding_guides_new_user">New to %s? We recommend checking out the getting started guide.</string>
     <string name="onboarding_guides_returning_user">Reinstalling %s?</string>
@@ -231,6 +227,8 @@
     <string name="theme_dark">Dark</string>
     <string name="theme_monet">Dynamic</string>
     <string name="theme_catppuccin">Catppuccin</string>
+    <string name="theme_dracula">Dracula</string>
+    <string name="theme_obsidian">Obsidian</string>
     <string name="theme_greenapple">Green Apple</string>
     <string name="theme_lavender">Lavender</string>
     <string name="theme_midnightdusk">Midnight Dusk</string>
@@ -251,10 +249,14 @@
 
     <string name="pref_manage_notifications">Manage notifications</string>
     <string name="pref_app_language">App language</string>
+    <string name="pref_font_size">Font size</string>
+    <string name="pref_font_size_small">Small</string>
+    <string name="pref_font_size_normal">Normal</string>
+    <string name="pref_font_size_large">Large</string>
+    <string name="pref_font_size_huge">Huge</string>
 
     <string name="pref_category_security">Security and privacy</string>
     <string name="pref_security">Security</string>
-    <string name="pref_firebase">Analytics and Crash logs</string>
 
     <string name="lock_with_biometrics">Require unlock</string>
     <string name="lock_when_idle">Lock when idle</string>
@@ -263,7 +265,6 @@
     <string name="hide_notification_content">Hide notification content</string>
     <string name="secure_screen">Secure screen</string>
     <string name="secure_screen_summary">Secure screen hides app contents when switching apps and block screenshots</string>
-    <string name="firebase_summary">Sending crash logs and analytics will allow us to identify and fix issues, improve performance, and make future updates more relevant to your needs</string>
 
     <string name="pref_category_nsfw_content">NSFW (18+) sources</string>
     <string name="pref_show_nsfw_source">Show in sources and extensions lists</string>
@@ -330,6 +331,8 @@
     <string name="ext_update">Update</string>
     <string name="ext_update_all">Update all</string>
     <string name="ext_obsolete">Orphaned</string>
+    <string name="ext_uninstall_obsolete">Uninstall orphaned</string>
+    <string name="ext_uninstall_obsolete_dialog">Are you sure you want to uninstall %1$d orphaned extensions?</string>
     <string name="ext_install">Install</string>
     <string name="ext_pending">Pending</string>
     <string name="ext_downloading">Downloading</string>
@@ -584,6 +587,11 @@
     <string name="label_data">Data</string>
     <string name="pref_storage_usage">Storage usage</string>
     <string name="available_disk_space_info">Available: %1$s / Total: %2$s</string>
+    <string name="pref_storage_overview">Storage overview</string>
+    <string name="calculating_storage_overview">Calculating storage usage... (%1$s)</string>
+    <string name="storage_overview_no_items">No entries for selected category</string>
+    <string name="delete_local_manga">Delete local manga?</string>
+    <string name="delete_manga_confirm">Are you sure you wish to delete \"%1$s\"?</string>
     <string name="pref_clear_chapter_cache">Clear chapter cache</string>
     <string name="used_cache">Used: %1$s</string>
     <string name="cache_deleted">Cache cleared, %1$d files deleted</string>
@@ -1046,18 +1054,4 @@
     <string name="migrationListScreen.migrateDialog.cancelLabel">Cancel</string>
     <string name="migrationListScreen.progressDialog.cancelLabel">Cancel</string>
     <string name="migrationListScreen.matchWithoutChapterToast">No chapters found, this entry cannot be used for migration</string>
-
-    <string name="supportUsScreen.perks">Patrons get access to exclusive channels, with more perks to come.</string>
-    <string name="supportUsScreen.donationPlatform.patreon">Patreon (preferred)</string>
-    <string name="supportUsScreen.donationPlatform.opencollective">OpenCollective</string>
-    <string name="supportUsScreen.currentlySupportedBy">Mihon is currently backed by %d+ patrons. We want to thank each and everyone of you. Let's make Mihon even better together.</string>
-    <string name="supportUsScreen.contactForDetailsMessage">For alternative options or any related questions, join our Discord server.</string>
-    <string name="supportUsScreen.contactPlatform">Discord</string>
-
-    <string name="donationCampaign.title">Enjoying the app?</string>
-    <string name="donationCampaign.paragraph1">Hi! I’m the main developer behind Mihon, and I’d like to ask you to consider supporting its development financially. With enough support, I’ll be able to work on Mihon full-time and focus on long-standing issues as well as highly requested features.</string>
-    <string name="donationCampaign.paragraph2">You can donate through either Patreon (preferred) or OpenCollective. If you have questions or would like to support using alternative methods, feel free to reach out to me through Mihon's Discord server.</string>
-    <string name="donationCampaign.paragraph3">Regardless, Mihon will continue to be maintained by me and the volunteers, and it will stay open source.</string>
-    <string name="donationCampaign.contactPlatform">Discord</string>
-    <string name="donationCampaign.dismiss">Dismiss</string>
 </resources>

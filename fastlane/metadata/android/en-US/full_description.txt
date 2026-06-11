@@ -1,0 +1,1 @@
+<p>An open-source manga reader based on Mihon, forging its own path. This app integrates community patches and stable features to improve the reading experience.</p><p>Kumo is designed as a friendly place for new features: no telemetry, just the essentials.</p><p>Check out all features: https://github.com/nubesurrealista/Kumo/blob/main/features.md</p>
