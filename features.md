@@ -38,3 +38,4 @@
 - Dracula theme
 - Obsidian theme
 - Some tweaks to LibraryUpdateNotifier.kt
+- Enable private extensions
