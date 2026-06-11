@@ -49,7 +49,6 @@ import eu.kanade.tachiyomi.network.PREF_DOH_SHECAN
 import eu.kanade.tachiyomi.ui.more.OnboardingScreen
 import eu.kanade.tachiyomi.util.CrashLogUtil
 import eu.kanade.tachiyomi.util.system.GLUtil
-import eu.kanade.tachiyomi.util.system.isReleaseBuildType
 import eu.kanade.tachiyomi.util.system.isShizukuInstalled
 import eu.kanade.tachiyomi.util.system.powerManager
 import eu.kanade.tachiyomi.util.system.setDefaultSettings
@@ -264,7 +263,6 @@ object SettingsAdvancedScreen : SearchableSettings {
                     title = stringResource(MR.strings.pref_user_agent_string),
                     onValueChanged = {
                         try {
-                            // OkHttp checks for valid values internally
                             Headers.Builder().add("User-Agent", it)
                             context.toast(MR.strings.requires_app_restart)
                         } catch (_: IllegalArgumentException) {
@@ -422,14 +420,6 @@ object SettingsAdvancedScreen : SearchableSettings {
                 Preference.PreferenceItem.ListPreference(
                     preference = extensionInstallerPref,
                     entries = extensionInstallerPref.entries
-                        .filter {
-                            // TODO: allow private option in stable versions once URL handling is more fleshed out
-                            if (isReleaseBuildType) {
-                                it != BasePreferences.ExtensionInstaller.PRIVATE
-                            } else {
-                                true
-                            }
-                        }
                         .associateWith { stringResource(it.titleRes) },
                     title = stringResource(MR.strings.ext_installer_pref),
                     onValueChanged = {
