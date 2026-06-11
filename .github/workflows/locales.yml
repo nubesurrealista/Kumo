@@ -29,7 +29,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add i18n/src/commonMain/resources/locales_config.xml
+          git add i18n/src/commonMain/resources/xml/locales_config.xml
 
           if ! git diff --staged --quiet; then
             git commit -m "auto: update locales_config.xml"
