@@ -14,6 +14,10 @@ kotlin {
 
         // TODO(antsy): Remove when https://youtrack.jetbrains.com/issue/KT-83319 is resolved
         withHostTest { }
+
+        lint {
+            disable.addAll(listOf("MissingTranslation", "ExtraTranslation"))
+        }
     }
 
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -27,16 +31,10 @@ kotlin {
     }
 }
 
-android {
-    sourceSets {
-        val main by getting
-        main.res.srcDirs(
-            "src/commonMain/resources"
-        )
-    }
-
-    lint {
-        disable.addAll(listOf("MissingTranslation", "ExtraTranslation"))
+androidComponents {
+    onVariants { variant ->
+        val resSource = variant.sources.res ?: return@onVariants
+        resSource.addStaticSourceDirectory("src/commonMain/resources")
     }
 }
 
