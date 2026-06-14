@@ -115,7 +115,6 @@ private fun ColumnScope.FilterPage(
         state = filterCompleted,
         onClick = { screenModel.toggleFilter(LibraryPreferences::filterCompleted) },
     )
-    // TODO: re-enable when custom intervals are ready for stable
     if ((!isReleaseBuildType) && LibraryPreferences.MANGA_OUTSIDE_RELEASE_PERIOD in autoUpdateMangaRestrictions) {
         val filterIntervalCustom by screenModel.libraryPreferences.filterIntervalCustom.collectAsState()
         TriStateItem(
@@ -280,6 +279,17 @@ private fun ColumnScope.DisplayPage(
     CheckboxItem(
         label = stringResource(MR.strings.action_display_language_badge),
         pref = screenModel.libraryPreferences.languageBadge,
+    )
+    val showLang by screenModel.libraryPreferences.languageBadge.collectAsState()
+    if (showLang) {
+        CheckboxItem(
+            label = stringResource(MR.strings.action_display_language_icon),
+            pref = screenModel.libraryPreferences.useLangIcon,
+        )
+    }
+    CheckboxItem(
+    label = stringResource(MR.strings.action_display_source_badge),
+    pref = screenModel.libraryPreferences.sourceBadge,
     )
     CheckboxItem(
         label = stringResource(MR.strings.action_display_show_continue_reading_button),

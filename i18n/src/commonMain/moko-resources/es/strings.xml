@@ -34,6 +34,8 @@
     <string name="action_resume">Reanudar</string>
     <string name="action_open_in_browser">Abrir en el navegador</string>
     <string name="action_display_mode">Modo de visualización</string>
+    <string name="action_display_source_badge">Icono de fuente</string>
+    <string name="action_display_language_icon">Usar icono de idioma</string>
     <string name="action_cancel">Cancelar</string>
     <string name="action_sort">Ordenar</string>
     <string name="action_install">Instalar</string>

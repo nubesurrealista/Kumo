@@ -2,6 +2,7 @@ package eu.kanade.tachiyomi.ui.library
 
 import eu.kanade.tachiyomi.source.getNameForMangaInfo
 import tachiyomi.domain.library.model.LibraryManga
+import tachiyomi.domain.source.model.Source
 import tachiyomi.domain.source.service.SourceManager
 import tachiyomi.source.local.LocalSource
 
@@ -71,5 +72,7 @@ data class LibraryItem(
         val unreadCount: Long,
         val isLocal: Boolean,
         val sourceLanguage: String,
+        val useLangIcon: Boolean = true,
+        val source: Source? = null,
     )
 }
