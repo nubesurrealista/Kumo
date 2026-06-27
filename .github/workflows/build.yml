@@ -59,7 +59,7 @@ jobs:
           ANDROID_BUILD_TOOLS="$ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort -V | tail -n1)"
           APK_DIR="app/build/outputs/apk/release"
           for arch in armeabi-v7a arm64-v8a; do
-            UNSIGNED=$(ls $APK_DIR/*$arch*unsigned.apk 2>/dev/null | head -n 1)
+            UNSIGNED=$(ls $APK_DIR/*$arch*-release.apk 2>/dev/null | head -n 1)
             SIGNED="$APK_DIR/kumo-${{ steps.version_info.outputs.VERSION }}-$arch-release-signed.apk"
             if [ -n "$UNSIGNED" ] && [ -f "$UNSIGNED" ]; then
               "$ANDROID_BUILD_TOOLS/apksigner" sign \
