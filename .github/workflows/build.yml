@@ -57,10 +57,11 @@ jobs:
       - name: Sign APKs
         run: |
           ANDROID_BUILD_TOOLS="$ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort -V | tail -n1)"
+          APK_DIR="app/build/outputs/apk/release"
           for arch in armeabi-v7a arm64-v8a; do
-            UNSIGNED="app/build/outputs/apk/release/app-$arch-release-unsigned.apk"
-            SIGNED="app/build/outputs/apk/release/kumo-${{ steps.version_info.outputs.VERSION }}-$arch-release-signed.apk"
-            if [ -f "$UNSIGNED" ]; then
+            UNSIGNED=$(ls $APK_DIR/*$arch*unsigned.apk 2>/dev/null | head -n 1)
+            SIGNED="$APK_DIR/kumo-${{ steps.version_info.outputs.VERSION }}-$arch-release-signed.apk"
+            if [ -n "$UNSIGNED" ] && [ -f "$UNSIGNED" ]; then
               "$ANDROID_BUILD_TOOLS/apksigner" sign \
                 --ks app/nube.p12 \
                 --ks-key-alias "${{ secrets.RELEASE_KEY_ALIAS }}" \
@@ -71,7 +72,8 @@ jobs:
                 --out "$SIGNED" \
                 "$UNSIGNED"
             else
-              echo "Error: APK for $arch not found" >&2
+              echo "Error: APK for $arch not found in $APK_DIR" >&2
+              ls -la $APK_DIR >&2
               exit 1
             fi
           done
