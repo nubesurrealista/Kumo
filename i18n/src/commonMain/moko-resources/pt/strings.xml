@@ -786,16 +786,10 @@
     <string name="invalid_backup_file_json">Cópia de segurança JSON não suportada</string>
     <string name="invalid_backup_file_unknown">Ficheiro de Cópia de Segurança corrompido</string>
     <string name="action_sort_random">Aleatório</string>
-    <string name="onboarding_permission_analytics_description">Enviar dados de utilização anónimos para melhorar funções da aplicação.</string>
-    <string name="firebase_summary">Se enviar os registos de crache e as analíticas irá permitir-nos identificar e resolver problemas, melhorar o desempenho, e realizar futuras atualizações que sejam mais relevantes para as suas necessidades</string>
-    <string name="pref_firebase">Estatíscas e Logs de Crash</string>
     <string name="pref_auto_update_manga_on_mark_read">Atualizar progresso quando for marcado como lido</string>
     <string name="manga_interval_expected_update_null">Este mangá ou está completo ou ainda não tem uma data de lançamento prevista.</string>
     <string name="trackers_updated_summary">Rastreadores atualizados para o capítulo %d</string>
     <string name="file_picker_uri_permission_unsupported">Erro ao adquirir o acesso persistente à pasta. A aplicação pode comportar-se inesperadamente.</string>
-    <string name="onboarding_permission_crashlytics">Enviar logs de crash</string>
-    <string name="onboarding_permission_crashlytics_description">Enviar logs de crash anónimos para os desenvolvedores.</string>
-    <string name="onboarding_permission_analytics">Permitir estatísticas</string>
     <string name="pref_security">Segurança</string>
     <string name="pref_flash_duration_summary">%1$s ms</string>
     <string name="pref_flash_style_white_black">Branco e Preto</string>
@@ -812,7 +806,6 @@
     <string name="author">Autor</string>
     <string name="scanlator">Equipa de tradução</string>
     <string name="action_display_unread_badge">Capítulos não lidos</string>
-    <string name="label_support_us">Apoie-nos</string>
     <string name="action_webview_close_tab">Fechar guia</string>
     <string name="theme_catppuccin">Catppuccin</string>
     <string name="theme_monochrome">Monocromático</string>
@@ -892,16 +885,7 @@
     <string name="migrationListScreen.migrateDialog.cancelLabel">Cancelar</string>
     <string name="migrationListScreen.progressDialog.cancelLabel">Cancelar</string>
     <string name="migrationListScreen.matchWithoutChapterToast">Nenhum capítulo encontrado, esta entrada não pode ser usada para migração</string>
-    <string name="supportUsScreen.perks">Patrons tem acesso a canais exclusivos, com mais recursos por vir.</string>
-    <string name="supportUsScreen.donationPlatform.patreon">Patreon (preferido)</string>
-    <string name="supportUsScreen.donationPlatform.opencollective">OpenCollective</string>
-    <string name="supportUsScreen.currentlySupportedBy">Mihon atualmente conta com o apoio de %d+ patrons. Queremos agradecer cada um de vocês. Vamos fazer Mihon ainda melhor juntos.</string>
-    <string name="supportUsScreen.contactForDetailsMessage">Para opções alternativas ou qualquer perguntas relacionadas, se junte ao nosso servidor no Discord.</string>
-    <string name="supportUsScreen.contactPlatform">Discord</string>
-    <string name="donationCampaign.title">Gosta da app?</string>
-    <string name="donationCampaign.paragraph1">Olá! Sou o programador principal por trás do Mihon, e gostaria de perguntar se consideraria apoiar o desenvolvimento financeiramente. Com apoio suficiente, poderei trabalhar integralmente no Mihon e focar em problemas pendentes tanto quanto em funcionalidades muito solicitadas.</string>
-    <string name="donationCampaign.paragraph2">Pode doar através do Patreon (preferencialmente) ou OpenCollective. Se tiver perguntas ou gostaria de apoiar a utilizar métodos alternativos, sinta-se livre para se aproximar através do servidor no Discord do Mihon.</string>
-    <string name="donationCampaign.paragraph3">Apesar disso, Mihon continuará a se mantido por mim e pelos voluntários e se manterá de código aberto.</string>
-    <string name="donationCampaign.contactPlatform">Discord</string>
-    <string name="donationCampaign.dismiss">Ignorar</string>
+    
+    <string name="ext_uninstall_obsolete">Desinstalar obsoletos</string>
+    <string name="ext_uninstall_obsolete_dialog">Tem a certeza de que deseja desinstalar %1$d extensões obsoletas?</string>
 </resources>
