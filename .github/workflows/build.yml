@@ -78,7 +78,7 @@ jobs:
             fi
           done
       - name: Attest Build Provenance
-        uses: actions/attest-build-provenance@v4.1.0
+        uses: actions/attest-build-provenance@v4.1.1
         with:
           subject-path: app/build/outputs/apk/release/kumo-*-release-signed.apk
       - name: Create Immutable Release
