@@ -60,6 +60,7 @@ import eu.kanade.presentation.util.formatChapterNumber
 import eu.kanade.tachiyomi.data.download.model.Download
 import eu.kanade.tachiyomi.source.getNameForMangaInfo
 import eu.kanade.tachiyomi.ui.manga.ChapterList
+import eu.kanade.tachiyomi.ui.manga.MangaMetadataDraft
 import eu.kanade.tachiyomi.ui.manga.MangaViewModel
 import eu.kanade.tachiyomi.util.system.copyToClipboard
 import tachiyomi.domain.chapter.model.Chapter
@@ -112,6 +113,9 @@ fun MangaScreen(
     onEditFetchIntervalClicked: (() -> Unit)?,
     onMigrateClicked: (() -> Unit)?,
     onEditNotesClicked: () -> Unit,
+    onEditStatusClicked: () -> Unit,
+    onEditMetadataClicked: () -> Unit,
+    onMetadataDraftChange: (MangaMetadataDraft) -> Unit,
 
     // For bottom action menu
     onMultiBookmarkClicked: (List<Chapter>, bookmarked: Boolean) -> Unit,
@@ -133,7 +137,6 @@ fun MangaScreen(
             context.copyToClipboard(it, it)
         }
     }
-
     if (!isTabletUi) {
         MangaScreenSmallImpl(
             state = state,
@@ -162,6 +165,9 @@ fun MangaScreen(
             onEditIntervalClicked = onEditFetchIntervalClicked,
             onMigrateClicked = onMigrateClicked,
             onEditNotesClicked = onEditNotesClicked,
+            onEditStatusClicked = onEditStatusClicked,
+            onEditMetadataClicked = onEditMetadataClicked,
+            onMetadataDraftChange = onMetadataDraftChange,
             onMultiBookmarkClicked = onMultiBookmarkClicked,
             onMultiMarkAsReadClicked = onMultiMarkAsReadClicked,
             onMarkPreviousAsReadClicked = onMarkPreviousAsReadClicked,
@@ -199,6 +205,9 @@ fun MangaScreen(
             onEditIntervalClicked = onEditFetchIntervalClicked,
             onMigrateClicked = onMigrateClicked,
             onEditNotesClicked = onEditNotesClicked,
+            onEditStatusClicked = onEditStatusClicked,
+            onEditMetadataClicked = onEditMetadataClicked,
+            onMetadataDraftChange = onMetadataDraftChange,
             onMultiBookmarkClicked = onMultiBookmarkClicked,
             onMultiMarkAsReadClicked = onMultiMarkAsReadClicked,
             onMarkPreviousAsReadClicked = onMarkPreviousAsReadClicked,
@@ -246,6 +255,9 @@ private fun MangaScreenSmallImpl(
     onEditIntervalClicked: (() -> Unit)?,
     onMigrateClicked: (() -> Unit)?,
     onEditNotesClicked: () -> Unit,
+    onEditStatusClicked: () -> Unit,
+    onEditMetadataClicked: () -> Unit,
+    onMetadataDraftChange: (MangaMetadataDraft) -> Unit,
 
     // For bottom action menu
     onMultiBookmarkClicked: (List<Chapter>, bookmarked: Boolean) -> Unit,
@@ -305,6 +317,8 @@ private fun MangaScreenSmallImpl(
                 onClickRefresh = onRefresh,
                 onClickMigrate = onMigrateClicked,
                 onClickEditNotes = onEditNotesClicked,
+                onClickEditMetadata = onEditMetadataClicked,
+                isEditingMetadata = state.isEditingMetadata,
                 actionModeCounter = selectedChapterCount,
                 onCancelActionMode = { onAllChapterSelected(false) },
                 onSelectAll = { onAllChapterSelected(true) },
@@ -386,6 +400,10 @@ private fun MangaScreenSmallImpl(
                             isStubSource = remember { state.source is StubSource },
                             onCoverClick = onCoverClicked,
                             doSearch = onSearch,
+                            onStatusClick = onEditStatusClicked,
+                            isEditingMetadata = state.isEditingMetadata,
+                            metadataDraft = state.metadataDraft,
+                            onMetadataDraftChange = onMetadataDraftChange,
                         )
                     }
 
@@ -420,6 +438,11 @@ private fun MangaScreenSmallImpl(
                             onTagSearch = onTagSearch,
                             onCopyTagToClipboard = onCopyTagToClipboard,
                             onEditNotes = onEditNotesClicked,
+                            isEditingMetadata = state.isEditingMetadata,
+                            descriptionDraft = state.metadataDraft.description,
+                            onDescriptionDraftChange = {
+                                onMetadataDraftChange(state.metadataDraft.copy(description = it))
+                            },
                         )
                     }
 
@@ -490,6 +513,9 @@ fun MangaScreenLargeImpl(
     onEditIntervalClicked: (() -> Unit)?,
     onMigrateClicked: (() -> Unit)?,
     onEditNotesClicked: () -> Unit,
+    onEditStatusClicked: () -> Unit,
+    onEditMetadataClicked: () -> Unit,
+    onMetadataDraftChange: (MangaMetadataDraft) -> Unit,
 
     // For bottom action menu
     onMultiBookmarkClicked: (List<Chapter>, bookmarked: Boolean) -> Unit,
@@ -542,6 +568,7 @@ fun MangaScreenLargeImpl(
                 onClickRefresh = onRefresh,
                 onClickMigrate = onMigrateClicked,
                 onClickEditNotes = onEditNotesClicked,
+                onClickEditMetadata = onEditMetadataClicked,
                 onCancelActionMode = { onAllChapterSelected(false) },
                 actionModeCounter = selectedChapterCount,
                 onSelectAll = { onAllChapterSelected(true) },
@@ -624,6 +651,10 @@ fun MangaScreenLargeImpl(
                             isStubSource = remember { state.source is StubSource },
                             onCoverClick = onCoverClicked,
                             doSearch = onSearch,
+                            onStatusClick = onEditStatusClicked,
+                            isEditingMetadata = state.isEditingMetadata,
+                            metadataDraft = state.metadataDraft,
+                            onMetadataDraftChange = onMetadataDraftChange,
                         )
                         MangaActionRow(
                             favorite = state.manga.favorite,
@@ -646,6 +677,11 @@ fun MangaScreenLargeImpl(
                             onTagSearch = onTagSearch,
                             onCopyTagToClipboard = onCopyTagToClipboard,
                             onEditNotes = onEditNotesClicked,
+                            isEditingMetadata = state.isEditingMetadata,
+                            descriptionDraft = state.metadataDraft.description,
+                            onDescriptionDraftChange = {
+                                onMetadataDraftChange(state.metadataDraft.copy(description = it))
+                            },
                         )
                     }
                 },
