@@ -12,6 +12,7 @@ import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.gestures.animateTo
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -93,6 +94,7 @@ fun AdaptiveSheet(
                         onClick = {},
                     )
                     .systemBarsPadding()
+                    .imePadding()
                     .padding(vertical = 16.dp)
                     .then(modifier),
                 shape = MaterialTheme.shapes.extraLarge,
@@ -179,7 +181,8 @@ fun AdaptiveSheet(
                         flingBehavior = flingBehavior,
                     )
                     .navigationBarsPadding()
-                    .statusBarsPadding(),
+                    .statusBarsPadding()
+                    .imePadding(),
                 shape = MaterialTheme.shapes.extraLarge,
                 color = MaterialTheme.colorScheme.surfaceContainerHigh,
                 content = {
