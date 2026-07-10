@@ -25,8 +25,8 @@ android {
     defaultConfig {
         applicationId = "app.kumo"
 
-        versionCode = 24
-        versionName = "0.20.0"
+        versionCode = 26
+        versionName = "0.20.1"
 
         buildConfigField("String", "COMMIT_COUNT", "\"${getLatestCommitCount()}\"")
         buildConfigField("String", "COMMIT_SHA", "\"${getLatestCommitSha()}\"")
@@ -70,8 +70,8 @@ android {
             isPseudoLocalesEnabled = true
         }
         val release = getByName("release") {
-            isMinifyEnabled = Config.enableCodeShrink
-            isShrinkResources = Config.enableCodeShrink
+            isMinifyEnabled = true
+            isShrinkResources = true
 
             signingConfig = debug.signingConfig
 

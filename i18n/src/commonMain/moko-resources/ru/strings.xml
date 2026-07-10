@@ -899,4 +899,5 @@
     <string name="extensionStoresScreen.deleteStore.title">Удалить хранилище расширений</string>
     <string name="extensionStoresScreen.deleteStore.body">Вы хотите удалить хранилище расширений \"%1$s\" (%2$s)?</string>
     <string name="pref_webtoon_vertical_navigator_on_left">Разместить вертикальную навигацию с левой стороны</string>
+    <string name="considering">Рассматривается</string>
 </resources>
