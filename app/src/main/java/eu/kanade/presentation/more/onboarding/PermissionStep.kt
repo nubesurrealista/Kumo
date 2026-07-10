@@ -156,26 +156,4 @@ internal class PermissionStep : OnboardingStep {
             content = { Text(text = title) },
         )
     }
-
-    @Composable
-    private fun PermissionSwitch(
-        title: String,
-        subtitle: String,
-        granted: Boolean,
-        modifier: Modifier = Modifier,
-        onToggleChange: (Boolean) -> Unit,
-    ) {
-        ListItem(
-            modifier = modifier,
-            trailingContent = {
-                Switch(
-                    checked = granted,
-                    onCheckedChange = onToggleChange,
-                )
-            },
-            supportingContent = { Text(text = subtitle) },
-            colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-            content = { Text(text = title) },
-        )
-    }
 }
