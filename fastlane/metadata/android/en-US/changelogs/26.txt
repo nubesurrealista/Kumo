@@ -1,0 +1,4 @@
+- Updated codebase to Mihon v0.20.1.
+- No original changes since the last version.
+
+Mihon changelog: https://github.com/mihonapp/mihon/blob/main/CHANGELOG.md
