@@ -2,8 +2,7 @@ package eu.kanade.tachiyomi.ui.storage
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.util.fastDistinctBy
-import cafe.adriel.voyager.core.model.StateScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.viewModelScope
 import com.hippo.unifile.UniFile
 import eu.kanade.domain.manga.interactor.UpdateManga
 import eu.kanade.presentation.more.storage.StorageScreenState
@@ -22,6 +21,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.flow.update
+import mihon.core.viewmodel.StateViewModel
 import tachiyomi.core.common.util.lang.launchIO
 import tachiyomi.core.common.util.lang.launchNonCancellable
 import tachiyomi.domain.category.interactor.GetCategories
@@ -36,7 +36,7 @@ import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 import kotlin.random.Random
 
-class StorageScreenModel(
+class StorageViewModel(
     private val downloadCache: DownloadCache = Injekt.get(),
     private val downloadManager: DownloadManager = Injekt.get(),
     private val getLibraryManga: GetLibraryManga = Injekt.get(),
@@ -44,7 +44,7 @@ class StorageScreenModel(
     private val updateManga: UpdateManga = Injekt.get(),
     private val sourceManager: SourceManager = Injekt.get<SourceManager>(),
     private val sourceFileSystem: LocalSourceFileSystem = Injekt.get(),
-) : StateScreenModel<StorageScreenState>(StorageScreenState.Loading(0)) {
+) : StateViewModel<StorageScreenState>(StorageScreenState.Loading(0)) {
     private val _selectedCategory = MutableStateFlow<Category>(allCategory)
     val selectedCategory = _selectedCategory.asStateFlow()
 
@@ -57,7 +57,7 @@ class StorageScreenModel(
     private val entries = MutableStateFlow<List<Long>>(emptyList())
 
     init {
-        screenModelScope.launchIO {
+        viewModelScope.launchIO {
             val downloadCacheFlow = downloadCache.changes
                 .debounce(500L)
                 .transformLatest {
@@ -159,7 +159,7 @@ class StorageScreenModel(
                     )
                 }
             }
-            .launchIn(screenModelScope)
+            .launchIn(viewModelScope)
     }
 
     private suspend fun getMangaCategoryIds(manga: Manga): List<Long> {
@@ -195,7 +195,7 @@ class StorageScreenModel(
     fun deleteManga(storageData: StorageData, removeFromLibrary: Boolean) {
         val manga = storageData.manga
 
-        screenModelScope.launchNonCancellable {
+        viewModelScope.launchNonCancellable {
             skipDownloadChangeFlow.value = true
 
             if (manga.isLocal()) {
