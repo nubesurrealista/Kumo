@@ -47,6 +47,7 @@ import eu.kanade.presentation.util.Screen
 import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.material.Scaffold
 import tachiyomi.presentation.core.i18n.stringResource
+import tachiyomi.presentation.core.icons.CustomIcons
 import cafe.adriel.voyager.core.screen.Screen as VoyagerScreen
 
 object SettingsMainScreen : Screen() {
@@ -228,7 +229,7 @@ object SettingsMainScreen : Screen() {
         Item(
             titleRes = MR.strings.pref_category_about,
             formatSubtitle = {
-                "${stringResource(MR.strings.app_name)} ${AboutScreen.getVersionName(withBuildDate = false)}"
+                "${stringResource(MR.strings.app_name)} ${AboutScreen.getVersionName()}"
             },
             icon = Icons.Outlined.Info,
             screen = AboutScreen,

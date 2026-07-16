@@ -118,6 +118,7 @@ class MangaScreen(
             state = successState,
             snackbarHostState = viewModel.snackbarHostState,
             nextUpdate = successState.manga.expectedNextUpdate,
+            isUpdateIntervalEnabled = screenModel.isUpdateIntervalEnabled,
             isTabletUi = isTabletUi(),
             chapterSwipeStartAction = viewModel.chapterSwipeStartAction,
             chapterSwipeEndAction = viewModel.chapterSwipeEndAction,
