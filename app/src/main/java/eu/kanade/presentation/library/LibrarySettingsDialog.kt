@@ -280,16 +280,16 @@ private fun ColumnScope.DisplayPage(
         label = stringResource(MR.strings.action_display_language_badge),
         pref = viewModel.libraryPreferences.languageBadge,
     )
-    val showLang by screenModel.libraryPreferences.languageBadge.collectAsState()
+    val showLang by viewModel.libraryPreferences.languageBadge.collectAsState()
     if (showLang) {
         CheckboxItem(
             label = stringResource(MR.strings.action_display_language_icon),
-            pref = screenModel.libraryPreferences.useLangIcon,
+            pref = viewModel.libraryPreferences.useLangIcon,
         )
     }
     CheckboxItem(
-    label = stringResource(MR.strings.action_display_source_badge),
-    pref = screenModel.libraryPreferences.sourceBadge,
+        label = stringResource(MR.strings.action_display_source_badge),
+        pref = viewModel.libraryPreferences.sourceBadge,
     )
     CheckboxItem(
         label = stringResource(MR.strings.action_display_show_continue_reading_button),

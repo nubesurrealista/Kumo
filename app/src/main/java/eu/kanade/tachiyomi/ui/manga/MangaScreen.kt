@@ -44,7 +44,6 @@ import eu.kanade.tachiyomi.source.isLocalOrStub
 import eu.kanade.tachiyomi.source.online.HttpSource
 import eu.kanade.tachiyomi.ui.browse.source.browse.BrowseSourceScreen
 import eu.kanade.tachiyomi.ui.browse.source.globalsearch.GlobalSearchScreen
-import eu.kanade.tachiyomi.ui.category.CategoryScreen
 import eu.kanade.tachiyomi.ui.home.HomeScreen
 import eu.kanade.tachiyomi.ui.manga.notes.MangaNotesScreen
 import eu.kanade.tachiyomi.ui.manga.track.TrackInfoDialogHomeScreen
@@ -118,7 +117,7 @@ class MangaScreen(
             state = successState,
             snackbarHostState = viewModel.snackbarHostState,
             nextUpdate = successState.manga.expectedNextUpdate,
-            isUpdateIntervalEnabled = screenModel.isUpdateIntervalEnabled,
+            isUpdateIntervalEnabled = viewModel.isUpdateIntervalEnabled,
             isTabletUi = isTabletUi(),
             chapterSwipeStartAction = viewModel.chapterSwipeStartAction,
             chapterSwipeEndAction = viewModel.chapterSwipeEndAction,

@@ -65,7 +65,7 @@ abstract class SearchViewModel(
                 mutableState.update { it.copy(onlyShowHasResults = state) }
             }
         }
-        screenModelScope.launch {
+        viewModelScope.launch {
             preferences.globalSearchPinnedState().changes().collectLatest { state ->
                 mutableState.update { it.copy(sourceFilter = state) }
             }

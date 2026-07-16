@@ -1,9 +1,9 @@
 package eu.kanade.tachiyomi.ui.storage
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import cafe.adriel.voyager.core.model.rememberScreenModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import eu.kanade.presentation.components.AppBar
@@ -22,9 +22,9 @@ class StorageScreen : Screen() {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
 
-        val screenModel = rememberScreenModel { StorageScreenModel() }
-        val state by screenModel.state.collectAsState()
-        val selectedCategory by screenModel.selectedCategory.collectAsState()
+        val viewModel = viewModel<StorageViewModel>()
+        val state by viewModel.state.collectAsStateWithLifecycle()
+        val selectedCategory by viewModel.selectedCategory.collectAsStateWithLifecycle()
 
         Scaffold(
             topBar = { scrollBehavior ->
@@ -47,8 +47,8 @@ class StorageScreen : Screen() {
                 state = state as StorageScreenState.Success,
                 selectedCategory = selectedCategory,
                 paddingValues = paddingValues,
-                onCategorySelected = screenModel::setSelectedCategory,
-                onDelete = screenModel::deleteManga,
+                onCategorySelected = viewModel::setSelectedCategory,
+                onDelete = viewModel::deleteManga,
                 onClickCover = { item -> navigator.push(MangaScreen(item.manga.id)) },
             )
         }
