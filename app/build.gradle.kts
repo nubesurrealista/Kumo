@@ -201,6 +201,7 @@ dependencies {
     implementation(projects.i18n)
     implementation(projects.core.archive)
     implementation(projects.core.common)
+    implementation(projects.core.viewmodel)
     implementation(projects.coreMetadata)
     implementation(projects.sourceApi)
     implementation(projects.sourceLocal)
