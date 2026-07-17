@@ -47,7 +47,7 @@ data object MoreTab : Tab {
                 index = 4u,
                 title = stringResource(MR.strings.label_more),
                 icon = rememberAnimatedVectorPainter(image, isSelected),
-            )
+                )
         }
 
     override suspend fun onReselect(navigator: Navigator) {
@@ -75,7 +75,7 @@ data object MoreTab : Tab {
     }
 }
 
-private class MoreViewModel(
+class MoreViewModel(
     private val downloadManager: DownloadManager = Injekt.get(),
     preferences: BasePreferences = Injekt.get(),
 ) : ViewModel() {
