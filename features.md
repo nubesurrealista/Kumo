@@ -7,7 +7,8 @@
 - [Remove productFlavors](https://github.com/AmanoTeam/Kahon/commit/d21199b2ce754aceca650cbb164eb47123e40405)
 - [Disable showing changelog on app start](https://github.com/AmanoTeam/Kahon/commit/cabcad9542c447fdffc5197af530f427fa624909)
 - [Add an "Uninstall obsolete" button to the extension listing](https://github.com/AmanoTeam/Kahon/commit/97535a99fb2e427a0629a03989b446900d263339)
-
+- [Allow editing manga metadata](https://github.com/AmanoTeam/Kahon/commit/587a83e99b2d43e9ece3b0fb9f2aea731e4cb47d)
+- [Add Shizuku-based uninstall service](https://github.com/AmanoTeam/Kahon/commit/d7bfaa2ab49b9c8a55774af8cbe21a0f282a8f92)
 ---
 
 **From [Komikku](https://github.com/komikku-app/komikku):**
