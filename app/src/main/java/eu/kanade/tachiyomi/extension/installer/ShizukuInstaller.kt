@@ -42,6 +42,7 @@ class ShizukuInstaller(private val service: Service) : Installer(service) {
             .processNameSuffix("shizuku_service")
             .debuggable(BuildConfig.DEBUG)
             .daemon(false)
+            .version(2)
     }
 
     private val connection = object : ServiceConnection {
@@ -57,6 +58,13 @@ class ShizukuInstaller(private val service: Service) : Installer(service) {
             shellInterface = null
         }
     }
+
+    private val statusIntent = PendingIntent.getBroadcast(
+        service.applicationContext,
+        0,
+        Intent(ACTION_INSTALL_RESULT).setPackage(BuildConfig.APPLICATION_ID),
+        PendingIntent.FLAG_MUTABLE,
+    )
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -129,7 +137,7 @@ class ShizukuInstaller(private val service: Service) : Installer(service) {
         super.processEntry(entry)
         try {
             service.contentResolver.openAssetFileDescriptor(entry.uri, "r").use {
-                shellInterface?.install(it)
+                shellInterface?.install(it, statusIntent.intentSender)
             }
             service.contentResolver.delete(entry.uri, null, null)
         } catch (e: Exception) {

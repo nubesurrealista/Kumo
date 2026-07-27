@@ -3,7 +3,7 @@ package mihon.app.shizuku;
 import android.content.IntentSender;
 
 interface IShellInterface {
-    void install(in AssetFileDescriptor apk) = 1;
+    void install(in AssetFileDescriptor apk, in IntentSender intentSender) = 1;
 
     void uninstall(String packageName, in IntentSender statusSender) = 2;
 
