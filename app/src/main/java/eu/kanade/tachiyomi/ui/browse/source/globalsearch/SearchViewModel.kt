@@ -65,6 +65,11 @@ abstract class SearchViewModel(
                 mutableState.update { it.copy(onlyShowHasResults = state) }
             }
         }
+        viewModelScope.launch {
+            preferences.globalSearchPinnedState().changes().collectLatest { state ->
+                mutableState.update { it.copy(sourceFilter = state) }
+            }
+        }
     }
 
     @Composable
@@ -108,7 +113,7 @@ abstract class SearchViewModel(
     }
 
     fun setSourceFilter(filter: SourceFilter) {
-        mutableState.update { it.copy(sourceFilter = filter) }
+        preferences.globalSearchPinnedState().set(filter)
         search()
     }
 

@@ -555,6 +555,8 @@
     <string name="publishing_finished">完結済み</string>
     <string name="cancelled">キャンセル済み</string>
     <string name="on_hiatus">休載中</string>
+    <string name="edit_status_dialog_title">ステータスを設定</string>
+    <string name="edit_status_dialog_message">この漫画のステータスを上書き</string>
     <string name="action_show_manga">項目を表示</string>
     <string name="action_display_cover_only_grid">表紙グリッド</string>
     <string name="pref_update_only_started">読み始めていない作品をスキップ</string>
@@ -796,16 +798,10 @@
     <string name="invalid_backup_file_unknown">バックアップファイルが壊れている</string>
     <string name="trackers_updated_summary">トラッカーが章 %d に更新されました</string>
     <string name="action_sort_random">ランダム</string>
-    <string name="onboarding_permission_crashlytics_description">匿名化されたクラッシュ ログを開発者に送信します。</string>
-    <string name="onboarding_permission_analytics">分析を許可する</string>
     <string name="pref_security">安全</string>
-    <string name="pref_firebase">分析とクラッシュログ</string>
     <string name="pref_download_new_unread_chapters_only">重複して読んだ章のダウンロードをスキップする</string>
     <string name="pref_auto_update_manga_on_mark_read">既読としてマークされた場合の更新の進行状況</string>
     <string name="non_library_settings">すべての既読エントリ</string>
-    <string name="onboarding_permission_crashlytics">クラッシュログを送信する</string>
-    <string name="onboarding_permission_analytics_description">アプリの機能を向上させるために、匿名化された使用状況データを送信します。</string>
-    <string name="firebase_summary">クラッシュ ログと分析を送信することで、問題を特定して修正し、パフォーマンスを向上させ、今後のアップデートを貴方のニーズに合わせたものにすることができます</string>
     <string name="ext_remove">取り除く</string>
     <string name="ext_confirm_remove">拡張機能を削除しますか?</string>
     <string name="remove_private_extension_message">本当に\"%s\"拡張機能を削除しますか？</string>
