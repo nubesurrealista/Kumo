@@ -1,0 +1,7 @@
+**Recommended**: backup before updating, app data reset may be needed.
+- Updated codebase to Mihon v0.20.2.
+- Allow editing manga metadata (Thanks @Kartatz).
+- Add Shizuku-based uninstall service (Thanks @Kartatz).
+- General fixes.
+
+Mihon changelog: https://github.com/mihonapp/mihon/blob/main/CHANGELOG.md
