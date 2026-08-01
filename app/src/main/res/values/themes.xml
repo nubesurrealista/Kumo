@@ -169,6 +169,7 @@
         <item name="colorSurfaceContainerHighest">@color/tokyonight_surfaceContainerHighest</item>
         <item name="colorSurfaceContainerLow">@color/tokyonight_surfaceContainerLow</item>
         <item name="colorSurfaceContainerLowest">@color/tokyonight_surfaceContainerLowest</item>
+    </style>
 
     <!--== Dracula Theme ==-->
     <style name="Theme.Tachiyomi.Dracula">
