@@ -305,7 +305,7 @@ class MigrationConfigScreen(private val mangaIds: Collection<Long>) : Screen() {
             }
         }
     }
-
+    
     class Model(
         val sourcePreferences: SourcePreferences = Injekt.get(),
         private val sourceManager: SourceManager = Injekt.get(),

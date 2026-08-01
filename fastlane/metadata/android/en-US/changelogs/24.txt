@@ -1,0 +1,9 @@
+Recommended: backup before updating, app data reset may be needed.
+- Updated codebase to Mihon v0.20.0.
+- Enabled private extensions (experimental).
+- Add an "Uninstall obsolete" button to the extension listing (Thanks @Kartatz).
+- Show source icon and language flags on library (Adapted from Komikku).
+- Fixed UI visual glitch on Android 11.
+- Clean UI.
+
+Mihon changelog: https://github.com/mihonapp/mihon/blob/main/CHANGELOG.md

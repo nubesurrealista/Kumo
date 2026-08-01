@@ -8,7 +8,7 @@ data class ALSearchItem(
     val title: ALItemTitle,
     val coverImage: ItemCover,
     val description: String?,
-    val format: String,
+    val format: String?,
     val status: String?,
     val startDate: ALFuzzyDate,
     val chapters: Long?,
@@ -22,7 +22,7 @@ data class ALSearchItem(
         imageUrl = coverImage.large,
         description = description,
         format = if (format != "MANGA") {
-            format.replace("_", "-")
+            format?.replace("_", "-") ?: ""
         } else {
             when (countryOfOrigin) {
                 "KR" -> "Manhwa"
@@ -56,7 +56,6 @@ data class ALStaff(
 @Serializable
 data class ALEdge(
     val role: String,
-    val id: Int,
     val node: ALStaffNode,
 )
 
