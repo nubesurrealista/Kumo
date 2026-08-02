@@ -24,7 +24,7 @@ jobs:
           echo "VERSION=${VERSION_NAME}" >> $GITHUB_OUTPUT
           echo "VERSION_CODE=${VERSION_CODE}" >> $GITHUB_OUTPUT
       - name: Set up JDK 21
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v5.6.0
         with:
           distribution: temurin
           java-version: '21'
