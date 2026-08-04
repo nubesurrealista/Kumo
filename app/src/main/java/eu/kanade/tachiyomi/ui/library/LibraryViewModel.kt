@@ -59,6 +59,7 @@ import tachiyomi.domain.manga.interactor.GetLibraryManga
 import tachiyomi.domain.manga.model.Manga
 import tachiyomi.domain.manga.model.MangaUpdate
 import tachiyomi.domain.manga.model.applyFilter
+import tachiyomi.domain.source.model.StubSource
 import tachiyomi.domain.source.service.SourceManager
 import tachiyomi.domain.track.interactor.GetTracksPerManga
 import tachiyomi.domain.track.model.Track
@@ -66,6 +67,7 @@ import tachiyomi.source.local.isLocal
 import uy.kohesive.injekt.Injekt
 import uy.kohesive.injekt.api.get
 import kotlin.random.Random
+import tachiyomi.domain.source.model.Source as DomainSource
 import kotlin.time.Duration.Companion.seconds
 
 class LibraryViewModel(
@@ -368,6 +370,9 @@ class LibraryViewModel(
             libraryPreferences.filterBookmarked.changes(),
             libraryPreferences.filterCompleted.changes(),
             libraryPreferences.filterIntervalCustom.changes(),
+
+            libraryPreferences.sourceBadge.changes(),
+            libraryPreferences.useLangIcon.changes(),
         ) {
             ItemPreferences(
                 downloadBadge = it[0] as Boolean,
@@ -382,6 +387,8 @@ class LibraryViewModel(
                 filterBookmarked = it[9] as TriState,
                 filterCompleted = it[10] as TriState,
                 filterIntervalCustom = it[11] as TriState,
+                sourceBadge = it[12] as Boolean,
+                useLangIcon = it[13] as Boolean,
             )
         }
     }
@@ -420,6 +427,19 @@ class LibraryViewModel(
                             sourceManager.getOrStub(manga.manga.source).lang
                         } else {
                             ""
+                        },
+                        useLangIcon = preferences.useLangIcon,
+                        source = if (preferences.sourceBadge) {
+                            val s = sourceManager.getOrStub(manga.manga.source)
+                            DomainSource(
+                                id = s.id,
+                                lang = s.lang,
+                                name = s.name,
+                                supportsLatest = false,
+                                isStub = s is StubSource,
+                            )
+                        } else {
+                            null
                         },
                     ),
                 )
@@ -757,6 +777,8 @@ class LibraryViewModel(
         val filterBookmarked: TriState,
         val filterCompleted: TriState,
         val filterIntervalCustom: TriState,
+        val sourceBadge: Boolean,
+        val useLangIcon: Boolean,
     )
 
     @Immutable

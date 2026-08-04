@@ -90,8 +90,9 @@ class HistoryviewModelStateProvider : PreviewParameterProvider<HistoryViewModel.
             }
         }
 
-        fun randItem(historyBuilder: (HistoryWithRelations) -> HistoryWithRelations = { it }) =
-            HistoryUiModel.Item(
+        fun randItem(historyBuilder: (HistoryWithRelations) -> HistoryWithRelations = { it }): HistoryUiModel.Item {
+            val totalChapters = Random.nextLong(1, 100)
+            return HistoryUiModel.Item(
                 historyBuilder(
                     HistoryWithRelations(
                         id = Random.nextLong(),
@@ -99,6 +100,10 @@ class HistoryviewModelStateProvider : PreviewParameterProvider<HistoryViewModel.
                         mangaId = Random.nextLong(),
                         title = "Test Title",
                         chapterNumber = Random.nextDouble(),
+                        read = Random.nextBoolean(),
+                        lastPageRead = Random.nextLong(1, 10),
+                        totalChapters = totalChapters,
+                        readCount = Random.nextLong(0, totalChapters + 1),
                         readAt = Date.from(Clock.System.now().toJavaInstant()),
                         readDuration = Random.nextLong(),
                         coverData = MangaCover(
@@ -111,5 +116,6 @@ class HistoryviewModelStateProvider : PreviewParameterProvider<HistoryViewModel.
                     ),
                 ),
             )
+        }
     }
 }
