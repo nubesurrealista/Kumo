@@ -52,7 +52,7 @@ The developer(s) of this application does not have any affiliation with the cont
 
 ## Fingerprint & Trust
 
-The build process is fully public and transparent; you can audit every build in the [**Actions**](https://github.com/nubesurrealista/Kumo/actions) tab. **All APKs** are signed automatically by GitHub Actions using my digital signature. 
+The build process is fully public and transparent; you can audit every build in the [**Actions**](https://github.com/nubesurrealista/Kumo/actions) tab. **All APKs** are signed automatically by GitHub Actions using my digital signature.
 
 If the signature hash of your APK does not match the one below, you're not using an APK from me. Also, this repository uses **immutable releases** to guarantee reliability; once a version is published, binaries and tags cannot be modified or replaced. It's recommended that you simply do not trust me, make a fork and compile your own build; there's nothing more reliable than that, if you can do it, do it.
 
