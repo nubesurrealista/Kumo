@@ -54,7 +54,6 @@ import logcat.LogPriority
 import logcat.LogcatLogger
 import mihon.core.migration.Migrator
 import mihon.core.migration.migrations.migrations
-import mihon.telemetry.TelemetryConfig
 import org.conscrypt.Conscrypt
 import tachiyomi.core.common.i18n.stringResource
 import tachiyomi.core.common.preference.Preference
@@ -80,16 +79,13 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
     override fun onCreate() {
         super<Application>.onCreate()
         patchInjekt()
-        TelemetryConfig.init(applicationContext)
 
         GlobalExceptionHandler.initialize(applicationContext, CrashActivity::class.java)
 
-        // TLS 1.3 support for Android < 10
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             Security.insertProviderAt(Conscrypt.newProvider(), 1)
         }
 
-        // Avoid potential crashes
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             val process = getProcessName()
             if (packageName != process) WebView.setDataDirectorySuffix(process)
@@ -105,7 +101,6 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
 
         val scope = ProcessLifecycleOwner.get().lifecycleScope
 
-        // Show notification to disable Incognito Mode when it's enabled
         basePreferences.incognitoMode.changes()
             .onEach { enabled ->
                 if (enabled) {
@@ -134,16 +129,6 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
             }
             .launchIn(scope)
 
-        privacyPreferences.analytics
-            .changes()
-            .onEach(TelemetryConfig::setAnalyticsEnabled)
-            .launchIn(scope)
-
-        privacyPreferences.crashlytics
-            .changes()
-            .onEach(TelemetryConfig::setCrashlyticsEnabled)
-            .launchIn(scope)
-
         basePreferences.hardwareBitmapThreshold.let { preference ->
             if (!preference.isSet()) preference.set(GLUtil.DEVICE_TEXTURE_LIMIT)
         }
@@ -154,7 +139,6 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
 
         setAppCompatDelegateThemeMode(Injekt.get<UiPreferences>().themeMode.get())
 
-        // Updates widget update
         WidgetManager(Injekt.get(), Injekt.get()).apply { init(scope) }
 
         if (!LogcatLogger.isInstalled) {
@@ -189,15 +173,11 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
         return ImageLoader.Builder(this).apply {
             val callFactoryLazy = lazy { Injekt.get<NetworkHelper>().client }
             components {
-                // NetworkFetcher.Factory
                 add(OkHttpNetworkFetcherFactory(callFactoryLazy::value))
-                // Decoder.Factory
                 add(TachiyomiImageDecoder.Factory())
-                // Fetcher.Factory
                 add(BufferedSourceFetcher.Factory())
                 add(MangaCoverFetcher.MangaCoverFactory(callFactoryLazy))
                 add(MangaCoverFetcher.MangaFactory(callFactoryLazy))
-                // Keyer
                 add(MangaCoverKeyer())
                 add(MangaKeyer())
             }
@@ -212,7 +192,6 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
             allowRgb565(DeviceUtil.isLowRamDevice(this@App))
             if (networkPreferences.verboseLogging.get()) logger(DebugLogger())
 
-            // Coil spawns a new thread for every image load by default
             fetcherCoroutineContext(Dispatchers.IO.limitedParallelism(8))
             decoderCoroutineContext(Dispatchers.IO.limitedParallelism(3))
         }

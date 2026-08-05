@@ -1,6 +1,7 @@
 package eu.kanade.tachiyomi.ui.library
 
 import tachiyomi.domain.library.model.LibraryManga
+import tachiyomi.domain.source.model.Source
 
 data class LibraryItem(
     val libraryManga: LibraryManga,
@@ -18,5 +19,7 @@ data class LibraryItem(
         val unreadCount: Long,
         val isLocal: Boolean,
         val sourceLanguage: String,
+        val useLangIcon: Boolean = true,
+        val source: Source? = null,
     )
 }
