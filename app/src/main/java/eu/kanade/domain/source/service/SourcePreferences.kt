@@ -4,6 +4,7 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import eu.kanade.domain.source.interactor.SetMigrateSorting
+import eu.kanade.tachiyomi.ui.browse.source.globalsearch.SourceFilter
 import eu.kanade.tachiyomi.util.system.LocaleHelper
 import mihon.domain.migration.models.MigrationFlag
 import tachiyomi.core.common.preference.Preference
@@ -15,7 +16,7 @@ import tachiyomi.domain.library.model.LibraryDisplayMode
 @Inject
 @SingleIn(AppScope::class)
 class SourcePreferences(
-    preferenceStore: PreferenceStore,
+    private val preferenceStore: PreferenceStore,
 ) {
 
     val sourceDisplayMode: Preference<LibraryDisplayMode> = preferenceStore.getObjectFromString(
@@ -67,6 +68,11 @@ class SourcePreferences(
     val globalSearchFilterState: Preference<Boolean> = preferenceStore.getBoolean(
         Preference.appStateKey("has_filters_toggle_state"),
         false,
+    )
+
+    fun globalSearchPinnedState() = preferenceStore.getEnum(
+        Preference.appStateKey("global_search_pinned_toggle_state"),
+        SourceFilter.PinnedOnly,
     )
 
     val migrationSources: Preference<List<Long>> = preferenceStore.getLongArray("migration_sources", emptyList())

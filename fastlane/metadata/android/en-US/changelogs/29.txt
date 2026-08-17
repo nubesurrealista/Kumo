@@ -1,0 +1,5 @@
+- Updated codebase to Mihon v0.20.4.
+- Minor fixes to some of Kumo's own features
+- No original changes this time, this release is just for merge Mihon fixes to bugs caused by themselves
+
+Mihon changelog: https://github.com/mihonapp/mihon/blob/main/CHANGELOG.md
