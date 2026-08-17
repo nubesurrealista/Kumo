@@ -12,6 +12,7 @@ plugins {
     alias(mihonx.plugins.compose)
     alias(mihonx.plugins.spotless)
 
+    alias(libs.plugins.metro)
     alias(libs.plugins.aboutLibraries)
     alias(libs.plugins.androidx.baselineProfile)
     alias(libs.plugins.kotlin.serialization)
@@ -91,7 +92,7 @@ android {
 
             matchingFallbacks.addAll(commonMatchingFallbacks)
         }
-        create("preview") {
+        create("nightly") {
             initWith(release)
 
             applicationIdSuffix = ".debug"
@@ -113,7 +114,7 @@ android {
     }
 
     sourceSets {
-        getByName("preview").res.directories.add("src/debug/res")
+        getByName("nightly").res.directories.add("src/debug/res")
         getByName("benchmark").res.directories.add("src/debug/res")
     }
 
@@ -201,7 +202,7 @@ dependencies {
     implementation(projects.i18n)
     implementation(projects.core.archive)
     implementation(projects.core.common)
-    implementation(projects.core.viewmodel)
+    implementation(projects.core.metro)
     implementation(projects.coreMetadata)
     implementation(projects.sourceApi)
     implementation(projects.sourceLocal)
@@ -266,6 +267,9 @@ dependencies {
     implementation(libs.androidx.preference)
 
     implementation(libs.injekt)
+    implementation(libs.metro.runtime)
+    implementation(libs.metrox.viewmodel)
+    implementation(libs.metrox.viewmodel.compose)
 
     implementation(libs.bundles.coil)
     implementation(libs.subsamplingScaleImageView) {
@@ -273,6 +277,10 @@ dependencies {
     }
     implementation(libs.image.decoder)
 
+    implementation(libs.webgpuviewer)
+    implementation(libs.kim)
+
+    // UI libraries
     implementation(libs.material)
     implementation(libs.flexibleAdapter)
     implementation(libs.photoView)
