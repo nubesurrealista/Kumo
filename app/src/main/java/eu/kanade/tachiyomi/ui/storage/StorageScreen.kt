@@ -9,12 +9,13 @@ import eu.kanade.presentation.components.AppBar
 import eu.kanade.presentation.more.storage.StorageScreenContent
 import eu.kanade.presentation.more.storage.StorageScreenState
 import eu.kanade.presentation.util.Screen
-import eu.kanade.presentation.util.injektViewModel
 import eu.kanade.tachiyomi.ui.manga.MangaScreen
 import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.material.Scaffold
 import tachiyomi.presentation.core.i18n.stringResource
 import tachiyomi.presentation.core.screens.LoadingScreen
+import uy.kohesive.injekt.Injekt
+import uy.kohesive.injekt.api.get
 
 class StorageScreen : Screen() {
 
@@ -22,7 +23,9 @@ class StorageScreen : Screen() {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
 
-        val viewModel = injektViewModel<StorageViewModel>()
+        val viewModel = androidx.lifecycle.viewmodel.compose.viewModel {
+            Injekt.get<StorageViewModel>()
+        }
         val state by viewModel.state.collectAsStateWithLifecycle()
         val selectedCategory by viewModel.selectedCategory.collectAsStateWithLifecycle()
 
