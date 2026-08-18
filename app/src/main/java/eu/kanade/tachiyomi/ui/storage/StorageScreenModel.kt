@@ -5,7 +5,11 @@ import androidx.compose.ui.util.fastDistinctBy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hippo.unifile.UniFile
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.binding
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import eu.kanade.domain.manga.interactor.UpdateManga
 import eu.kanade.presentation.more.storage.StorageScreenState
 import eu.kanade.presentation.more.storage.data.StorageData
@@ -35,6 +39,9 @@ import tachiyomi.source.local.io.LocalSourceFileSystem
 import tachiyomi.source.local.isLocal
 import kotlin.random.Random
 
+@Inject
+@ViewModelKey
+@ContributesIntoMap(AppScope::class, binding = binding<ViewModel>())
 class StorageViewModel @Inject constructor(
     private val downloadCache: DownloadCache,
     private val downloadManager: DownloadManager,
