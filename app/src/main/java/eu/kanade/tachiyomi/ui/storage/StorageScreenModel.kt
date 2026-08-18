@@ -42,7 +42,7 @@ import kotlin.random.Random
 @Inject
 @ViewModelKey
 @ContributesIntoMap(AppScope::class, binding = binding<ViewModel>())
-class StorageViewModel @Inject constructor(
+class StorageViewModel(
     private val downloadCache: DownloadCache,
     private val downloadManager: DownloadManager,
     private val getLibraryManga: GetLibraryManga,
