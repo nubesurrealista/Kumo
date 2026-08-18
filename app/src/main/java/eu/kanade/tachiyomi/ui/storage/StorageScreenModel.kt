@@ -2,6 +2,7 @@ package eu.kanade.tachiyomi.ui.storage
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.util.fastDistinctBy
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hippo.unifile.UniFile
 import eu.kanade.domain.manga.interactor.UpdateManga
@@ -21,7 +22,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.flow.update
-import mihon.core.viewmodel.StateViewModel
 import tachiyomi.core.common.util.lang.launchIO
 import tachiyomi.core.common.util.lang.launchNonCancellable
 import tachiyomi.domain.category.interactor.GetCategories
@@ -44,7 +44,11 @@ class StorageViewModel(
     private val updateManga: UpdateManga = Injekt.get(),
     private val sourceManager: SourceManager = Injekt.get<SourceManager>(),
     private val sourceFileSystem: LocalSourceFileSystem = Injekt.get(),
-) : StateViewModel<StorageScreenState>(StorageScreenState.Loading(0)) {
+) : ViewModel() {
+
+    private val _state = MutableStateFlow<StorageScreenState>(StorageScreenState.Loading(0))
+    val state = _state.asStateFlow()
+
     private val _selectedCategory = MutableStateFlow<Category>(allCategory)
     val selectedCategory = _selectedCategory.asStateFlow()
 
@@ -80,7 +84,6 @@ class StorageViewModel(
             ) { _, _, libraries, categories ->
                 val distinctEntries = libraries.fastDistinctBy { it.id }
 
-                // If a manga is removed, avoid recomputing sizes for all entries
                 if (downloadedItems.value.first.isNotEmpty() && distinctEntries.size < entries.value.size) {
                     val (items, categories) = downloadedItems.value
                     val libraryIds = libraries.map { it.manga.id }
@@ -95,7 +98,7 @@ class StorageViewModel(
 
                 val items = mutableListOf<StorageData>()
 
-                mutableState.update {
+                _state.update {
                     StorageScreenState.Loading(0)
                 }
 
@@ -107,7 +110,7 @@ class StorageViewModel(
                     val chapterCount = getCount(manga)
                     val categories = getMangaCategoryIds(manga)
 
-                    mutableState.update {
+                    _state.update {
                         StorageScreenState.Loading((((index + 1.0) / distinctEntries.size) * 100).toInt())
                     }
 
@@ -152,7 +155,7 @@ class StorageViewModel(
             .onEach { (items, categories) ->
                 if (items.isEmpty() && categories.isEmpty()) return@onEach
 
-                mutableState.update {
+                _state.update {
                     StorageScreenState.Success(
                         items = items,
                         categories = categories,
