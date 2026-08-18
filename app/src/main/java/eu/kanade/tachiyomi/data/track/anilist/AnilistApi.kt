@@ -18,10 +18,10 @@ import eu.kanade.tachiyomi.network.awaitSuccess
 import eu.kanade.tachiyomi.network.interceptor.rateLimit
 import eu.kanade.tachiyomi.network.jsonMime
 import eu.kanade.tachiyomi.network.parseAs
-import eu.kanade.tachiyomi.util.lang.htmlDecode
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
+import eu.kanade.tachiyomi.util.lang.htmlDecode
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
@@ -295,13 +295,13 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
         return withIOContext {
             val query = """
             |query User {
-            |    Viewer {
-            |        id
-            |        name
-            |        mediaListOptions {
-            |            scoreFormat
-            |        }
-            |    }
+                |Viewer {
+                    |id
+                    |name
+                    |mediaListOptions {
+                        |scoreFormat
+                    |}
+                |}
             |}
             |
             """.trimMargin()
@@ -322,20 +322,11 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
         }
     }
 
-    suspend fun getMangaDetails(id: Int): TrackSearch? {
-        val metadata = getMangaMetadata(id.toLong())
-        return metadata.toTrackSearch()
-    }
-
     suspend fun getMangaMetadata(track: DomainTrack): TrackMangaMetadata {
-        return getMangaMetadata(track.remoteId)
-    }
-
-    suspend fun getMangaMetadata(mangaId: Long): TrackMangaMetadata {
         return withIOContext {
             val query = """
-            |query (${'$'}mangaId: Int) {
-            |    Media (id: ${'$'}mangaId, type: MANGA, format_not_in: [NOVEL]) {
+            |query (${'$'}mangaId: Int!) {
+            |    Media (id: ${'$'}mangaId) {
             |        id
             |        title {
             |            userPreferred
@@ -344,16 +335,6 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
             |            large
             |        }
             |        description
-            |        format
-            |        countryOfOrigin
-            |        status
-            |        chapters
-            |        startDate {
-            |            year
-            |            month
-            |            day
-            |        }
-            |        averageScore
             |        staff {
             |            edges {
             |                role
@@ -369,15 +350,14 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
             |        }
             |    }
             |}
-            |""".trimMargin()
-
+            |
+            """.trimMargin()
             val payload = buildJsonObject {
                 put("query", query)
                 putJsonObject("variables") {
-                    put("mangaId", mangaId)
+                    put("mangaId", track.remoteId)
                 }
             }
-
             with(json) {
                 authClient.newCall(
                     POST(
@@ -404,12 +384,6 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
                                 .mapNotNull { it.node.name() }
                                 .joinToString(", ")
                                 .ifEmpty { null },
-                            format = media.format,
-                            countryOfOrigin = media.countryOfOrigin,
-                            status = media.status,
-                            chapters = media.chapters,
-                            startDate = media.startDate,
-                            averageScore = media.averageScore,
                         )
                     }
             }
