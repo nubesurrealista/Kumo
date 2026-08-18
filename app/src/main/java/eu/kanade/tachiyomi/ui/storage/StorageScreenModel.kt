@@ -5,6 +5,7 @@ import androidx.compose.ui.util.fastDistinctBy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hippo.unifile.UniFile
+import dev.zacsweers.metro.Inject
 import eu.kanade.domain.manga.interactor.UpdateManga
 import eu.kanade.presentation.more.storage.StorageScreenState
 import eu.kanade.presentation.more.storage.data.StorageData
@@ -32,18 +33,16 @@ import tachiyomi.domain.source.service.SourceManager
 import tachiyomi.source.local.io.Archive
 import tachiyomi.source.local.io.LocalSourceFileSystem
 import tachiyomi.source.local.isLocal
-import uy.kohesive.injekt.Injekt
-import uy.kohesive.injekt.api.get
 import kotlin.random.Random
 
-class StorageViewModel(
-    private val downloadCache: DownloadCache = Injekt.get(),
-    private val downloadManager: DownloadManager = Injekt.get(),
-    private val getLibraryManga: GetLibraryManga = Injekt.get(),
-    private val getCategories: GetCategories = Injekt.get(),
-    private val updateManga: UpdateManga = Injekt.get(),
-    private val sourceManager: SourceManager = Injekt.get<SourceManager>(),
-    private val sourceFileSystem: LocalSourceFileSystem = Injekt.get(),
+class StorageViewModel @Inject constructor(
+    private val downloadCache: DownloadCache,
+    private val downloadManager: DownloadManager,
+    private val getLibraryManga: GetLibraryManga,
+    private val getCategories: GetCategories,
+    private val updateManga: UpdateManga,
+    private val sourceManager: SourceManager,
+    private val sourceFileSystem: LocalSourceFileSystem,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<StorageScreenState>(StorageScreenState.Loading(0))
