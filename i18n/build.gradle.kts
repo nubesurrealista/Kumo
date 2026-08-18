@@ -14,6 +14,10 @@ kotlin {
 
         // TODO(antsy): Remove when https://youtrack.jetbrains.com/issue/KT-83319 is resolved
         withHostTest { }
+
+        lint {
+            disable.addAll(listOf("MissingTranslation", "ExtraTranslation"))
+        }
     }
 
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -30,13 +34,14 @@ kotlin {
 androidComponents {
     onVariants { variant ->
         val resSource = variant.sources.res ?: return@onVariants
-
-        val variantName = variant.name.replaceFirstChar { it.uppercase() }
-        val task = tasks.register<GenerateLocalesConfigTask>("generate${variantName}LocalesConfig")
-        resSource.addGeneratedSourceDirectory(task) { it.outputDir }
+        resSource.addStaticSourceDirectory("src/commonMain/resources")
     }
 }
 
 multiplatformResources {
     resourcesPackage.set("tachiyomi.i18n")
+}
+
+tasks.register<GenerateLocalesConfigTask>("generateLocalesConfig") {
+    outputDir.set(file("src/commonMain/resources"))
 }

@@ -534,6 +534,8 @@
     <string name="local_invalid_format">פורמט פרק לא תקין</string>
     <string name="on_hiatus">בהפסקה</string>
     <string name="delete_category_confirmation">האם למחוק את הקטגוריה \"%s\"?</string>
+    <string name="edit_status_dialog_title">קבע מצב</string>
+    <string name="edit_status_dialog_message">דרוס את המצב של מאנגה זו</string>
     <string name="pref_dual_page_split">פצל עמודים רחבים</string>
     <string name="kindlish_nav">כמו ספר אלקטרוני</string>
     <string name="ext_info_version">גרסה</string>
@@ -718,7 +720,6 @@
     <string name="onboarding_permission_install_apps">הרשאה להתקנת אפליקציות</string>
     <string name="theme_monochrome">מונוכרום</string>
     <string name="pref_security">אבטחה</string>
-    <string name="pref_firebase">ניתוח נתונים ודוחות קריסה</string>
     <string name="pref_behavior">התנהגות</string>
     <string name="action_sort_random">אקראי</string>
     <string name="onboarding_heading">ברוכים הבאים!</string>
@@ -739,13 +740,9 @@
     <string name="pref_library_update_smart_update">עדכון חכם</string>
     <string name="action_display_unread_badge">כמות הפרקים שלא נקראו‏</string>
     <string name="action_apply">החל</string>
-    <string name="onboarding_permission_crashlytics_description">שלח דוחות קריסה אנונימיים למפתחים.</string>
-    <string name="onboarding_permission_analytics_description">שלח נתוני שימוש אנונימיים לשיפור תכונות האפליקציה.</string>
     <string name="onboarding_storage_action_select">בחר תיקייה</string>
-    <string name="onboarding_permission_analytics">אפשר ניתוח נתונים</string>
     <string name="onboarding_action_skip">דלג</string>
     <string name="onboarding_action_next">הבא</string>
-    <string name="onboarding_permission_crashlytics">שלח דוחות קריסה</string>
     <string name="scanlator">קבוצת תרגום</string>
     <string name="migrationConfigScreen.selectedHeader">נבחרים</string>
     <string name="label_upcoming">עדכונים צפויים</string>

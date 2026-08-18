@@ -5,16 +5,12 @@ import kotlin.time.Clock
 import kotlin.time.Duration.Companion.nanoseconds
 import kotlin.time.Instant
 
-// Git is needed in your system PATH for these commands to work.
-// If it's not installed, you can return a random value as a workaround
 fun Project.getLatestCommitCount(): String {
     return exec("git rev-list --count HEAD")
-    // return "1"
 }
 
 fun Project.getLatestCommitSha(): String {
-    return exec("git rev-parse --short HEAD")
-    // return "1"
+    return exec("git rev-parse --short=7 HEAD")
 }
 
 /**

@@ -4,6 +4,10 @@
 -keep,allowoptimization class tachiyomi.**
 -keep,allowoptimization class mihon.**
 
+-keep class mihon.app.shizuku.ShellInterface {
+    <init>();
+}
+
 # Keep common dependencies used in extensions
 -keep,allowoptimization class androidx.preference.** { public protected *; }
 -keep,allowoptimization class kotlin.** { public protected *; }
@@ -86,10 +90,6 @@
 
 # XmlUtil
 -keep public enum nl.adaptivity.xmlutil.EventType { *; }
-
-# Firebase
--keep class com.google.firebase.installations.** { *; }
--keep interface com.google.firebase.installations.** { *; }
 
 # KotlinX Datetime
 -keep,allowoptimization class kotlinx.datetime.** { public protected *; }

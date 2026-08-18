@@ -57,7 +57,7 @@ import mihon.app.di.injekt.MetroInteropModule
 import mihon.core.metro.GraphProvider
 import mihon.core.migration.Migration
 import mihon.core.migration.Migrator
-import mihon.telemetry.TelemetryConfig
+import mihon.core.migration.migrations.migrations
 import org.conscrypt.Conscrypt
 import tachiyomi.core.common.i18n.stringResource
 import tachiyomi.core.common.preference.Preference
@@ -114,11 +114,8 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
         graph.inject(this)
         setupInjekt()
 
-        TelemetryConfig.init(applicationContext)
-
         GlobalExceptionHandler.initialize(applicationContext, CrashActivity::class.java)
 
-        // TLS 1.3 support for Android < 10
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             Security.insertProviderAt(Conscrypt.newProvider(), 1)
         }
@@ -129,7 +126,6 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
 
         val scope = ProcessLifecycleOwner.get().lifecycleScope
 
-        // Show notification to disable Incognito Mode when it's enabled
         basePreferences.incognitoMode.changes()
             .onEach { enabled ->
                 if (enabled) {
@@ -156,16 +152,6 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
                     cancelNotification(Notifications.ID_INCOGNITO_MODE)
                 }
             }
-            .launchIn(scope)
-
-        privacyPreferences.analytics
-            .changes()
-            .onEach(TelemetryConfig::setAnalyticsEnabled)
-            .launchIn(scope)
-
-        privacyPreferences.crashlytics
-            .changes()
-            .onEach(TelemetryConfig::setCrashlyticsEnabled)
             .launchIn(scope)
 
         setAppCompatDelegateThemeMode(uiPreferences.themeMode.get())
@@ -213,7 +199,6 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
         return ImageLoader.Builder(this).apply {
             val callFactoryLazy = lazy { networkHelper.client }
             components {
-                // NetworkFetcher.Factory
                 add(OkHttpNetworkFetcherFactory(callFactoryLazy::value))
                 // Decoder.Factory
                 add(ImageDecoder.Factory())
@@ -236,7 +221,6 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
             allowRgb565(DeviceUtil.isLowRamDevice(this@App))
             if (networkPreferences.verboseLogging.get()) logger(DebugLogger())
 
-            // Coil spawns a new thread for every image load by default
             fetcherCoroutineContext(Dispatchers.IO.limitedParallelism(8))
             decoderCoroutineContext(Dispatchers.IO.limitedParallelism(3))
         }
