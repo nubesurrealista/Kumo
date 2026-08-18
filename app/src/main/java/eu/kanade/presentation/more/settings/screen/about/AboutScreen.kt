@@ -205,7 +205,7 @@ object AboutScreen : Screen() {
     fun getVersionName(): String {
         return when {
             BuildConfig.DEBUG -> "Debug ${BuildConfig.COMMIT_SHA}"
-            isPreviewBuildType -> "Beta r${BuildConfig.COMMIT_COUNT} (${BuildConfig.COMMIT_SHA})"
+            isNightlyBuildType -> "Nightly r${BuildConfig.COMMIT_COUNT} (${BuildConfig.COMMIT_SHA})"
             else -> "Stable ${BuildConfig.VERSION_NAME}"
         }
     }
