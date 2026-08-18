@@ -4,7 +4,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.util.fastDistinctBy
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hippo.unifile.UniFile
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
@@ -15,8 +14,10 @@ import eu.kanade.presentation.more.storage.StorageScreenState
 import eu.kanade.presentation.more.storage.data.StorageData
 import eu.kanade.tachiyomi.data.download.DownloadCache
 import eu.kanade.tachiyomi.data.download.DownloadManager
-import eu.kanade.tachiyomi.source.Source
 import eu.kanade.tachiyomi.util.storage.size
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -27,6 +28,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.withContext
 import tachiyomi.core.common.util.lang.launchIO
 import tachiyomi.core.common.util.lang.launchNonCancellable
 import tachiyomi.domain.category.interactor.GetCategories
@@ -37,6 +39,7 @@ import tachiyomi.domain.source.service.SourceManager
 import tachiyomi.source.local.io.Archive
 import tachiyomi.source.local.io.LocalSourceFileSystem
 import tachiyomi.source.local.isLocal
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.random.Random
 
 @Inject
@@ -102,40 +105,49 @@ class StorageViewModel(
 
                 entries.value = distinctEntries.map { it.id }
 
-                val items = mutableListOf<StorageData>()
+                _state.update { StorageScreenState.Loading(0) }
 
-                _state.update {
-                    StorageScreenState.Loading(0)
+                val processedCount = AtomicInteger(0)
+                val totalEntries = distinctEntries.size
+                var lastReportedProgress = -1
+
+                val items = withContext(Dispatchers.IO) {
+                    distinctEntries.chunked(10).flatMap { chunk ->
+                        chunk.map { libraryManga ->
+                            async {
+                                val manga = libraryManga.manga
+                                val size = getSize(manga)
+
+                                if (size <= 0) return@async null
+
+                                val chapterCount = getCount(manga)
+                                val mangaCategories = getMangaCategoryIds(manga)
+                                val random = Random(manga.id)
+
+                                val currentProcessed = processedCount.incrementAndGet()
+                                val progress = ((currentProcessed.toDouble() / totalEntries) * 100).toInt()
+
+                                if (progress >= lastReportedProgress + 5 || currentProcessed == totalEntries) {
+                                    lastReportedProgress = progress
+                                    _state.update { StorageScreenState.Loading(progress) }
+                                }
+
+                                StorageData(
+                                    manga = manga,
+                                    categories = mangaCategories,
+                                    size = size,
+                                    chapterCount = chapterCount,
+                                    color = Color(
+                                        random.nextInt(255),
+                                        random.nextInt(255),
+                                        random.nextInt(255),
+                                    ),
+                                )
+                            }
+                        }.awaitAll().filterNotNull()
+                    }
                 }
 
-                distinctEntries.forEachIndexed { index, libraryManga ->
-                    val manga = libraryManga.manga
-                    val random = Random(manga.id)
-
-                    val size = getSize(manga)
-                    val chapterCount = getCount(manga)
-                    val categories = getMangaCategoryIds(manga)
-
-                    _state.update {
-                        StorageScreenState.Loading((((index + 1.0) / distinctEntries.size) * 100).toInt())
-                    }
-
-                    if (size > 0) {
-                        items.add(
-                            StorageData(
-                                manga = manga,
-                                categories = categories,
-                                size = size,
-                                chapterCount = chapterCount,
-                                color = Color(
-                                    random.nextInt(255),
-                                    random.nextInt(255),
-                                    random.nextInt(255),
-                                ),
-                            ),
-                        )
-                    }
-                }
                 items to listOf(allCategory) + categories
             }
                 .collectLatest {
@@ -172,8 +184,7 @@ class StorageViewModel(
     }
 
     private suspend fun getMangaCategoryIds(manga: Manga): List<Long> {
-        return getCategories.await(manga.id)
-            .map { it.id }
+        return getCategories.await(manga.id).map { it.id }
     }
 
     private fun getSize(manga: Manga): Long {
