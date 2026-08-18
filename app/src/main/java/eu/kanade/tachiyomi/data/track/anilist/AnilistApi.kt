@@ -18,10 +18,10 @@ import eu.kanade.tachiyomi.network.awaitSuccess
 import eu.kanade.tachiyomi.network.interceptor.rateLimit
 import eu.kanade.tachiyomi.network.jsonMime
 import eu.kanade.tachiyomi.network.parseAs
+import eu.kanade.tachiyomi.util.lang.htmlDecode
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
-import eu.kanade.tachiyomi.util.lang.htmlDecode
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
@@ -295,13 +295,13 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
         return withIOContext {
             val query = """
             |query User {
-                |Viewer {
-                    |id
-                    |name
-                    |mediaListOptions {
-                        |scoreFormat
-                    |}
-                |}
+            |    Viewer {
+            |        id
+            |        name
+            |        mediaListOptions {
+            |            scoreFormat
+            |        }
+            |    }
             |}
             |
             """.trimMargin()
@@ -322,7 +322,7 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
         }
     }
 
-suspend fun getMangaDetails(id: Int): TrackSearch? {
+    suspend fun getMangaDetails(id: Int): TrackSearch? {
         val metadata = getMangaMetadata(id.toLong())
         return metadata.toTrackSearch()
     }
@@ -386,7 +386,7 @@ suspend fun getMangaDetails(id: Int): TrackSearch? {
                     ),
                 )
                     .awaitSuccess()
-.parseAs<ALMangaMetadata>()
+                    .parseAs<ALMangaMetadata>()
                     .let {
                         val media = it.data.media
                         TrackMangaMetadata(
@@ -463,9 +463,6 @@ suspend fun getMangaDetails(id: Int): TrackSearch? {
             }
         }
     }
-            }
-        }
-    }
 
     private fun createDate(dateValue: Long): JsonObject {
         if (dateValue == 0L) {
@@ -480,7 +477,7 @@ suspend fun getMangaDetails(id: Int): TrackSearch? {
         return buildJsonObject {
             put("year", dateTime.year)
             put("month", dateTime.month.number)
-            put("day", dateTime.day)
+            put("day", dateTime.dayOfMonth)
         }
     }
 
