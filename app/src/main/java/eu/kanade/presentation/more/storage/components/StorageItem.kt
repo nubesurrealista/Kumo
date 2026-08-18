@@ -133,7 +133,7 @@ private fun ItemDeleteDialog(
     onDismissRequest: () -> Unit,
     onDelete: (Boolean) -> Unit,
 ) {
-    var removeFromLibrary by remember { mutableStateOf(true) }
+    var removeFromLibrary by remember { mutableStateOf(false) }
 
     AlertDialog(
         onDismissRequest = onDismissRequest,
