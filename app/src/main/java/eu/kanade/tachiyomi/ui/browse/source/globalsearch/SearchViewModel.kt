@@ -42,8 +42,6 @@ abstract class SearchViewModel(
     val state: StateFlow<State>
         field = MutableStateFlow<State>(initialState)
 
-    // Subclasses can't touch the backing field (Kotlin forbids a visibility modifier on one),
-    // so state writes from them go through here.
     protected fun updateState(function: (State) -> State) {
         state.update(function)
     }
@@ -75,8 +73,8 @@ abstract class SearchViewModel(
             }
         }
         viewModelScope.launch {
-            preferences.globalSearchPinnedState().changes().collectLatest { state ->
-                mutableState.update { it.copy(sourceFilter = state) }
+            preferences.globalSearchPinnedState().changes().collectLatest { pinnedFilter ->
+                state.update { it.copy(sourceFilter = pinnedFilter) }
             }
         }
     }
@@ -147,7 +145,6 @@ abstract class SearchViewModel(
 
         val sources = getSelectedSources()
 
-        // Reuse previous results if possible
         if (sameQuery) {
             val existingResults = state.value.items
             updateItems(
