@@ -3,6 +3,7 @@ package eu.kanade.tachiyomi.ui.storage
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import eu.kanade.presentation.components.AppBar
@@ -14,8 +15,6 @@ import tachiyomi.i18n.MR
 import tachiyomi.presentation.core.components.material.Scaffold
 import tachiyomi.presentation.core.i18n.stringResource
 import tachiyomi.presentation.core.screens.LoadingScreen
-import uy.kohesive.injekt.Injekt
-import uy.kohesive.injekt.api.get
 
 class StorageScreen : Screen() {
 
@@ -23,9 +22,7 @@ class StorageScreen : Screen() {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
 
-        val viewModel = androidx.lifecycle.viewmodel.compose.viewModel {
-            Injekt.get<StorageViewModel>()
-        }
+        val viewModel: StorageViewModel = viewModel()
         val state by viewModel.state.collectAsStateWithLifecycle()
         val selectedCategory by viewModel.selectedCategory.collectAsStateWithLifecycle()
 
