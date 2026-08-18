@@ -21,10 +21,4 @@ data class ALMangaMetadataMedia(
     val coverImage: ItemCover,
     val description: String?,
     val staff: ALStaff,
-    val format: String? = null,
-    val countryOfOrigin: String? = null,
-    val status: String? = null,
-    val chapters: Int? = null,
-    val averageScore: Int? = null,
-    val startDate: ALDate? = null,
 )
