@@ -451,7 +451,7 @@ class AnilistApi(val client: OkHttpClient, interceptor: AnilistInterceptor) {
         return buildJsonObject {
             put("year", dateTime.year)
             put("month", dateTime.month.number)
-            put("day", dateTime.dayOfMonth)
+            put("day", dateTime.day)
         }
     }
 
