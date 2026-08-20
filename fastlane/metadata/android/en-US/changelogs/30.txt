@@ -1,0 +1,11 @@
+This will be the last release of Kumo, the project will be archived.
+
+This is a personal decision, I just DON’T LIKE the development of Mihon, they make developing a fork increasingly hard.
+
+So instead of adapting to a development that I do not like, I decided to simply abandon this.
+
+If you want an alternative, I recommend [Usagi](https://github.com/UsagiApp/Usagi), for me it's what I tried to do with Kumo, but with nothing to do with Mihon. 
+
+This release is based on unreleased Mihon code, with changes like the new decoder that it's horrible for low-end devices, Usagi on the other hand is much more efficient even on low-end.
+
+Well, see you in my next project I guess, thanks to those who used Kumo, and if you see repos or modified versions of Kumo, know that they are probably malicious.
