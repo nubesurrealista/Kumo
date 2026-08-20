@@ -22,6 +22,17 @@
 
 ---
 
+> [!CAUTION]
+> **This project is archived.**
+> 
+> Kumo is no longer under active development. Thank you to everyone who used and supported this app throughout its lifespan! 
+> 
+> If you are looking for an active alternative, please check out **[Usagi](https://github.com/UsagiApp/Usagi)**.
+> 
+> *(Special thanks to everyone who used this app, and no thanks to Mihon for their awful development process.)*
+
+---
+
 ## FAQ
 
 **Why Kumo?**
